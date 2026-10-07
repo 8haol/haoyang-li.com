@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { getGalleryProjects, loadYaml, localizeGalleryItem } from "@/lib/content/load";
+import { getGalleryProjects, loadLocalizedYaml, localizeGalleryItem } from "@/lib/content/load";
 import { OpenSource } from "@/lib/content/schema";
 import type { Locale } from "@/lib/site";
 import { Hero } from "@/components/home/Hero";
@@ -17,7 +17,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
     const item = localizeGalleryItem(raw, locale);
     return { image: item.image!, video: item.video, slug, title: item.title, meta: `${item.org} · ${item.year}`, blurb: item.blurb };
   });
-  const open = loadYaml("open-source.yaml", OpenSource);
+  const open = loadLocalizedYaml("open-source.yaml", OpenSource, locale);
 
   // main paints its own paper: the page background turns slate while the silk hero is on screen (globals.css).
   return (
@@ -42,13 +42,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
             {open.map((o, i) => (
               <Reveal key={o.name} delay={i * 0.05} className="bg-bg">
                 <li className="flex h-full flex-col p-6">
-                  <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-fg-muted">{o.status}</p>
+                  <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-fg-muted">{os(`status.${o.status}`)}</p>
                   <a href={o.repo} className="font-display mt-3 text-xl font-medium tracking-tight hover:underline hover:underline-offset-4">
                     {o.name}
                   </a>
                   <p className="mt-2 text-[15px] leading-6 text-fg/85">{o.tagline}</p>
                   <p className="mt-4 text-[14px] leading-6 text-fg-muted">
-                    <span className="text-fg/85">{os("why")}:</span> {o.why}
+                    <span className="text-fg/85">{os("why")}</span> {o.why}
                   </p>
                   <p className="mt-auto pt-6 font-mono text-[11px] text-fg-muted">
                     {o.stack.join(" · ")}

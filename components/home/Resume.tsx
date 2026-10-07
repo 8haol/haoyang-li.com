@@ -1,6 +1,7 @@
-import { getTranslations } from "next-intl/server";
-import { loadYaml } from "@/lib/content/load";
+import { getLocale, getTranslations } from "next-intl/server";
+import { loadLocalizedYaml } from "@/lib/content/load";
 import { Resume as ResumeSchema, type Resume as ResumeData } from "@/lib/content/schema";
+import type { Locale } from "@/lib/site";
 import { Reveal } from "@/components/motion/Reveal";
 
 const label = "font-mono text-[11px] uppercase tracking-[0.22em] text-fg-muted";
@@ -53,7 +54,7 @@ function Roles({ title, items }: { title: string; items: ResumeData["experience"
 /** The full résumé, on the home page: everything in resume.yaml, with the PDF one click away. */
 export async function Resume() {
   const t = await getTranslations("resume");
-  const r = loadYaml("resume.yaml", ResumeSchema);
+  const r = loadLocalizedYaml("resume.yaml", ResumeSchema, (await getLocale()) as Locale);
   return (
     <section className="shell py-24">
       <div className="grid gap-12 border-t border-border pt-10 lg:grid-cols-[1fr_1.4fr] lg:gap-20">

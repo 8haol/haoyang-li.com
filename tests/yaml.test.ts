@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
-import { getGalleryProjects, loadYaml } from "@/lib/content/load";
+import { getGalleryProjects, loadLocalizedYaml, loadYaml } from "@/lib/content/load";
 import { Gallery, OpenSource } from "@/lib/content/schema";
 import { bannedTermsIn } from "./bannedTerms";
 
@@ -20,6 +20,10 @@ describe("yaml content", () => {
   });
   it("open-source entries point at github.com/8haol", () => {
     for (const o of loadYaml("open-source.yaml", OpenSource)) expect(o.repo).toMatch(/^https:\/\/github\.com\/8haol\//);
+  });
+  it("zh open-source lists the same repos as en", () => {
+    const repos = (locale: "en" | "zh") => loadLocalizedYaml("open-source.yaml", OpenSource, locale).map((o) => o.repo);
+    expect(repos("zh")).toEqual(repos("en"));
   });
 });
 

@@ -1,0 +1,59 @@
+name: Haoyang Li
+headline: AI 系统架构师、全栈工程师
+location: 英国伦敦
+email: hello@haoyang-li.com
+summary: AI 系统架构师、全栈工程师。负责企业级 AI 产品从需求调研到上线生产的全过程，涵盖大模型应用、SaaS 架构、系统集成与自动化，也直接面向客户做技术交付。
+experience:
+  - org: Zenith AI / My Club Group
+    url: https://zenithai.one/
+    title: Lead AI & Data Integration Architect
+    location: 英国伦敦
+    period: 2025.05 – 至今
+    bullets:
+      - 负责企业 AI 项目的端到端交付：从客户需求调研、架构设计，到全栈开发、部署上线，并和业务方一起持续迭代。
+      - 独立设计并开发 GAIMS：一个可审计的 AI 供应商分配决策层（专利申请中），上线八个月处理了 3,000 多张采购订单。系统结合前沿大模型、历史与风险数据、品牌专属规则和人工审核反馈，并实现了租户隔离与敏感数据脱敏。
+      - 为四家英国运动服饰集团定制 GAIMS 演示，在保密协议阶段的评估中向高管和 IT 团队讲解架构与业务价值。
+      - 上线 Voiceflow 聊天 agent，累计 4 万多条消息、1.5 万多名用户；搭建 Retell 语音 agent，打通 Zoho CRM 的线索录入、通话摘要、通话记录和按意图分配销售。
+      - 搭建 50 多个 n8n 工作流，把 AI 产品和 CRM、运营数据连起来，支持订单状态查询、销售通话预约和跨系统业务流程。
+      - 交付 Kit Funder、客户门户和 Zenith AI 官网，开发覆盖登录认证、支付、订单追踪和 CRM 集成的全栈客户流程。
+  - org: Outlier AI
+    url: https://outlier.ai/
+    title: AI 训练工程师
+    location: 远程
+    period: 2024.10 – 2025.05
+    bullets:
+      - 为前沿大模型的后训练（RLHF）设计评分标准和对抗性提示词，评估推理、代码生成、指令遵循和工具调用能力，把系统性的失败模式反馈给模型训练团队。
+      - 带领 15 人的评估团队，制定质量基准，并用标准答案校准评审员。
+  - org: 国联民生证券股份有限公司
+    title: 量化研究员
+    location: 中国郑州
+    period: 2023.06 – 2023.08
+    bullets:
+      - 用 Python、SQL 和基于 PCA 的因子分析研究商品期货交易策略。
+entrepreneurial:
+  - org: Kelay AI
+    title: 技术联合创始人
+    location: 英国伦敦
+    period: 2026.05 – 至今
+    bullets:
+      - 用 Next.js、TypeScript 和 PostgreSQL 开发面向小商户的语音 AI 预约应用（试点阶段），在多租户架构下实现 Retell agent 的自动创建和中英双语对话。
+      - 实现预约、改期和取消工具、Webhook 签名校验和幂等的通话存储；通过真实通话测试解决来电号码识别和模型延迟问题。
+education:
+  - school: 伦敦政治经济学院（LSE）
+    degree: 应用数学硕士
+    period: 2023.09 – 2024.09
+    coursework: [机器学习算法, 算法与数据结构, 最优化方法]
+  - school: 伦敦国王学院（KCL）
+    degree: 数学与统计学士
+    period: 2020.09 – 2023.06
+    coursework: [Python 计算方法, 统计建模, 线性代数, 金融随机微积分]
+skills:
+  - group: 工程
+    items: [TypeScript, JavaScript, Python, SQL, React, Next.js, Node.js]
+  - group: AI 与集成
+    items: [大模型 API, RAG, 提示词工程, 工具调用, REST API, n8n, Zoho CRM, Retell AI, Voiceflow]
+  - group: 数据与部署
+    items: [PostgreSQL/Neon, Supabase, Airtable, Railway, Vercel, Netlify, Cloudflare]
+  - group: 开发工具
+    items: [Git/GitHub, Claude Code, Codex, Cursor, Base44]
+languages: [中文（母语）, 英语（熟练）, 西班牙语（熟练）]
