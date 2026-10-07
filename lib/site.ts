@@ -8,6 +8,11 @@ export const siteConfig = {
   defaultLocale: "en" as const,
   /** The home page's open-source section and its nav link; the content stays in content/open-source.yaml. */
   showOpenSource: false,
+  /** The /zh routes, the language switcher and hreflang; the translations stay in messages/ and content/. */
+  showChinese: false,
 } as const;
 
 export type Locale = (typeof siteConfig.locales)[number];
+
+/** Locales the site actually serves. */
+export const liveLocales: readonly Locale[] = siteConfig.showChinese ? siteConfig.locales : [siteConfig.defaultLocale];
