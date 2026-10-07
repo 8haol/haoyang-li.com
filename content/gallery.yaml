@@ -10,37 +10,6 @@
   image: /images/work/gaims/cover.jpg
   zh:
     blurb: 可审计的 LLM 决策层：把采购订单分配给合作工厂，并给出人可以批准或推翻的理由；已在生产环境处理 3,000 多张订单。
-- title: Kelay AI
-  blurb: Multi-tenant AI phone receptionist for UK small businesses; answers calls and books, reschedules and cancels in English and Mandarin. Pilot-ready.
-  org: Kelay AI (co-founder)
-  year: '2026'
-  tags: [Retell, Next.js, Postgres, Multi-tenant]
-  caseStudy: kelay-ai
-  image: /images/work/kelay-ai/cover.jpg
-  zh:
-    org: Kelay AI（联合创始人）
-    blurb: 面向英国小商户的多租户 AI 电话前台：接电话，用中英文帮客人预约、改期和取消。已具备试点条件。
-- title: Kit Funder
-  blurb: Not-for-profit platform matching UK grassroots clubs with local sponsors; nine-dimension scoring (eight rules plus an LLM judgement), mutual opt-in and in-app messaging.
-  org: Kit Funder (not-for-profit)
-  year: 2025–2026
-  tags: [AI matching, React, Base44, OpenAI]
-  href: https://kitfunder.ai/
-  caseStudy: kit-funder
-  image: /images/work/kit-funder/cover.jpg
-  zh:
-    org: Kit Funder（非营利）
-    blurb: 非营利平台，为英国草根球队匹配本地赞助商：九个维度打分（八项规则加一项 LLM 判断），双方都同意才能联系，之后在站内直接沟通。
-- title: Voice & chat agents
-  blurb: Chat agents in six languages that answer from live order data (40K+ messages), and voice agents that log every call to the CRM with a summary and intent routing.
-  org: My Club Group
-  year: 2025–2026
-  tags: [Voiceflow, Retell, Zoho CRM, n8n]
-  caseStudy: voice-and-chat-agents
-  image: /images/work/voice-and-chat-agents/cover.jpg
-  zh:
-    title: 语音与聊天 Agent
-    blurb: 六种语言的聊天 agent，回答基于实时订单数据（累计 4 万多条消息）；语音 agent 把每通电话连同摘要写进 CRM，并按意图分给对应的销售。
 - title: Zenith AI website
   blurb: Motion-led marketing site for an AI-native agency; GSAP, Lenis and Three.js on Next.js.
   org: Zenith AI
@@ -52,6 +21,27 @@
   zh:
     title: Zenith AI 官网
     blurb: 一家 AI 原生代理公司的官网，以动效为核心；Next.js 搭配 GSAP、Lenis 和 Three.js。
+- title: Voice & chat agents
+  blurb: Chat agents in six languages that answer from live order data (40K+ messages), and voice agents that log every call to the CRM with a summary and intent routing.
+  org: My Club Group
+  year: 2025–2026
+  tags: [Voiceflow, Retell, Zoho CRM, n8n]
+  caseStudy: voice-and-chat-agents
+  image: /images/work/voice-and-chat-agents/cover.jpg
+  zh:
+    title: 语音与聊天 Agent
+    blurb: 六种语言的聊天 agent，回答基于实时订单数据（累计 4 万多条消息）；语音 agent 把每通电话连同摘要写进 CRM，并按意图分给对应的销售。
+- title: Kit Funder
+  blurb: Not-for-profit platform matching UK grassroots clubs with local sponsors; nine-dimension scoring (eight rules plus an LLM judgement), mutual opt-in and in-app messaging.
+  org: Kit Funder (not-for-profit)
+  year: 2025–2026
+  tags: [AI matching, React, Base44, OpenAI]
+  href: https://kitfunder.ai/
+  caseStudy: kit-funder
+  image: /images/work/kit-funder/cover.jpg
+  zh:
+    org: Kit Funder（非营利）
+    blurb: 非营利平台，为英国草根球队匹配本地赞助商：九个维度打分（八项规则加一项 LLM 判断），双方都同意才能联系，之后在站内直接沟通。
 - title: Client Portal
   blurb: Order portal for sports clubs; one-time-code login, order tracking through CRM stages, the kit order form, artwork upload and estimate approval, all on n8n webhooks.
   org: My Club Group
@@ -63,17 +53,26 @@
   zh:
     title: 客户门户
     blurb: 面向球队的订单门户：验证码登录、按 CRM 阶段追踪订单、球衣下单表单、设计稿上传和报价确认，后端全部走 n8n webhook。
-- title: Elite Outlet
-  slug: elite-outlet-portal
-  caseStudy: elite-outlet-portal
-  blurb: Clearance shop for a teamwear range; basket, Stripe checkout, and stock synced from Zoho through n8n.
-  org: My Club Group
+- title: Kelay AI
+  blurb: Multi-tenant AI phone receptionist for UK small businesses; answers calls and books, reschedules and cancels in English and Mandarin. Pilot-ready.
+  org: Kelay AI (co-founder)
   year: '2026'
-  tags: [Base44, Stripe, Zoho, n8n]
-  href: https://outlet.myclubgroup.com/
-  image: /images/work/elite-outlet-portal/cover.jpg
+  tags: [Retell, Next.js, Postgres, Multi-tenant]
+  caseStudy: kelay-ai
+  image: /images/work/kelay-ai/cover.jpg
   zh:
-    blurb: 团队运动服清仓商城：购物车、Stripe 结账，库存经 n8n 从 Zoho 同步。
+    org: Kelay AI（联合创始人）
+    blurb: 面向英国小商户的多租户 AI 电话前台：接电话，用中英文帮客人预约、改期和取消。已具备试点条件。
+- title: Interactive 3D pitch decks
+  blurb: Scroll-driven 3D proposal decks for enterprise pitches; one template, re-skinned for each prospect.
+  org: My Club Group · Zenith AI
+  year: '2026'
+  tags: [Three.js, GSAP, Lenis]
+  caseStudy: interactive-3d-pitch-decks
+  image: /images/work/interactive-3d-pitch-decks/cover.jpg
+  zh:
+    title: 3D 交互式提案
+    blurb: 滚动驱动的 3D 提案页面，用在企业客户提案中；一套模板，按客户换皮。
 - title: Product Hub
   blurb: Internal product-lifecycle hub, from idea to catalogue; SharePoint document sync, department permissions, sample sign-offs and a weekday digest.
   org: My Club Group
@@ -94,6 +93,17 @@
   zh:
     org: 个人项目
     blurb: 线下活动的手机互动平台：扫码入场、工作人员给各站计分、现场大屏，还有中秋集章卡这样的主题玩法。游戏逻辑全部写在 Postgres RPC 里。
+- title: Elite Outlet
+  slug: elite-outlet-portal
+  caseStudy: elite-outlet-portal
+  blurb: Clearance shop for a teamwear range; basket, Stripe checkout, and stock synced from Zoho through n8n.
+  org: My Club Group
+  year: '2026'
+  tags: [Base44, Stripe, Zoho, n8n]
+  href: https://outlet.myclubgroup.com/
+  image: /images/work/elite-outlet-portal/cover.jpg
+  zh:
+    blurb: 团队运动服清仓商城：购物车、Stripe 结账，库存经 n8n 从 Zoho 同步。
 - title: Selah
   blurb: Worship lyrics to PPTX with pinyin aligned over every character; 18 themes, a shared song library and photo-to-lyrics recognition.
   org: Personal
@@ -105,13 +115,3 @@
   zh:
     org: 个人项目
     blurb: 把敬拜歌词做成 PPTX，每个汉字上方对齐拼音；18 套主题、共享歌库，还能拍照识别歌谱。
-- title: Interactive 3D pitch decks
-  blurb: Scroll-driven 3D proposal decks for enterprise pitches; one template, re-skinned for each prospect.
-  org: My Club Group · Zenith AI
-  year: '2026'
-  tags: [Three.js, GSAP, Lenis]
-  caseStudy: interactive-3d-pitch-decks
-  image: /images/work/interactive-3d-pitch-decks/cover.jpg
-  zh:
-    title: 3D 交互式提案
-    blurb: 滚动驱动的 3D 提案页面，用在企业客户提案中；一套模板，按客户换皮。
