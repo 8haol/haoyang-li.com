@@ -23,6 +23,14 @@
   padding-inline: clamp(1rem, 4vw, 4.5rem);
 }
 
+/* Inner scroll areas (the project viewer, the chat) scroll without a native bar, like the page itself. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 :root {
   --bg: #f4f2ee;
   --fg: #121212;
@@ -55,10 +63,10 @@ html::-webkit-scrollbar {
 body {
   font-family: var(--font-sans);
   font-feature-settings: "ss01", "cv11";
-  transition: padding-right 0.6s var(--ease-out-expo);
 }
 /* Split view: while the text panel is open on a wide screen, the page narrows beside it and stays fully usable.
-   <html data-agent-panel> is set by AgentPanel; the panel's width lives here so both sides agree. */
+   <html data-agent-panel> is set by AgentPanel; the panel's width lives here so both sides agree. The narrowing is
+   not animated on purpose: a padding transition re-lays out the page (and resizes the WebGL canvases) every frame. */
 :root {
   --agent-panel-w: min(520px, 42vw);
   /* How much of the viewport's right edge the panel occupies right now; fixed overlays subtract it. */
@@ -72,13 +80,10 @@ body {
 body {
   padding-right: var(--agent-panel-offset);
 }
-/* While the divider is being dragged the page follows the pointer directly. */
+/* While the divider is being dragged. */
 html[data-agent-resizing] {
   cursor: col-resize;
   user-select: none;
-}
-html[data-agent-resizing] body {
-  transition: none;
 }
 .font-display {
   font-family: var(--font-display);

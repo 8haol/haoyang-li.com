@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 
 vi.mock("next-intl", () => ({ useLocale: () => "en" }));
 
@@ -20,7 +20,9 @@ describe("AgentPanel", () => {
     expect(document.documentElement.dataset.agentPanel).toBeUndefined();
   });
 
-  it("resizes by dragging the divider, within limits, and remembers the width", () => {
+  const frame = () => act(() => new Promise<void>((r) => requestAnimationFrame(() => r())));
+
+  it("resizes by dragging the divider, within limits, and remembers the width", async () => {
     Object.defineProperty(window, "innerWidth", { value: 1600, configurable: true });
     localStorage.clear();
     const { unmount } = render(<AgentPanel onClose={() => {}} labels={labels} />);
@@ -29,8 +31,10 @@ describe("AgentPanel", () => {
     fireEvent.pointerDown(divider, { clientX: 1080 });
     expect(root.dataset.agentResizing).toBe("");
     fireEvent.pointerMove(window, { clientX: 900 });
+    await frame();
     expect(root.style.getPropertyValue("--agent-panel-w")).toBe("700px");
     fireEvent.pointerMove(window, { clientX: 100 }); // wider than allowed: capped at 70% of the window
+    await frame();
     expect(root.style.getPropertyValue("--agent-panel-w")).toBe("1120px");
     fireEvent.pointerUp(window, { clientX: 1500 }); // narrower than allowed: floored at the minimum
     expect(root.style.getPropertyValue("--agent-panel-w")).toBe("360px");

@@ -21,6 +21,10 @@ const readStoredWidth = (): number | null => {
     return null;
   }
 };
+const remeasure = () => {
+  getLenis()?.resize?.();
+  window.dispatchEvent(new Event("resize"));
+};
 const storeWidth = (w: number) => {
   try {
     localStorage.setItem(PANEL_KEY, String(w));
@@ -52,20 +56,15 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
     return () => document.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  // Split view: the page narrows beside the panel (see globals.css) and re-measures once the transition settles.
+  // Split view: the page narrows beside the panel in one step (see globals.css) and re-measures once.
   useEffect(() => {
     const root = document.documentElement;
     root.dataset.agentPanel = "open";
-    const remeasure = () => {
-      getLenis()?.resize?.();
-      window.dispatchEvent(new Event("resize"));
-    };
-    const t = setTimeout(remeasure, 650);
+    remeasure();
     return () => {
-      clearTimeout(t);
       delete root.dataset.agentPanel;
       root.style.removeProperty("--agent-panel-w");
-      setTimeout(remeasure, 650);
+      remeasure();
     };
   }, []);
 
@@ -83,15 +82,25 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
     e.preventDefault();
     const root = document.documentElement;
     root.dataset.agentResizing = "";
-    const move = (ev: PointerEvent) => resizeTo(window.innerWidth - ev.clientX);
+    // One layout per frame, however fast the pointer moves: each resize re-lays out the whole page.
+    let frame = 0;
+    let lastX = e.clientX;
+    const move = (ev: PointerEvent) => {
+      lastX = ev.clientX;
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        resizeTo(window.innerWidth - lastX);
+      });
+    };
     const up = (ev: PointerEvent) => {
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerup", up);
       window.removeEventListener("pointercancel", up);
+      if (frame) cancelAnimationFrame(frame);
       delete root.dataset.agentResizing;
       storeWidth(resizeTo(window.innerWidth - ev.clientX));
-      getLenis()?.resize?.();
-      window.dispatchEvent(new Event("resize"));
+      remeasure();
     };
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", up);
@@ -151,9 +160,9 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
       data-lenis-prevent
       role="dialog"
       aria-label={labels.title}
-      initial={{ x: 40, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ x: "100%" }}
+      animate={{ x: 0 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
     >
       {/* Drag handle. A 12px hit area straddling the border; the visible line appears on hover and while focused. */}
       <div
@@ -180,7 +189,7 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
         </button>
       </header>
 
-      <div ref={listRef} className="flex-1 space-y-4 overflow-y-auto px-6 py-6" data-lenis-prevent>
+      <div ref={listRef} className="no-scrollbar flex-1 space-y-4 overflow-y-auto px-6 py-6" data-lenis-prevent>
         {messages.length === 0 && (
           <div className="flex flex-wrap gap-2">
             {labels.suggestions.map((s) => (
