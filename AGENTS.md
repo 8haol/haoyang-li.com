@@ -12,6 +12,16 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 This repository is public and doubles as a portfolio. Keep the history clean and professional.
 
+## Default behaviour
+
+The owner describes what they want in plain words and will not mention branches, commits or PRs. Apply everything below automatically to every request that changes files, without being asked:
+
+- Analyse the request first: restate the goal, list the files involved, and ask only if something is genuinely ambiguous.
+- Pick the branch type and name yourself. Unrelated requests in one message get separate branches and PRs.
+- Finish by opening the PR and replying with its link and a short summary in the owner's language.
+- Do not merge. Merging to `main` deploys the live site, so the owner merges once CI is green (or explicitly asks you to).
+- If a push fails with "Repository not found", the GitHub CLI is on the wrong account: run `gh auth switch -u 8haol` first.
+
 ## Flow for every change
 
 1. Start from an up-to-date `main`: `git switch main && git pull`.
