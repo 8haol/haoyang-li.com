@@ -88,11 +88,31 @@
     "title": "Mathematician by training, builder by habit.",
     "body": "I studied mathematics and statistics in London, spent a year teaching frontier models what good answers look like, and now design and ship AI products for a sportswear group and my own startup. I care about systems that explain themselves, and the unglamorous integration work that makes them run in production.",
     "nowLabel": "Now",
-    "now": "Lead AI & Data Integration Architect, Zenith AI · Technical co-founder, Kelay AI",
+    "now": [
+      {
+        "role": "Lead AI & Data Integration Architect",
+        "org": "Zenith AI"
+      },
+      {
+        "role": "Technical co-founder",
+        "org": "Kelay AI"
+      }
+    ],
     "educationLabel": "Education",
-    "education": "MSc Applicable Mathematics, LSE · BSc Mathematics & Statistics, King's College London",
+    "education": [
+      {
+        "role": "MSc Applicable Mathematics",
+        "org": "LSE"
+      },
+      {
+        "role": "BSc Mathematics & Statistics",
+        "org": "King's College London"
+      }
+    ],
     "languagesLabel": "Languages",
-    "languages": "Mandarin · English · Spanish — London based, open to relocation",
+    "languages": "Mandarin · English · Spanish",
+    "basedLabel": "Based",
+    "based": "London",
     "resume": "Full résumé",
     "work": "Selected work"
   },
