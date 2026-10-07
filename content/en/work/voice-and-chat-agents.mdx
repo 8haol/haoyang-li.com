@@ -1,0 +1,59 @@
+---
+title: "Voice and chat agents wired into the business"
+slug: voice-and-chat-agents
+summary: Chat agents serving 40K+ messages to 15K+ users, voice agents that capture leads into the CRM with summaries and intent routing, and the 50+ integration workflows that connect them to orders, bookings and operations.
+role: Designed and built the agents and the integration layer
+period: May 2025 – present
+org: My Club Group · Zenith AI
+stack: [Voiceflow, Retell, Zoho CRM, n8n, Node.js, Stripe, Resend]
+outcome:
+  - 40K+ chat messages, 15K+ users served in production
+  - Voice calls land in the CRM with transcript, summary and intent-based routing to the right salesperson
+  - 50+ workflows covering order status, sales-call booking and cross-system processes
+featured: true
+cover: /images/work/voice-and-chat-agents/cover.svg
+order: 3
+---
+
+## Context
+
+A sportswear manufacturer with thousands of club customers gets the same questions all day: where is my order, how much would a kit cost, can I talk to someone about sponsorship. Sales and support were answering by hand across email, phone and web chat, and leads were being lost between systems.
+
+## Constraints
+
+- **Answers had to be true.** Order status comes from operational systems, not from the model's imagination.
+- **Existing tools stay.** The CRM, the order systems and the email stack were not going to change; the agents had to fit around them.
+- **No dedicated platform team.** Integrations had to be inspectable and editable by non-engineers after I moved on to the next thing.
+
+## My role
+
+I designed the conversation flows, built the agents, and built and operated the integration layer between them and the business systems. I also owned the order-form front end whose backend is entirely this integration layer.
+
+## Architecture
+
+- **Chat**: Voiceflow agents on the public sites with a knowledge base, price-list grounding and hand-off to humans. 40K+ messages, 15K+ users.
+- **Voice**: Retell agents answering inbound sales lines. On call end, a webhook delivers transcript and summary; a workflow classifies intent, creates or updates the CRM lead, and routes it to the right salesperson with the summary attached.
+- **Integration layer**: 50+ n8n workflows acting as the API surface for the agents and the web apps. Order-status lookups, sales-call booking, estimate generation, approval notifications and CRM synchronisation are all workflows with webhook triggers.
+- **Webhook-only backend**: the multi-step kit order form is a React app whose every server interaction is a signed webhook into this layer. There is no bespoke API server to maintain.
+
+## Three decisions
+
+**1. Ground every factual answer in a lookup.** The chat agent never answers "where is my order" from memory; it calls a workflow that queries the operational data and returns a templated answer. Hallucinated order statuses went from the main risk to a non-issue.
+
+**2. Put the integration logic where the business can see it.** Workflows in n8n are visual, versioned and editable by the operations team. A conventional service would have been tidier for me and a black box for them.
+
+**3. Route by intent, not by queue.** Voice calls are classified (new lead, existing order, sponsorship, other) before they reach a human. Each intent has an owner and a response-time expectation, and the CRM record carries the summary, so the first human touch is informed.
+
+## Outcome
+
+- 40K+ chat messages and 15K+ users served without a support hire.
+- Every inbound sales call becomes a CRM record with transcript, summary and an owner within seconds of hang-up.
+- 50+ production workflows carrying order status, bookings and approvals across systems.
+
+## What I'd do differently
+
+Add evaluation earlier. I added a weekly sample review of agent transcripts after launch; starting with a scored sample from week one would have caught two bad flows sooner. I would also centralise webhook signature verification and retries in one library instead of per-workflow (that library is now an open-source project).
+
+## Stack
+
+Voiceflow, Retell, Zoho CRM, n8n, Node.js, Stripe, Resend, React.

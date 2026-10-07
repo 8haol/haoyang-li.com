@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<defs><radialGradient id="g" cx="0.85" cy="0.1" r="0.9"><stop offset="0" stop-color="#444444" stop-opacity="0.18"/><stop offset="1" stop-color="#444444" stop-opacity="0"/></radialGradient>
+<pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M80 0H0V80" fill="none" stroke="#444444" stroke-opacity="0.08"/></pattern></defs>
+<rect width="1600" height="1000" fill="#efefef"/><rect width="1600" height="1000" fill="url(#grid)"/><rect width="1600" height="1000" fill="url(#g)"/>
+<text x="96" y="132" font-family="ui-monospace,Menlo,monospace" font-size="26" letter-spacing="6" fill="#444444" fill-opacity="0.75">MY CLUB GROUP · 2026</text>
+<text x="96" y="640" font-family="-apple-system,Inter,Helvetica,Arial,sans-serif" font-size="112" font-weight="700" letter-spacing="-4" fill="#121212">Client Portal</text>
+<text x="96" y="730" font-family="-apple-system,Inter,Helvetica,Arial,sans-serif" font-size="32" fill="#121212" fill-opacity="0.7"><tspan x="96" dy="0">Order tracking, estimates, artwork approval</tspan><tspan x="96" dy="44">and one-time-code login for sports clubs.</tspan></text>
+<text x="1504" y="920" text-anchor="end" font-family="ui-monospace,Menlo,monospace" font-size="28" fill="#444444" fill-opacity="0.7">06 / 13</text>
+<circle cx="1480" cy="128" r="14" fill="#444444"/></svg>

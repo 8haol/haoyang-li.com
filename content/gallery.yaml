@@ -1,0 +1,128 @@
+- title: GAIMS
+  blurb: Auditable LLM decision layer for supplier allocation; 3,000+ purchase orders routed in production.
+  org: My Club Group
+  year: 2025–2026
+  tags:
+  - LLM
+  - Decision systems
+  - Hono
+  - Postgres
+  caseStudy: gaims
+  image: /images/work/gaims/cover.svg
+- title: Kelay AI
+  blurb: Multi-tenant voice AI receptionist for UK small businesses; books, reschedules and takes deposits in English and Mandarin.
+  org: Kelay AI (co-founder)
+  year: '2026'
+  tags:
+  - Retell
+  - Next.js
+  - Stripe
+  - Multi-tenant
+  caseStudy: kelay-ai
+  image: /images/work/kelay-ai/cover.svg
+- title: Voice & chat agents
+  blurb: Chat agents with 40K+ messages and voice agents wired into CRM lead capture, summaries and intent-based routing.
+  org: My Club Group
+  year: 2025–2026
+  tags:
+  - Voiceflow
+  - Retell
+  - Zoho CRM
+  - n8n
+  caseStudy: voice-and-chat-agents
+  image: /images/work/voice-and-chat-agents/cover.svg
+- title: Kit Funder
+  blurb: AI matching between grassroots sports clubs and sponsors across 50+ compatibility factors; 100+ clubs registered pre-launch.
+  org: Kit Funder (not-for-profit)
+  year: 2025–2026
+  tags:
+  - AI matching
+  - Messaging
+  - Webflow
+  href: https://kitfunder.ai/
+  image: /images/work/kit-funder/cover.svg
+- title: Zenith AI website
+  blurb: Motion-led marketing site for an AI-native agency; GSAP, Lenis and Three.js on Next.js.
+  org: Zenith AI
+  year: '2026'
+  tags:
+  - Next.js
+  - GSAP
+  - Three.js
+  href: https://zenithai.one/
+  image: /images/work/zenith-ai-website/cover.svg
+- title: Client Portal
+  blurb: Order tracking, estimates, artwork approval and one-time-code login for sports clubs.
+  org: My Club Group
+  year: '2026'
+  tags:
+  - React 19
+  - TanStack Query
+  - Stripe
+  - Sentry
+  href: https://myclubgroup.com/client-portal/
+  image: /images/work/client-portal/cover.svg
+- title: Product Hub
+  blurb: Internal product-lifecycle hub with Microsoft 365 document sync, department permissions and daily digests.
+  org: My Club Group
+  year: '2026'
+  tags:
+  - Microsoft Graph
+  - Permissions
+  - n8n
+  image: /images/work/product-hub/cover.svg
+- title: Elite Outlet portal
+  blurb: B2B clearance catalogue with enquiry basket, checkout and CRM-synced stock.
+  org: My Club Group
+  year: '2026'
+  tags:
+  - Zoho
+  - Stripe
+  - Catalogue
+  image: /images/work/elite-outlet-portal/cover.svg
+- title: Kit order form
+  blurb: Multi-step kit ordering with estimates, approvals and PDF previews; the backend is nothing but webhooks.
+  org: My Club Group
+  year: 2025–2026
+  tags:
+  - React
+  - n8n
+  - Stripe
+  - PDF
+  image: /images/work/kit-order-form/cover.svg
+- title: Interactive 3D pitch decks
+  blurb: Browser-based 3D presentation decks used in enterprise evaluations; one template, many brands.
+  org: My Club Group · Zenith AI
+  year: '2026'
+  tags:
+  - Three.js
+  - Presentations
+  image: /images/work/interactive-3d-pitch-decks/cover.svg
+- title: Sponsor kit configurator
+  blurb: Demo for a beverage brand's sponsored-kit selection flow with a printable user guide.
+  org: Kit Funder
+  year: '2026'
+  tags:
+  - Demo
+  - Static site
+  image: /images/work/sponsor-kit-configurator/cover.svg
+- title: Crowdplay
+  blurb: Live event platform for in-person activities; stations, scoring, shared photo wall, host control room and projector views.
+  org: Personal
+  year: '2026'
+  tags:
+  - Supabase
+  - React
+  - Realtime
+  href: https://github.com/8haol/crowdplay
+  image: /images/work/crowdplay/cover.svg
+- title: Selah
+  blurb: Worship-lyrics to PPTX generator with character-aligned pinyin, 17 themes and a song library.
+  org: Personal
+  year: '2026'
+  tags:
+  - Next.js
+  - pptxgenjs
+  - OpenAI
+  href: https://github.com/8haol/selah
+  image: /images/work/selah/cover.svg

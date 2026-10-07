@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-geist-sans), var(--font-cjk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-display), var(--font-cjk), var(--font-geist-sans), sans-serif;
+  --font-serif: var(--font-serif), Georgia, serif;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Page shell: one max width and one fluid gutter for every section, so wide screens get margins
+   instead of content pinned to the edges. */
+@utility shell {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1440px;
+  padding-inline: clamp(1rem, 4vw, 4.5rem);
+}
+
+:root {
+  --bg: #f4f2ee;
+  --fg: #121212;
+  --fg-muted: #6b6b6b;
+  --border: rgba(18, 18, 18, 0.08);
+  --muted: rgba(18, 18, 18, 0.04);
+  --accent: #2f55d4;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+}
+/* Lenis owns smoothing; native smooth scrolling would swallow programmatic scrolls (ScrollTrigger.scroll, anchors). */
+html.lenis {
+  scroll-behavior: auto;
+}
+/* Lenis measures the scrollable height from the content box; a fixed 100% html box would freeze that limit. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+/* Lenis provides the scroll feedback; the native bar is hidden. */
+html {
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  display: none;
+}
+body {
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+}
+.font-display {
+  font-family: var(--font-display);
+  font-variation-settings: "wdth" 100, "opsz" 96;
+}
+.font-serif {
+  font-family: var(--font-serif);
+}
+:lang(zh) .font-display {
+  letter-spacing: -0.01em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* MDX prose */
+.prose-custom :where(h2 a, h3 a) {
+  text-decoration: none;
+  color: inherit;
+}
+.prose-custom :where(strong) {
+  font-weight: 600;
+}
+
+/* hairline helper */
+.hairline {
+  border-color: var(--border);
+}
+
+/* Tailwind v4 dropped the pointer cursor from buttons; every clickable control should read as clickable. */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+}
+
+/* Talk button: while hovered or focused, the icon's voice bars bounce like a level meter. */
+.talk-bar {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .talk-cta:hover .talk-bar,
+  .talk-cta:focus-visible .talk-bar {
+    animation: talkBar 0.8s ease-in-out infinite alternate;
+  }
+  .talk-cta .talk-bar:nth-child(2) { animation-delay: -0.2s; }
+  .talk-cta .talk-bar:nth-child(3) { animation-delay: -0.5s; }
+  .talk-cta .talk-bar:nth-child(4) { animation-delay: -0.1s; }
+  .talk-cta .talk-bar:nth-child(5) { animation-delay: -0.35s; }
+}
+@keyframes talkBar {
+  0% { transform: scaleY(0.5); }
+  50% { transform: scaleY(1.6); }
+  100% { transform: scaleY(0.8); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* White type over the silk photo: everything drawn with the fg/bg tokens flips (text-fg, text-fg-muted,
+   border-fg/…, and the CTA's bg-fg/text-bg). Applies to the hero, and to the sticky header on the home page
+   until it has scrolled past the hero. <html data-hero> comes from HERO_BACKDROP (lib/hero.ts) on the server, so
+   the first paint is already right; the `?hero=` preview flips it on the client. */
+html[data-hero="silk"] .hero-scope,
+html[data-hero="silk"]:not([data-header-past-hero]):has(.hero-scope) header {
+  --color-fg: #ffffff;
+  --color-fg-muted: rgba(255, 255, 255, 0.86);
+  --color-border: rgba(255, 255, 255, 0.2);
+  --color-bg: #121212;
+  --color-muted: rgba(255, 255, 255, 0.08);
+  /* body sets text-fg once at the root, so inherited text has to be re-coloured here */
+  color: var(--color-fg);
+  text-shadow: 0 1px 16px rgba(10, 14, 22, 0.35);
+}
+/* Readability comes from a soft cool halo hugging the type, not from shading the photo. */
+html[data-hero="silk"] .hero-scope .font-display {
+  text-shadow: 0 0 28px rgba(24, 34, 52, 0.22), 0 1px 3px rgba(24, 34, 52, 0.16);
+}
+html[data-hero="silk"] .hero-scope .font-serif {
+  color: var(--color-fg);
+  text-shadow: 0 0 22px rgba(24, 34, 52, 0.55), 0 1px 3px rgba(24, 34, 52, 0.3);
+}
+html[data-hero="silk"] .hero-scope .font-mono,
+html[data-hero="silk"]:not([data-header-past-hero]):has(.hero-scope) header :is(.font-mono, a) {
+  text-shadow: 0 0 12px rgba(10, 14, 22, 0.55), 0 1px 2px rgba(10, 14, 22, 0.35);
+}
+html[data-hero="silk"] .hero-scope .talk-cta,
+html[data-hero="silk"] .hero-scope .talk-cta .font-mono {
+  text-shadow: none;
+}

@@ -1,0 +1,61 @@
+name: Haoyang Li
+headline: AI systems architect and full-stack engineer
+location: London, UK · open to relocation worldwide
+email: hello@haoyang-li.com
+summary: >-
+  AI systems architect and full-stack engineer delivering enterprise AI products from discovery to production,
+  combining LLM applications, SaaS architecture, integration and automation with customer-facing technical delivery.
+experience:
+  - org: Zenith AI / My Club Group
+    url: https://zenithai.one/
+    title: Lead AI & Data Integration Architect
+    location: London, UK
+    period: May 2025 – Present
+    bullets:
+      - Own enterprise AI delivery from customer discovery and architecture design through full-stack development, deployment and iteration with business stakeholders.
+      - Independently designed and built GAIMS, a patent-pending, auditable AI decision layer for supplier allocation, processing 3,000+ purchase orders over eight months in production. Combines frontier LLMs, historical and risk data, brand-specific criteria and human-review feedback; implements tenant isolation and sensitive-data redaction.
+      - Build tailored GAIMS demos for four UK sportswear groups; present architecture and business value to executives and IT teams during NDA-stage evaluations.
+      - Deployed Voiceflow chat agents with 40K+ messages and 15K+ users; built Retell voice agents integrating Zoho CRM lead capture, call summaries, transcripts and intent-based sales routing.
+      - Built 50+ n8n workflows integrating AI products with CRM and operational data, supporting order-status retrieval, sales-call booking and cross-system business processes.
+      - Delivered Kit Funder, a client portal and Zenith AI's website; built full-stack customer workflows spanning authentication, payments, order tracking and CRM integration.
+  - org: Outlier AI
+    url: https://outlier.ai/
+    title: AI Training Engineer
+    location: Remote
+    period: Oct 2024 – May 2025
+    bullets:
+      - Designed rubrics and adversarial prompts for frontier LLM post-training (RLHF); evaluated reasoning, code generation, instruction following and tool calling, surfacing systematic failure modes for model training teams.
+      - Led a 15-person evaluation team; set quality benchmarks and calibrated reviewers against ground truth.
+  - org: Guolian Minsheng Securities Co., Ltd
+    title: Quantitative Researcher
+    location: Zhengzhou, China
+    period: Jun 2023 – Aug 2023
+    bullets:
+      - Researched commodity futures trading strategies using Python, SQL and PCA-based factor analysis.
+entrepreneurial:
+  - org: Kelay AI
+    title: Technical Co-founder
+    location: London, UK
+    period: May 2026 – Present
+    bullets:
+      - Built a pilot-stage voice AI booking application for small businesses using Next.js, TypeScript and PostgreSQL; integrated Retell agent provisioning and English/Mandarin conversations within a multi-tenant architecture.
+      - Implemented booking, rescheduling and cancellation tools, webhook signature verification and idempotent call storage; resolved caller-ID and model-latency issues through live-call testing.
+education:
+  - school: London School of Economics and Political Science
+    degree: MSc Applicable Mathematics
+    period: Sep 2023 – Sep 2024
+    coursework: [Algorithmic Techniques in Machine Learning, Algorithms and Data Structures, Optimization Methods]
+  - school: King's College London
+    degree: BSc Mathematics & Statistics
+    period: Sep 2020 – Jun 2023
+    coursework: [Computational Methods with Python, Statistical Modeling, Linear Algebra, Stochastic Calculus in Finance]
+skills:
+  - group: Engineering
+    items: [TypeScript, JavaScript, Python, SQL, React, Next.js, Node.js]
+  - group: AI & integration
+    items: [LLM APIs, RAG, prompt engineering, tool calling, REST APIs, n8n, Zoho CRM, Retell AI, Voiceflow]
+  - group: Data & deployment
+    items: [PostgreSQL/Neon, Supabase, Airtable, Railway, Vercel, Netlify, Cloudflare]
+  - group: Developer tools
+    items: [Git/GitHub, Claude Code, Codex, Cursor, Base44]
+languages: [Mandarin (native), English (proficient), Spanish (proficient)]

@@ -1,0 +1,19 @@
+- name: crowdplay
+  repo: https://github.com/8haol/crowdplay
+  tagline: Live event platform for in-person activities.
+  why: Ran a 50-person onboarding event end to end; now the base for a host-plus-phones event toolkit.
+  stack: [React, Supabase, Netlify]
+  status: live
+- name: selah
+  repo: https://github.com/8haol/selah
+  tagline: Lyrics to slides with character-aligned pinyin.
+  why: Nothing existed that put pinyin under each Chinese character inside a PPTX; worship teams needed it weekly.
+  stack: [Next.js, Drizzle, pptxgenjs]
+  status: live
+  demo: https://selah-8haol.vercel.app/
+- name: haoyang-li.com
+  repo: https://github.com/8haol/haoyang-li.com
+  tagline: This site.
+  why: A bilingual Next.js content site with a typed MDX loader; the agent that talks about my work lives here too.
+  stack: [Next.js, next-intl, MDX]
+  status: live

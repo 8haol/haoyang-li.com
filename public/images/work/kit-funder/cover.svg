@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<defs><radialGradient id="g" cx="0.85" cy="0.1" r="0.9"><stop offset="0" stop-color="#b8860b" stop-opacity="0.18"/><stop offset="1" stop-color="#b8860b" stop-opacity="0"/></radialGradient>
+<pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M80 0H0V80" fill="none" stroke="#b8860b" stroke-opacity="0.08"/></pattern></defs>
+<rect width="1600" height="1000" fill="#f6efe0"/><rect width="1600" height="1000" fill="url(#grid)"/><rect width="1600" height="1000" fill="url(#g)"/>
+<text x="96" y="132" font-family="ui-monospace,Menlo,monospace" font-size="26" letter-spacing="6" fill="#b8860b" fill-opacity="0.75">KIT FUNDER (NOT-FOR-PROFIT) · 2025–2026</text>
+<text x="96" y="640" font-family="-apple-system,Inter,Helvetica,Arial,sans-serif" font-size="112" font-weight="700" letter-spacing="-4" fill="#121212">Kit Funder</text>
+<text x="96" y="730" font-family="-apple-system,Inter,Helvetica,Arial,sans-serif" font-size="32" fill="#121212" fill-opacity="0.7"><tspan x="96" dy="0">AI matching between grassroots sports clubs</tspan><tspan x="96" dy="44">and sponsors across 50+ compatibility factors;</tspan><tspan x="96" dy="44">100+ clubs registered pre-launch.</tspan></text>
+<text x="1504" y="920" text-anchor="end" font-family="ui-monospace,Menlo,monospace" font-size="28" fill="#b8860b" fill-opacity="0.7">04 / 13</text>
+<circle cx="1480" cy="128" r="14" fill="#b8860b"/></svg>

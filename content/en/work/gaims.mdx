@@ -1,0 +1,68 @@
+---
+title: "GAIMS: an auditable LLM decision layer for supplier allocation"
+slug: gaims
+summary: Routes every incoming purchase order to the right factory, explains why, learns from human overrides, and keeps a full audit trail. 3,000+ orders in eight months of production.
+role: Sole designer and builder (architecture, backend, frontend, LLM pipeline, deployment)
+period: May 2025 – present
+org: My Club Group
+stack: [TypeScript, Hono, Drizzle, PostgreSQL, pg-boss, OpenAI, n8n, Zoho CRM, React, Leaflet, Docker]
+outcome:
+  - 3,000+ purchase orders allocated in production over eight months
+  - Minutes of manual triage per order replaced by a recommendation with rationale in seconds
+  - Patent application filed on the decision-and-feedback method
+  - Demoed to four UK sportswear groups in NDA-stage evaluations
+featured: true
+cover: /images/work/gaims/cover.svg
+order: 1
+---
+
+## Context
+
+My Club Group manufactures custom sportswear through a network of partner factories across several countries and currencies. Every purchase order used to be allocated by hand: an operations lead would weigh price lists, capacity, lead time, quality history and relationships, then pick a factory. It worked because one person held the context in their head. It did not scale, and it left no record of why a decision was made.
+
+## Constraints
+
+- **Trust before autonomy.** The team would not accept a black box. Every recommendation needed a rationale a human could read and overrule.
+- **Sensitive data.** Price lists and margins are the most confidential data in the business; brand customers evaluating the system each needed strict isolation from one another.
+- **Live operations.** Orders kept arriving from the CRM and the order form while the system was being built; there was no pause button.
+- **One engineer.** I designed, built, deployed and iterated the whole system alone, with feedback from operations and leadership.
+
+## My role
+
+I owned GAIMS end to end: discovery with operations, architecture, data model, LLM pipeline, integrations with the CRM and automation layer, the web app, deployment, and the enterprise rebuild. I also built and presented the brand-specific demos.
+
+## Architecture
+
+Two generations:
+
+**v1** was built fast on a low-code platform with serverless functions: the factory-scoring logic, price-list sync from the CRM, exchange-rate fetching, a webhook dispatcher and tokenised factory-portal links. It proved the decision model with real orders.
+
+**v2** is a TypeScript monorepo built to be sold as enterprise software, one isolated instance per customer:
+
+- `domain` holds the order, factory and decision types; `engine` turns an order plus context into a structured recommendation; `db` is the Drizzle schema and migrations; `connectors` talk to the CRM, the automation layer and email. Dependency direction between packages is checked in CI.
+- Orders enter through signed webhooks (HMAC) with duplicate protection, land in a queue (pg-boss) and are processed by workers; outgoing side effects go through an outbox so a crash never drops a notification.
+- Each customer instance is a YAML file: brand criteria, allowed factories, currencies, redaction rules. A CLI (`gaimsctl`) provisions and replays instances from snapshots.
+- The decision engine assembles a context (order, eligible factories, reliability and regional-risk signals, multi-currency pricing with live rates, accumulated reviewer feedback), calls a frontier LLM with a strict output schema, and stores the recommendation, confidence, rationale and the full prompt for audit.
+
+## Three decisions
+
+**1. Structured output plus rationale, never free text.** The LLM returns a typed object (factory, split plan, cost breakdown, confidence, rationale). Validation failures are retried with the error; persistent failures fall back to the deterministic scorer and are flagged. This is what made operations willing to trust it.
+
+**2. Human overrides are training data, not exceptions.** Every approve, reject or edit is stored as a structured feedback record and summarised back into the next prompt's context, with a separate slow path that adjusts scoring weights. The system improves without retraining a model, and every change is traceable to a decision someone made.
+
+**3. Rebuild instead of patch.** When brand customers started evaluating the system, the low-code v1 could not give tenant isolation, redaction or reproducible deployments. I rebuilt it as the monorepo above while v1 kept serving production, then cut over instance by instance.
+
+## Outcome
+
+- 3,000+ purchase orders allocated in production across eight months.
+- Allocation went from minutes of manual triage per order to a recommendation with rationale in seconds, with humans approving instead of deciding from scratch.
+- Patent application filed on the method; NDA-stage demos to four UK sportswear groups, presented to executives and IT teams.
+- An immutable audit trail from order receipt to factory assignment, which did not exist before.
+
+## What I'd do differently
+
+Start the enterprise architecture earlier. The low-code v1 was the right call for proving the decision model with real orders, but I under-estimated how soon isolation and reproducibility would be the gating questions in customer evaluations. I would also instrument the override rate from day one; it is the best single metric for whether the engine is earning trust.
+
+## Stack
+
+TypeScript, Hono, Drizzle ORM, PostgreSQL, pg-boss, OpenAI models behind an LLM-agnostic interface, n8n, Zoho CRM, Resend, React, Leaflet, Sentry, Docker.
