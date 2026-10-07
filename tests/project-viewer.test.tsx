@@ -14,7 +14,7 @@ const current: ViewerProject = {
   year: "2025",
   blurb: "Order tracking and reorders for club kit buyers.",
   tags: ["Next.js", "Zoho"],
-  image: "/images/work/client-portal/cover.svg",
+  image: "/images/work/client-portal/cover.jpg",
   href: "https://myclubgroup.com/client-portal/",
   hasCaseStudy: false,
 };

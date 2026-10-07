@@ -99,6 +99,12 @@ export function slugify(title: string): string {
 
 export type GalleryProject = { slug: string; item: GalleryItem };
 
+/** A loop dropped at `public/images/work/<slug>/loop.mp4` is picked up without touching the YAML. */
+function defaultVideo(slug: string): string | undefined {
+  const rel = `/images/work/${slug}/loop.mp4`;
+  return fs.existsSync(path.join(process.cwd(), "public", rel)) ? rel : undefined;
+}
+
 /** Every gallery item with a cover, in YAML order, each with a stable route slug. */
 export function getGalleryProjects(root = defaultRoot()): GalleryProject[] {
   const items = loadYaml("gallery.yaml", Gallery, root).filter((it) => !!it.image);
@@ -107,8 +113,14 @@ export function getGalleryProjects(root = defaultRoot()): GalleryProject[] {
     const slug = item.slug ?? item.caseStudy ?? slugify(item.title);
     if (seen.has(slug)) throw new Error(`duplicate gallery slug "${slug}"`);
     seen.add(slug);
-    return { slug, item };
+    return { slug, item: { ...item, video: item.video ?? defaultVideo(slug) } };
   });
+}
+
+/** The item with its `zh` overrides applied for Chinese; English is the source. */
+export function localizeGalleryItem(item: GalleryItem, locale: Locale): GalleryItem {
+  if (locale !== "zh" || !item.zh) return item;
+  return { ...item, title: item.zh.title ?? item.title, blurb: item.zh.blurb ?? item.blurb, org: item.zh.org ?? item.org };
 }
 
 export type Project =

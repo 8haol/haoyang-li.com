@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { allProjectSlugs, getProject } from "@/lib/content/load";
+import { allProjectSlugs, getProject, localizeGalleryItem } from "@/lib/content/load";
 import { routing } from "@/i18n/routing";
 import type { Locale } from "@/lib/site";
 import { Container } from "@/components/ui/Container";
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!project) return {};
   return project.kind === "case"
     ? { title: project.work.frontmatter.title, description: project.work.frontmatter.summary }
-    : { title: project.item.title, description: project.item.blurb };
+    : { title: localizeGalleryItem(project.item, locale).title, description: localizeGalleryItem(project.item, locale).blurb };
 }
 
 export default async function WorkDetail({ params }: { params: Params }) {
@@ -37,7 +37,7 @@ export default async function WorkDetail({ params }: { params: Params }) {
       <Container>
         <ProjectViewer
           mode="page"
-          current={toViewerProject(project)}
+          current={toViewerProject(project, locale)}
           basePath={locale === "en" ? "" : `/${locale}`}
           labels={{ close: c("close"), prev: w("prev"), next: w("next"), visit: w("visit"), readCase: w("readCase") }}
         >

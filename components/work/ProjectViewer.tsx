@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 export type ViewerProject = {
   slug: string;
@@ -12,6 +12,8 @@ export type ViewerProject = {
   blurb: string;
   tags: string[];
   image?: string;
+  /** Muted loop shown in place of the image when motion is allowed. */
+  video?: string;
   href?: string;
   hasCaseStudy: boolean;
 };
@@ -38,6 +40,7 @@ const SWIPE_PX = 60;
  */
 export function ProjectViewer({ mode, current, prev, next, basePath, labels, children }: Props) {
   const router = useRouter();
+  const reduceMotion = useReducedMotion();
   const modal = mode === "modal";
   const rootRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -153,8 +156,20 @@ export function ProjectViewer({ mode, current, prev, next, basePath, labels, chi
           </div>
         )}
       </div>
-      {current.image && (
-        <Image src={current.image} alt={current.title} width={1600} height={1000} priority className="w-full rounded-2xl border border-border" />
+      {current.video && !reduceMotion ? (
+        <video
+          key={current.video}
+          src={current.video}
+          poster={current.image}
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-label={current.title}
+          className="aspect-[16/10] w-full rounded-2xl border border-border bg-muted object-cover"
+        />
+      ) : (
+        current.image && <Image src={current.image} alt={current.title} width={1600} height={1000} priority className="w-full rounded-2xl border border-border" />
       )}
     </div>
   );

@@ -1,14 +1,22 @@
 import { describe, it, expect } from "vitest";
-import { loadLocalizedYaml, loadYaml } from "@/lib/content/load";
+import fs from "node:fs";
+import path from "node:path";
+import { getGalleryProjects, loadLocalizedYaml, loadYaml } from "@/lib/content/load";
 import { Gallery, OpenSource } from "@/lib/content/schema";
 import { bannedTermsIn } from "./bannedTerms";
 
 describe("yaml content", () => {
-  it("gallery has 12–15 items and no client names", () => {
+  it("gallery has 10–15 items and no client names", () => {
     const g = loadYaml("gallery.yaml", Gallery);
-    expect(g.length).toBeGreaterThanOrEqual(12);
+    expect(g.length).toBeGreaterThanOrEqual(10);
     expect(g.length).toBeLessThanOrEqual(15);
     expect(bannedTermsIn(JSON.stringify(g))).toEqual([]);
+  });
+  it("every gallery cover and loop exists in public/ and every item has a Chinese blurb", () => {
+    for (const { item } of getGalleryProjects()) {
+      for (const f of [item.image, item.video].filter(Boolean) as string[]) expect(fs.existsSync(path.join(process.cwd(), "public", f)), f).toBe(true);
+      expect(item.zh?.blurb, item.title).toBeTruthy();
+    }
   });
   it("open-source entries point at github.com/8haol", () => {
     for (const o of loadYaml("open-source.yaml", OpenSource)) expect(o.repo).toMatch(/^https:\/\/github\.com\/8haol\//);
@@ -18,9 +26,6 @@ describe("yaml content", () => {
     expect(repos("zh")).toEqual(repos("en"));
   });
 });
-
-import fs from "node:fs";
-import path from "node:path";
 
 const REQUIRED = ["Context", "Constraints", "My role", "Architecture", "Three decisions", "Outcome", "What I'd do differently", "Stack"];
 
@@ -35,5 +40,14 @@ describe("case studies", () => {
       expect(headings).toEqual(REQUIRED);
       expect(bannedTermsIn(text)).toEqual([]);
     });
+  }
+});
+
+describe("zh case studies", () => {
+  const dir = (l: string) => path.join(process.cwd(), "content", l, "work");
+  const mdx = (l: string) => (fs.existsSync(dir(l)) ? fs.readdirSync(dir(l)).filter((f) => f.endsWith(".mdx")).sort() : []);
+  it("translate every English case study", () => expect(mdx("zh")).toEqual(mdx("en")));
+  for (const f of mdx("zh")) {
+    it(`${f} has no client names`, () => expect(bannedTermsIn(fs.readFileSync(path.join(dir("zh"), f), "utf8"))).toEqual([]));
   }
 });

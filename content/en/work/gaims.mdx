@@ -3,16 +3,16 @@ title: "GAIMS: an auditable LLM decision layer for supplier allocation"
 slug: gaims
 summary: Routes every incoming purchase order to the right factory, explains why, learns from human overrides, and keeps a full audit trail. 3,000+ orders in eight months of production.
 role: Sole designer and builder (architecture, backend, frontend, LLM pipeline, deployment)
-period: May 2025 – present
+period: 2025 – present
 org: My Club Group
 stack: [TypeScript, Hono, Drizzle, PostgreSQL, pg-boss, OpenAI, n8n, Zoho CRM, React, Leaflet, Docker]
 outcome:
   - 3,000+ purchase orders allocated in production over eight months
-  - Minutes of manual triage per order replaced by a recommendation with rationale in seconds
+  - "Allocation became review-and-approve: every order arrives with a recommendation and its rationale"
   - Patent application filed on the decision-and-feedback method
   - Demoed to four UK sportswear groups in NDA-stage evaluations
 featured: true
-cover: /images/work/gaims/cover.svg
+cover: /images/work/gaims/cover.jpg
 order: 1
 ---
 
@@ -41,21 +41,21 @@ Two generations:
 
 - `domain` holds the order, factory and decision types; `engine` turns an order plus context into a structured recommendation; `db` is the Drizzle schema and migrations; `connectors` talk to the CRM, the automation layer and email. Dependency direction between packages is checked in CI.
 - Orders enter through signed webhooks (HMAC) with duplicate protection, land in a queue (pg-boss) and are processed by workers; outgoing side effects go through an outbox so a crash never drops a notification.
-- Each customer instance is a YAML file: brand criteria, allowed factories, currencies, redaction rules. A CLI (`gaimsctl`) provisions and replays instances from snapshots.
-- The decision engine assembles a context (order, eligible factories, reliability and regional-risk signals, multi-currency pricing with live rates, accumulated reviewer feedback), calls a frontier LLM with a strict output schema, and stores the recommendation, confidence, rationale and the full prompt for audit.
+- Each customer instance is a YAML file: brand criteria, allowed factories and currencies. A CLI (`gaimsctl`) provisions and replays instances from snapshots.
+- The decision engine assembles a context (order, eligible factories, reliability history, multi-currency pricing with live rates, accumulated reviewer feedback), calls a frontier LLM with a strict output schema, and stores the recommendation, confidence, rationale and the full prompt for audit.
 
 ## Three decisions
 
-**1. Structured output plus rationale, never free text.** The LLM returns a typed object (factory, split plan, cost breakdown, confidence, rationale). Validation failures are retried with the error; persistent failures fall back to the deterministic scorer and are flagged. This is what made operations willing to trust it.
+**1. Structured output plus rationale, never free text.** The LLM returns a typed object (factory, split plan, cost breakdown, confidence, rationale). If the model assigns products to a factory that cannot make them, the call is retried with that error; output that still fails validation is stored as an error and goes to a person, never applied silently. This is what made operations willing to trust it.
 
-**2. Human overrides are training data, not exceptions.** Every approve, reject or edit is stored as a structured feedback record and summarised back into the next prompt's context, with a separate slow path that adjusts scoring weights. The system improves without retraining a model, and every change is traceable to a decision someone made.
+**2. Human overrides are training data, not exceptions.** Every approve, reject or edit is stored as a structured feedback record. Rejections are distilled into explicit rules that the next decisions see in their context. The system improves without retraining a model, and every change is traceable to a decision someone made.
 
-**3. Rebuild instead of patch.** When brand customers started evaluating the system, the low-code v1 could not give tenant isolation, redaction or reproducible deployments. I rebuilt it as the monorepo above while v1 kept serving production, then cut over instance by instance.
+**3. Rebuild instead of patch.** When brand customers started evaluating the system, the low-code v1 could not give tenant isolation, redaction or reproducible deployments. I rebuilt it as the monorepo above while v1 kept serving production, replayed 2,600+ historical decisions through v2 until they came back clean, then cut production over in a single day.
 
 ## Outcome
 
 - 3,000+ purchase orders allocated in production across eight months.
-- Allocation went from minutes of manual triage per order to a recommendation with rationale in seconds, with humans approving instead of deciding from scratch.
+- Every order now arrives with a recommendation and its rationale, so people approve or overrule instead of deciding from scratch.
 - Patent application filed on the method; NDA-stage demos to four UK sportswear groups, presented to executives and IT teams.
 - An immutable audit trail from order receipt to factory assignment, which did not exist before.
 

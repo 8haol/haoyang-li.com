@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { getGalleryProjects, loadLocalizedYaml } from "@/lib/content/load";
+import { getGalleryProjects, loadLocalizedYaml, localizeGalleryItem } from "@/lib/content/load";
 import { OpenSource } from "@/lib/content/schema";
 import type { Locale } from "@/lib/site";
 import { Hero } from "@/components/home/Hero";
@@ -13,16 +13,15 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   setRequestLocale(locale);
   const g = await getTranslations("gallery");
   const os = await getTranslations("openSource");
-  const slides: StageSlide[] = getGalleryProjects().map(({ slug, item }) => ({
-    image: item.image!,
-    slug,
-    title: item.title,
-    meta: `${item.org} · ${item.year}`,
-  }));
+  const slides: StageSlide[] = getGalleryProjects().map(({ slug, item: raw }) => {
+    const item = localizeGalleryItem(raw, locale);
+    return { image: item.image!, video: item.video, slug, title: item.title, meta: `${item.org} · ${item.year}`, blurb: item.blurb };
+  });
   const open = loadLocalizedYaml("open-source.yaml", OpenSource, locale);
 
+  // main paints its own paper: the page background turns slate while the silk hero is on screen (globals.css).
   return (
-    <main id="content">
+    <main id="content" className="bg-bg">
       <Hero />
       <div id="about">
         <About />

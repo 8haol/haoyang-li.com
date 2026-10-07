@@ -3,10 +3,14 @@ import { useEffect, useRef } from "react";
 import { Camera, Mesh, Plane, Program, RenderTarget, Renderer, Texture, Transform } from "ogl";
 import { STAGE, deformCardPoint, frustum, rectToPose, roundedRectPoint, velocityNorm, type SheetParams } from "@/lib/stageMath";
 import { cardFragment, cardVertex, floorFragment, floorVertex } from "./stage/shaders";
+import { OVERLAY_H, OVERLAY_W, drawCardOverlay } from "./stage/cardOverlay";
+
+/** What one card shows: a poster, an optional muted loop, and the title drawn onto the card. */
+export type StageCard = { image: string; video?: string; title: string };
 
 export type StageGLProps = {
-  /** One cover per card, in the same order as `cardsRef`. */
-  images: string[];
+  /** One entry per card, in the same order as `cardsRef`. */
+  cards: StageCard[];
   /** The `<article>` elements the planes follow; written by WorkStage. */
   cardsRef: React.RefObject<(HTMLElement | null)[]>;
   /** Signed scroll velocity in px/s, written by WorkStage every frame. */
@@ -32,13 +36,28 @@ const u = <T,>(value: T): U<T> => ({ value });
 /** 1×1 near-black pixel so an unloaded or missing cover is a dark plane, never white. */
 const placeholderPixel = () => new Uint8Array([20, 20, 20, 255]);
 
-export function StageGL({ images, cardsRef, velocityRef, activeRef, hoverRef, reducedMotion, outlineRef }: StageGLProps) {
+/** Uploads per second for a playing loop; the source clips are 30 fps. */
+const VIDEO_FPS = 30;
+
+/** The display font as the page resolved it (next/font hashes the family name). */
+function displayFont(container: HTMLElement): string {
+  const probe = document.createElement("span");
+  probe.className = "font-display";
+  probe.style.position = "absolute";
+  probe.style.visibility = "hidden";
+  container.appendChild(probe);
+  const family = getComputedStyle(probe).fontFamily || "sans-serif";
+  probe.remove();
+  return family;
+}
+
+export function StageGL({ cards: slides, cardsRef, velocityRef, activeRef, hoverRef, reducedMotion, outlineRef }: StageGLProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const reducedRef = useRef(reducedMotion);
   useEffect(() => {
     reducedRef.current = reducedMotion;
   }, [reducedMotion]);
-  const imageKey = images.join("|");
+  const cardKey = slides.map((c) => `${c.image}>${c.video ?? ""}>${c.title}`).join("|");
 
   useEffect(() => {
     const container = containerRef.current;
@@ -74,8 +93,11 @@ export function StageGL({ images, cardsRef, velocityRef, activeRef, hoverRef, re
     };
 
     const cardGeo = new Plane(gl, { widthSegments: 24, heightSegments: 24 });
-    const cards = images.map((src) => {
+    const font = displayFont(container);
+    let disposed = false;
+    const cards = slides.map((slide) => {
       const texture = new Texture(gl, { image: placeholderPixel(), width: 1, height: 1, generateMipmaps: false });
+      const overlay = new Texture(gl, { image: new Uint8Array([0, 0, 0, 0]), width: 1, height: 1, generateMipmaps: false });
       const program = new Program(gl, {
         vertex: cardVertex,
         fragment: cardFragment,
@@ -86,6 +108,8 @@ export function StageGL({ images, cardsRef, velocityRef, activeRef, hoverRef, re
         uniforms: {
           ...sheetU,
           tMap: u<Texture>(texture),
+          tOverlay: u<Texture>(overlay),
+          uOverlay: u(0),
           uImageSizes: u([16, 10]),
           uRes: u([1, 1]),
           uCorner: u<number>(STAGE.corner),
@@ -98,15 +122,80 @@ export function StageGL({ images, cardsRef, velocityRef, activeRef, hoverRef, re
       });
       const mesh = new Mesh(gl, { geometry: cardGeo, program });
       mesh.setParent(cardScene);
+      const card: {
+        mesh: Mesh;
+        program: Program;
+        video: HTMLVideoElement | null;
+        videoTex: Texture | null;
+        showingVideo: boolean;
+        lastTime: number;
+        lastUpload: number;
+      } = { mesh, program, video: null, videoTex: null, showingVideo: false, lastTime: -1, lastUpload: 0 };
+
       const img = new Image();
       img.crossOrigin = "anonymous";
       img.onload = () => {
+        if (disposed || card.showingVideo) return;
         program.uniforms.tMap.value = new Texture(gl, { image: img, generateMipmaps: true });
         program.uniforms.uImageSizes.value = [img.naturalWidth || 16, img.naturalHeight || 10];
       };
-      img.src = src;
-      return { mesh, program };
+      img.src = slide.image;
+
+      // Title and arrow: drawn once the display font is ready so the canvas never bakes in a fallback face.
+      const canvas2d = document.createElement("canvas");
+      canvas2d.width = OVERLAY_W;
+      canvas2d.height = OVERLAY_H;
+      const ctx = canvas2d.getContext("2d");
+      if (ctx) {
+        const draw = () => {
+          if (disposed) return;
+          drawCardOverlay(ctx, slide.title, font);
+          program.uniforms.tOverlay.value = new Texture(gl, { image: canvas2d, generateMipmaps: true });
+          program.uniforms.uOverlay.value = 1;
+        };
+        const fonts = document.fonts;
+        if (fonts?.load) fonts.load(`500 62px ${font}`, slide.title).then(draw, draw);
+        else draw();
+      }
+
+      // The loop is only attached (and downloaded) the first time its card is on screen.
+      if (slide.video) {
+        const v = document.createElement("video");
+        v.muted = true;
+        v.loop = true;
+        v.playsInline = true;
+        v.preload = "none";
+        v.crossOrigin = "anonymous";
+        v.setAttribute("muted", "");
+        v.setAttribute("playsinline", "");
+        card.video = v;
+      }
+      return card;
     });
+
+    /** Play loops for cards on screen, pause the rest; swap a card to its video once a frame exists. */
+    const syncVideos = (now: number) => {
+      const allow = !reducedRef.current && activeRef.current;
+      cards.forEach((c, i) => {
+        const v = c.video;
+        if (!v) return;
+        const want = allow && c.mesh.visible;
+        if (want && v.paused) {
+          if (!v.src) v.src = slides[i].video!;
+          v.play().catch(() => {});
+        } else if (!want && !v.paused) v.pause();
+        if (v.readyState < 2 || v.currentTime === c.lastTime || now - c.lastUpload < 1000 / VIDEO_FPS - 2) return;
+        if (!c.videoTex) c.videoTex = new Texture(gl, { image: v, generateMipmaps: false });
+        c.videoTex.needsUpdate = true;
+        c.lastTime = v.currentTime;
+        c.lastUpload = now;
+        if (!c.showingVideo) {
+          c.showingVideo = true;
+          c.program.uniforms.tMap.value = c.videoTex;
+          c.program.uniforms.uImageSizes.value = [v.videoWidth || 16, v.videoHeight || 10];
+        }
+      });
+    };
 
     const floorGeo = new Plane(gl, { widthSegments: 48, heightSegments: 24 });
     const floorU = {
@@ -173,8 +262,9 @@ export function StageGL({ images, cardsRef, velocityRef, activeRef, hoverRef, re
 
     const tmpRect = { left: 0, top: 0, width: 0, height: 0 };
     let raf = 0;
-    const loop = () => {
+    const loop = (now: number) => {
       raf = requestAnimationFrame(loop);
+      syncVideos(now);
       if (!sized || !activeRef.current) return;
 
       const W = fr.width / 2;
@@ -311,14 +401,21 @@ export function StageGL({ images, cardsRef, velocityRef, activeRef, hoverRef, re
 
     return () => {
       if (outlineRef?.current === outline) outlineRef.current = null;
+      disposed = true;
       cancelAnimationFrame(raf);
+      cards.forEach((c) => {
+        if (!c.video) return;
+        c.video.pause();
+        c.video.removeAttribute("src");
+        c.video.load();
+      });
       ro.disconnect();
       if (canvas.parentNode === container) container.removeChild(canvas);
       gl.getExtension("WEBGL_lose_context")?.loseContext();
     };
-    // Rebuild only when the image list changes; everything else is read from refs each frame.
+    // Rebuild only when the card list changes; everything else is read from refs each frame.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [imageKey]);
+  }, [cardKey]);
 
   return <div ref={containerRef} aria-hidden className="pointer-events-none absolute inset-0" />;
 }
