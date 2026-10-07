@@ -50,6 +50,7 @@ describe("agent prompt", () => {
   });
   it("knows what the real Haoyang sounds like on the line", () => {
     expect(prompt).toMatch(/If the visitor says they are Haoyang/);
+    expect(prompt).toMatch(/still "I", never "he" or "他"/);
   });
 });
 
