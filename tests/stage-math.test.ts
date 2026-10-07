@@ -179,3 +179,20 @@ describe("deformCardPoint", () => {
     expect(out[1]).toBeCloseTo(STAGE.sheet.diag * x, 9);
   });
 });
+
+describe("idle snap and focus", () => {
+  it("settles between cards, never on one or at the ends of the pin", async () => {
+    const { idleSnapTarget, cardFocus } = await import("@/lib/stageMath");
+    expect(idleSnapTarget(0.3, 11)).toBeNull();
+    expect(idleSnapTarget(0.34, 11)).toBeCloseTo(0.3, 6);
+    expect(idleSnapTarget(0.36, 11)).toBeCloseTo(0.4, 6);
+    expect(idleSnapTarget(0, 11)).toBeNull();
+    expect(idleSnapTarget(1, 11)).toBeNull();
+    expect(idleSnapTarget(0.5, 1)).toBeNull();
+    expect(cardFocus(500, 1000)).toBe(1);
+    expect(cardFocus(0, 1000)).toBe(0);
+    expect(cardFocus(1000, 1000)).toBe(0);
+    expect(cardFocus(700, 1000)).toBeGreaterThan(0.3);
+    expect(cardFocus(700, 1000)).toBeLessThan(1);
+  });
+});

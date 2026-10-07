@@ -2,12 +2,17 @@
 export const STAGE = {
   fov: 53.4,
   cameraZ: 41.18,
-  sheet: { depth: 0.2, span: 1.15, shift: -0.2, bank: -0.16, diag: 0.03, tail: 1, velDepthGain: 0.35, rearY: 0.04, rearZ: 0.08, vTwist: 0.5 },
+  // Gentler than the first tuning: less velocity twist and door lean, so a card never settles at a skew.
+  sheet: { depth: 0.2, span: 1.15, shift: -0.2, bank: -0.12, diag: 0.02, tail: 1, velDepthGain: 0.3, rearY: 0.025, rearZ: 0.05, vTwist: 0.3 },
   /** lift: how much a hovered card grows toward the viewer (share of its size). */
   hover: { dent: 0.06, lerp: 0.1, lit: 1.4, lift: 0.03 },
   /** Release inertia: how far (s) the release velocity is projected, and the snap animation bounds. */
   inertia: { horizon: 0.16, minDuration: 0.5, maxDuration: 1.0, perCard: 0.35 },
-  lean: { door: -0.12 },
+  /** Wheel scrolling stops anywhere; after `idleMs` without movement the strip settles on the nearest card. */
+  snap: { idleMs: 140, duration: 0.7, tolerance: 0.004 },
+  /** Cards away from the centre are dimmed down to `dim` of their brightness over `reach` of the viewport width. */
+  focus: { dim: 0.62, reach: 0.9 },
+  lean: { door: -0.09 },
   small: { depth: 0.18, span: 1, bulge: 1.3, breakpoint: 768 },
   velocity: { norm: 550, normSmall: 245, smoothing: 0.12 },
   floor: { drop: 0.06, run: 6, wide: 4, cell: 0.22, grid: 0.08, lip: 0.2, refl: 0.5, reflGap: 0.07 },
@@ -96,6 +101,24 @@ export function releaseTarget(progress: number, velocity: number, count: number)
   const cards = Math.abs(target - progress) * Math.max(1, count - 1);
   const duration = clamp(STAGE.inertia.minDuration + cards * STAGE.inertia.perCard, STAGE.inertia.minDuration, STAGE.inertia.maxDuration);
   return { index, progress: target, duration };
+}
+
+/**
+ * Where the strip should settle once scrolling has gone quiet: the nearest card, or null when it is already on one
+ * (within `tolerance`) or at either end of the pin, where the page is simply scrolling past the stage.
+ */
+export function idleSnapTarget(progress: number, count: number, tolerance: number = STAGE.snap.tolerance): number | null {
+  if (count < 2 || !Number.isFinite(progress) || progress <= tolerance || progress >= 1 - tolerance) return null;
+  const target = progressFromIndex(indexFromProgress(progress, count), count);
+  return Math.abs(target - progress) <= tolerance ? null : target;
+}
+
+/** 0 for a card at the viewport's edge (or beyond), 1 for one dead centre; drives the dimming of side cards. */
+export function cardFocus(centerPx: number, viewportPx: number, reach: number = STAGE.focus.reach): number {
+  if (!(viewportPx > 0)) return 1;
+  const d = Math.abs(centerPx - viewportPx / 2) / (viewportPx * reach * 0.5);
+  const t = 1 - clamp(d, 0, 1);
+  return t * t * (3 - 2 * t);
 }
 
 /** ease-out-quart, for the release snap. */
