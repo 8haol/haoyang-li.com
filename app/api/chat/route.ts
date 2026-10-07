@@ -1,13 +1,9 @@
-import Anthropic from "@anthropic-ai/sdk";
-import { buildSystemPrompt } from "@/lib/agent/knowledge";
-import { siteConfig, type Locale } from "@/lib/site";
+import { agentReply, chatBody, RETELL_API, retellConfig } from "@/lib/agent/retell";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
-type Msg = { role: "user" | "assistant"; content: string };
-
-// Very small in-memory limiter: 30 messages per IP per day. Replaced by Upstash in the agent plan.
+// Very small in-memory limiter: 30 messages per IP per day. Same shape as /api/voice; Upstash later if needed.
 const buckets = new Map<string, { day: string; count: number }>();
 function allow(ip: string): boolean {
   const day = new Date().toISOString().slice(0, 10);
@@ -21,42 +17,44 @@ function allow(ip: string): boolean {
   return true;
 }
 
-const systemCache = new Map<Locale, string>();
+const CHAT_ID = /^[\w-]{1,128}$/;
 
+/**
+ * One visitor message in, one agent reply out, through Retell's chat API. Retell keeps the history, so the browser
+ * only holds the chat id; the key stays here and every chat is pinned to our chat agent.
+ */
 export async function POST(req: Request) {
-  if (!process.env.ANTHROPIC_API_KEY) return new Response("assistant offline", { status: 503 });
+  const cfg = retellConfig("chat");
+  if (!cfg) return new Response("assistant offline", { status: 503 });
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
   if (!allow(ip)) return new Response("rate limited", { status: 429 });
 
-  const body = (await req.json().catch(() => null)) as { messages?: Msg[]; locale?: string } | null;
-  const messages = (body?.messages ?? []).filter((m) => (m.role === "user" || m.role === "assistant") && typeof m.content === "string").slice(-20);
-  if (!messages.length || messages[messages.length - 1].role !== "user") return new Response("bad request", { status: 400 });
-  const locale: Locale = body?.locale === "zh" ? "zh" : "en";
-  if (!systemCache.has(locale)) systemCache.set(locale, buildSystemPrompt(locale));
+  const body = (await req.json().catch(() => null)) as { chat_id?: unknown; message?: unknown; locale?: unknown } | null;
+  const message = typeof body?.message === "string" ? body.message.trim().slice(0, 4000) : "";
+  if (!message) return new Response("bad request", { status: 400 });
+  const locale = body?.locale === "zh" ? "zh" : "en";
 
-  const client = new Anthropic();
-  const stream = client.messages.stream({
-    model: "claude-opus-5-5",
-    max_tokens: 1200,
-    output_config: { effort: "low" },
-    system: [{ type: "text", text: systemCache.get(locale)!, cache_control: { type: "ephemeral" } }],
-    messages: messages.map((m) => ({ role: m.role, content: m.content.slice(0, 4000) })),
-  });
+  const retell = (path: string, payload: unknown) =>
+    fetch(`${RETELL_API}${path}`, {
+      method: "POST",
+      headers: { "content-type": "application/json", authorization: `Bearer ${cfg.apiKey}` },
+      body: JSON.stringify(payload),
+    });
 
-  const encoder = new TextEncoder();
-  const readable = new ReadableStream<Uint8Array>({
-    start(controller) {
-      stream.on("text", (delta) => controller.enqueue(encoder.encode(delta)));
-      stream.on("error", (err) => {
-        console.error("chat stream error", err);
-        controller.enqueue(encoder.encode(`\n\n(Something went wrong. Email ${siteConfig.email}.)`));
-        controller.close();
-      });
-      stream.on("end", () => controller.close());
-    },
-    cancel() {
-      stream.abort();
-    },
-  });
-  return new Response(readable, { headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" } });
+  let chatId = typeof body?.chat_id === "string" && CHAT_ID.test(body.chat_id) ? body.chat_id : null;
+  // A chat Retell has already closed (idle timeout) takes no more messages: start a fresh one, once.
+  for (let fresh = !chatId; ; fresh = true) {
+    if (!chatId) {
+      const created = await retell("/create-chat", chatBody(cfg.agentId, locale, { source: "haoyang-li.com", locale }));
+      if (!created.ok) return new Response("upstream error", { status: 502 });
+      chatId = ((await created.json()) as { chat_id: string }).chat_id;
+    }
+    const res = await retell("/create-chat-completion", { chat_id: chatId, content: message });
+    if (res.ok) {
+      const reply = agentReply(((await res.json()) as { messages?: unknown }).messages);
+      return Response.json({ chat_id: chatId, reply }, { headers: { "cache-control": "no-store" } });
+    }
+    if (fresh) return new Response("upstream error", { status: 502 });
+    chatId = null;
+  }
 }
