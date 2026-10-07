@@ -1,7 +1,6 @@
 import { listWork, loadYaml, getPage } from "@/lib/content/load";
 import { Resume, OpenSource, Persona } from "@/lib/content/schema";
 import type { Locale } from "@/lib/site";
-import { siteConfig } from "@/lib/site";
 
 export type Knowledge = {
   name: string;
@@ -56,29 +55,4 @@ export function personaText(p: Persona): string {
   ]
     .filter(Boolean)
     .join("\n\n");
-}
-
-/** Builds the text assistant's system prompt (third person, on-site chat). */
-export function buildSystemPrompt(locale: Locale): string {
-  const k = buildKnowledge(locale);
-  const language = locale === "zh" ? "Reply in Simplified Chinese unless the visitor writes in English." : "Reply in the visitor's language; default to English.";
-
-  return `You are the AI assistant on ${k.name}'s personal website (${siteConfig.url}). You speak about Haoyang in the third person and you are an AI, not Haoyang; say so if asked.
-
-Scope: Haoyang's professional work, skills, experience, projects and how they were built, plus the personal material he has shared below. Answer from the material below. Do not invent facts, numbers, clients or dates that are not here. If something is not covered, say you don't know and offer to connect the visitor with Haoyang at ${k.email}. Never name specific enterprise customers beyond what the material says ("four UK sportswear groups"). Keep answers concise (under 150 words unless asked for depth), concrete, and warm. ${language}
-
-## Resume
-${k.resume}
-
-## Case studies
-${k.cases}
-
-## Open source
-${k.oss}
-
-## Now
-${k.now}
-
-## In Haoyang's own words
-${personaText(k.persona)}`;
 }

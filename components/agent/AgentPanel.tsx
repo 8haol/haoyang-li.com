@@ -49,6 +49,8 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
     return stored ? clampWidth(stored) : null;
   });
   const listRef = useRef<HTMLDivElement>(null);
+  // Retell keeps the conversation; the panel only remembers which chat it is.
+  const chatIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -129,24 +131,17 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ messages: next, locale }),
+        body: JSON.stringify({ chat_id: chatIdRef.current, message: content, locale }),
       });
       if (res.status === 503) {
         setOffline(true);
         setMessages(next);
         return;
       }
-      if (!res.ok || !res.body) throw new Error(`chat ${res.status}`);
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let acc = "";
-      for (;;) {
-        const { value, done } = await reader.read();
-        if (done) break;
-        acc += decoder.decode(value, { stream: true });
-        const snapshot = acc;
-        setMessages([...next, { role: "assistant", content: snapshot }]);
-      }
+      if (!res.ok) throw new Error(`chat ${res.status}`);
+      const data = (await res.json()) as { chat_id: string; reply: string };
+      chatIdRef.current = data.chat_id;
+      setMessages([...next, { role: "assistant", content: data.reply || "…" }]);
     } catch {
       setMessages([...next, { role: "assistant", content: "…" }]);
     } finally {
@@ -200,7 +195,7 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
           </div>
         )}
         {messages.map((m, i) => (
-          <div key={i} className={m.role === "user" ? "ml-10 rounded-2xl rounded-br-sm bg-fg px-4 py-3 text-[15px] leading-6 text-bg" : "mr-10 text-[15px] leading-7"}>
+          <div key={i} className={m.role === "user" ? "ml-10 rounded-2xl rounded-br-sm bg-fg px-4 py-3 text-[15px] leading-6 text-bg" : "mr-10 whitespace-pre-wrap text-[15px] leading-7"}>
             {m.content || (busy && i === messages.length - 1 ? <span className="text-fg-muted">{labels.thinking}</span> : null)}
           </div>
         ))}

@@ -33,7 +33,11 @@ describe("/api/voice", () => {
     const [url, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
     expect(url).toBe("https://api.retellai.com/v3/create-web-call");
     expect((init.headers as Record<string, string>).authorization).toBe("Bearer key_test");
-    expect(JSON.parse(init.body as string)).toEqual({ agent_id: "agent_ours", metadata: { source: "haoyang-li.com", locale: "zh" } });
+    expect(JSON.parse(init.body as string)).toEqual({
+      agent_id: "agent_ours",
+      retell_llm_dynamic_variables: { channel: "voice", locale: "zh" },
+      metadata: { source: "haoyang-li.com", locale: "zh" },
+    });
   });
 
   it("rate limits an address after ten calls in a day", async () => {
