@@ -184,6 +184,8 @@ void main() {
 export const cardFragment = withChunks(/* glsl */ `
 precision highp float;
 uniform sampler2D tMap;
+uniform sampler2D tOverlay; // title and arrow, drawn in card space (not cover-cropped)
+uniform float uOverlay;
 uniform vec2 uImageSizes;
 uniform vec2 uRes;      // plane world size
 uniform float uCorner;  // radius as a share of the plane height
@@ -205,6 +207,8 @@ void main() {
   vec2 ratio = vec2(min(planeA / imgA, 1.0), min(imgA / planeA, 1.0));
   vec2 uv = vec2(vUv.x * ratio.x + (1.0 - ratio.x) * 0.5, vUv.y * ratio.y + (1.0 - ratio.y) * 0.5);
   vec3 col = texture2D(tMap, uv).rgb;
+  vec4 o = texture2D(tOverlay, vUv);
+  col = mix(col, o.rgb, o.a * uOverlay);
   vec3 n = sheetNormal(vX, vUv, uRes);
   vec3 v = normalize(cameraPosition - vWorld);
   col = sheetLit(col, n, v, uLit * (1.0 + 0.4 * uHover));

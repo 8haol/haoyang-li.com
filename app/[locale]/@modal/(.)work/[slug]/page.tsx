@@ -13,11 +13,11 @@ export default async function WorkModal({ params }: { params: Promise<{ locale: 
   if (!project) notFound();
   const c = await getTranslations("common");
   const w = await getTranslations("work");
-  const { prev, next } = neighbours(slug);
+  const { prev, next } = neighbours(slug, locale);
   return (
     <ProjectViewer
       mode="modal"
-      current={toViewerProject(project)}
+      current={toViewerProject(project, locale)}
       prev={prev}
       next={next}
       basePath={locale === "en" ? "" : `/${locale}`}

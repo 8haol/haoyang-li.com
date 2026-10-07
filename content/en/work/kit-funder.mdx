@@ -1,0 +1,59 @@
+---
+title: "Kit Funder: matching grassroots clubs with the businesses that fund their kit"
+slug: kit-funder
+summary: A not-for-profit platform where UK clubs, schools and community groups meet local sponsors. Both sides get ranked matches with an explained score, connect only when both opt in, then message, plan and agree a deal in the app.
+role: Lead builder; product, matching engine, backend functions and integrations
+period: Nov 2025 – present
+org: Kit Funder (not-for-profit)
+stack: [React, Vite, Base44, Deno, OpenAI, Resend, n8n, Webflow]
+outcome:
+  - Live at kitfunder.ai, free for clubs, developed with the University of Surrey
+  - Nine-dimension match score, eight rule-based plus one LLM judgement, with a written explanation for every match
+  - End-to-end flow from sign-up to an agreed sponsorship, with CRM sync behind it
+featured: false
+order: 4
+---
+
+## Context
+
+Grassroots teams pay for kit, travel and pitch fees every season, and most of them find sponsors through whoever happens to know a local business owner. Businesses that want to support their community have the opposite problem: no simple way to find a team that fits their values, budget and area. Kit Funder puts both sides in one place and does the introductions.
+
+## Constraints
+
+- **Trust on both sides.** Clubs include youth teams, so contact details and photos stay hidden until both sides say yes.
+- **Explainable matches.** A score on its own does not persuade a business to spend money; every match needed a reason in plain language.
+- **No fees for clubs.** It is a not-for-profit, so the running cost had to stay low and the stack had to be maintainable by a small team.
+
+## My role
+
+I led the build: the data model, the matching engine, the backend functions for scoring, messaging and email, the CRM sync, and most of the app's flows. I worked with an AI app builder for the routine UI scaffolding and wrote and reviewed the logic myself. The marketing site is a separate Webflow build.
+
+## Architecture
+
+- **App**: a React and Vite single-page app on Base44, with TanStack Query, react-hook-form and Zod, Recharts for the compatibility radar, Leaflet for maps and jsPDF for proposals.
+- **Backend**: Base44 entities plus Deno serverless functions for match scoring, notifications, geocoding (UK postcodes) and proposal handling.
+- **Matching**: a batch job scores every eligible club–sponsor pair on nine weighted dimensions: location, sports, budget, demographics, CSR focus, sector, organisation type, activation preferences, and an LLM judgement of overall fit. Some combinations are blocked before scoring.
+- **Integrations**: Resend for email, and an n8n webhook that keeps the CRM in step with sign-ups, matches and deals.
+- **Marketing site**: kitfunder.ai on Webflow, separate from the app at app.kitfunder.ai.
+
+## Three decisions
+
+**1. Rules first, the model for judgement.** Eight of the nine dimensions are deterministic, so most of the score is predictable and testable. The LLM covers what rules cannot, such as whether a company's story fits a team's, and writes the explanation. If the model call fails, the other weights are re-normalised so scores stay on the same 0–100 scale.
+
+**2. Mutual opt-in before any contact.** Matches are anonymous until both sides accept. That one rule removed most of the safeguarding questions and made businesses more willing to browse.
+
+**3. Keep the CRM in the loop from day one.** Every meaningful event goes out through a webhook, so the team can follow up with clubs and sponsors from the tools they already use instead of a separate admin panel.
+
+## Outcome
+
+- Live at kitfunder.ai, with clubs and businesses signing up and matching.
+- Every match comes with a score breakdown and a written reason, which is what businesses respond to.
+- A full path from sign-up to an agreed sponsorship inside one product: matches, messaging, a kit cost calculator and proposals.
+
+## What I'd do differently
+
+Separate the scoring engine into its own tested module earlier. It grew inside a serverless function, which made it harder to replay old matches after a weight change. I would also log which explanations led to a connection, to tune the LLM prompt against real outcomes rather than taste.
+
+## Stack
+
+React, Vite, TypeScript, Base44, Deno functions, OpenAI, Resend, n8n, Leaflet, Recharts, Webflow.

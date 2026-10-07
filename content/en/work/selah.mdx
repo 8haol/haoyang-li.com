@@ -1,0 +1,58 @@
+---
+title: "Selah: worship slides with pinyin over every character"
+slug: selah
+summary: A slide generator for Chinese-speaking congregations. Paste or photograph the lyrics, pick a song order and a theme, and download a PowerPoint with pinyin aligned over each character, text that fits, and video backgrounds that loop.
+role: Sole designer and developer
+period: Sep – Oct 2026
+org: Personal
+stack: [Next.js, React, TypeScript, Drizzle, Postgres, pptxgenjs, pinyin-pro, OpenAI]
+outcome:
+  - Used weekly by a Mandarin-speaking congregation in London
+  - 18 themes, a shared song library and setlists, with no login
+  - Core slide engine with 100+ tests; open source on GitHub
+featured: false
+order: 10
+---
+
+## Context
+
+Many people in a Mandarin-speaking congregation read Chinese better with pinyin, and visitors often cannot read it at all. Making slides with pinyin over each character meant hours of manual alignment in PowerPoint every week, and the result broke as soon as a line was edited.
+
+## Constraints
+
+- **PowerPoint is the output.** The person running slides uses PowerPoint or Keynote, so the result had to be a real .pptx, not a web page.
+- **Alignment must survive.** Pinyin has to sit over its character at any font size and line length.
+- **Volunteers, not designers.** No login, no settings maze; a song should take a few minutes.
+
+## My role
+
+All of it: the slide engine, the web app, the themes and the sheet-music recognition.
+
+## Architecture
+
+- **Slide engine**: a framework-free package that lays out each line as character and pinyin pairs, scales text to fit, checks contrast for each theme and writes the deck with pptxgenjs. The output is then post-processed at the XML level to deduplicate media and make video backgrounds autoplay and loop.
+- **Pinyin**: pinyin-pro plus a small override table for words it gets wrong in worship lyrics.
+- **Recognition**: a photo of a lyric sheet or score goes to a vision model that returns the title, sections and sung order as validated JSON.
+- **App**: Next.js with a shared song library and setlists in Postgres (Neon in production, PGlite locally, so it runs with no setup).
+
+## Three decisions
+
+**1. Keep the engine framework-free.** All layout logic lives in a plain TypeScript package with its own tests. The app is a thin shell, and the engine can be reused anywhere.
+
+**2. Fix PowerPoint at the XML level.** The PPTX library could not loop a video background. Rather than give up the feature, the engine patches the generated XML after writing it.
+
+**3. The model only reads, it never decides.** AI is used to read lyrics from a photo, with the output validated against a schema. Pinyin and layout stay deterministic, so the same input always gives the same slides.
+
+## Outcome
+
+- A week's slides take minutes instead of an evening.
+- 18 themes, including six looping video backgrounds, with contrast checked automatically.
+- Open source, with the slide engine covered by more than a hundred tests.
+
+## What I'd do differently
+
+Ship the song library before polishing themes. The library is what volunteers come back to every week; themes are what they set once.
+
+## Stack
+
+Next.js 16, React 19, TypeScript, Tailwind, Drizzle, Neon Postgres / PGlite, pptxgenjs, pinyin-pro, Vercel AI SDK (OpenAI), Zod, Vitest.

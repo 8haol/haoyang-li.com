@@ -1,0 +1,60 @@
+---
+title: "Crowdplay: running a live event from fifty phones and a projector"
+slug: crowdplay
+summary: A phone-first platform for in-person events. Guests join by QR code, staff score teams at stations, a projector shows the room what is happening, and themes reskin the whole game, from a Life Passport to a Mid-Autumn stamp card.
+role: Sole designer and developer
+period: Aug – Oct 2026
+org: Personal
+stack: [React, TypeScript, Vite, Supabase, Postgres, Deno, Cloudflare R2, Netlify]
+outcome:
+  - Ran a 50-person welcome event for international students end to end
+  - All game logic in Postgres functions, with 29 SQL test files and no app server
+  - Two themes on the same engine; open source on GitHub
+featured: false
+order: 9
+---
+
+## Context
+
+I was helping run a welcome event for about fifty international students: seven activity stations, teams, scoring and a prize ceremony. The usual tools are paper cards and a spreadsheet, which means queues, lost cards and nobody knowing who is winning. I wanted the room to feel like one game.
+
+## Constraints
+
+- **Phones only.** Guests would not install anything; it had to work from a QR code, including inside WeChat's browser.
+- **Unreliable volunteers and Wi-Fi.** Staff change during the night, and a dropped connection must never lose or double a score.
+- **One evening to get it right.** There is no second run of a live event.
+
+## My role
+
+All of it: game design, UI, the database and its functions, the projector view, the admin console, and running the event.
+
+## Architecture
+
+- **Guests**: join by QR code and get a three-digit number; a waiting room shows their passport card until the host starts.
+- **Staff**: score whole teams at a station with a six-digit code, no accounts.
+- **Projector**: a live board of team progress, an event feed, an arrival wall and an awards ceremony.
+- **Admin**: organisations, events and a station library, with a platform-owner view above.
+- **Backend**: Supabase Postgres with row-level security; every game action is a SECURITY DEFINER function with an idempotency key, so a retry never scores twice. Screens poll every three seconds.
+- **Media**: an organiser photo and video album on Cloudflare R2 through signed URLs from an edge function.
+
+## Three decisions
+
+**1. The database is the game engine.** Putting the rules in Postgres functions meant one place to test them, no server to deploy, and the same guarantees for every client.
+
+**2. Polling over realtime.** Fifty phones on venue Wi-Fi reconnecting websockets is a failure mode I did not want on the night. A three-second poll is boring and predictable.
+
+**3. Themes as data.** Copy, stamps and station names come from a theme, so the Mid-Autumn edition reused the whole engine with a new look.
+
+## Outcome
+
+- The welcome event ran from start to finish on it, with live scores and a ceremony on the projector.
+- Retries are safe by design: every scoring call is idempotent.
+- Released as open source, with a second theme for Mid-Autumn.
+
+## What I'd do differently
+
+Write the volunteer guide alongside the code. On a live night, a clear instruction for a volunteer fixes more than a new feature does.
+
+## Stack
+
+React 19, TypeScript, Vite, Tailwind, React Router, Supabase (Postgres, RLS, RPC, Edge Functions), Deno, Cloudflare R2, Netlify.
