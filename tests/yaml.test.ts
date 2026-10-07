@@ -38,3 +38,12 @@ describe("case studies", () => {
     });
   }
 });
+
+describe("zh case studies", () => {
+  const dir = (l: string) => path.join(process.cwd(), "content", l, "work");
+  const mdx = (l: string) => (fs.existsSync(dir(l)) ? fs.readdirSync(dir(l)).filter((f) => f.endsWith(".mdx")).sort() : []);
+  it("translate every English case study", () => expect(mdx("zh")).toEqual(mdx("en")));
+  for (const f of mdx("zh")) {
+    it(`${f} has no client names`, () => expect(bannedTermsIn(fs.readFileSync(path.join(dir("zh"), f), "utf8"))).toEqual([]));
+  }
+});
