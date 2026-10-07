@@ -44,7 +44,9 @@
     "education": "教育",
     "skills": "技能",
     "languages": "语言",
-    "download": "下载简历（PDF）"
+    "download": "下载简历（PDF）",
+    "more": "展开其余 {count} 条",
+    "less": "收起"
   },
   "footer": {
     "builtWith": "基于 Next.js 构建，部署在 Vercel。",

@@ -251,3 +251,18 @@ html[data-hero="silk"] .hero-scope .talk-cta :is(.font-display, .font-mono) {
   0%, 100% { transform: translateY(10px); opacity: 0; }
   50% { transform: none; opacity: 1; }
 }
+
+/* Résumé timeline (phones): the rail beside each role fills as the role scrolls through the screen. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .rail-fill {
+      animation: railFill linear both;
+      animation-timeline: view();
+      animation-range: entry 30% cover 55%;
+    }
+  }
+}
+@keyframes railFill {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
