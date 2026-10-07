@@ -1,0 +1,61 @@
+---
+title: "Product Hub: from idea to catalogue, with the paperwork attached"
+slug: product-hub
+summary: An internal app that walks every new product through feasibility, sampling, an approval gate and the catalogue, with the real Office documents synced from SharePoint, permissions per department and a morning digest of what needs attention.
+role: Designed and built it; main author
+period: Jul – Aug 2026
+org: My Club Group
+stack: [React, Base44, Deno, Microsoft Graph, SharePoint, n8n]
+outcome:
+  - One pipeline from product request to live, replacing spreadsheets and email chains
+  - Office documents stay in SharePoint; approvals freeze a snapshot of what was signed
+  - A weekday digest tells each department what is waiting on them
+featured: false
+order: 8
+---
+
+## Context
+
+New products moved through product development, finance, production and sales by email and shared spreadsheets. Nobody could say where a product was, which version of a spec had been approved, or who was holding it up.
+
+## Constraints
+
+- **Documents stay where people work.** Teams live in Word and Excel on SharePoint; asking them to upload files into another tool would have failed.
+- **Approvals must be provable.** An approval had to point at the exact version that was approved, even after the file changed.
+- **Different departments, different rights.** Finance approves prices, production approves samples; everyone can see progress.
+
+## My role
+
+I gathered the process from each department, designed the data model and permissions, and built the app and its integrations.
+
+## Architecture
+
+- **App**: React on Base44, with 27 entities covering products, stages, documents, price books, samples and requests.
+- **Pipeline**: stage templates generate each product's critical path; a kanban shows every product's stage.
+- **Documents**: Microsoft Graph creates and reads files in SharePoint; approving a document stores a frozen snapshot.
+- **Permissions**: grants per department (edit or approve) plus company-level approval, resolved in one tested function.
+- **Prices**: governed change requests with a dry-run diff and rollback.
+- **Digest**: a scheduled job at 08:00 on weekdays sends each person what is waiting on them.
+- **Integrations**: HMAC-signed events out to n8n and verified callbacks in, with the workflows handed to the tech team.
+
+## Three decisions
+
+**1. Link documents, do not copy them.** The hub stores references and snapshots, not uploads. People keep editing in Word; the hub always shows the current file and the approved one.
+
+**2. Grants, not roles.** Departments needed different rights on different stages. A grant table per department was simpler to reason about, and to test, than a growing list of roles.
+
+**3. Push the work to people.** The morning digest does more for adoption than any dashboard: nobody has to remember to open the app.
+
+## Outcome
+
+- Every product's stage, documents and approvals in one place.
+- Approvals point at the exact document version that was signed.
+- Each department starts the day with a list of what is waiting on it.
+
+## What I'd do differently
+
+Pilot with one department before building for all of them. Real usage shows which approvals matter, and the permission model should follow that rather than lead it.
+
+## Stack
+
+React, Vite, Base44 with Deno functions, Microsoft Graph (SharePoint, Word, Excel), n8n, Vitest.

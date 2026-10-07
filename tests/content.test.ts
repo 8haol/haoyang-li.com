@@ -57,10 +57,15 @@ describe("gallery projects (real content)", () => {
     expect(localizeGalleryItem(voice, "en")).toBe(voice);
   });
   it("resolves a case study first, then falls back to the gallery item", () => {
+    const fixtures = path.join(__dirname, "fixtures/content");
     expect(getProject("en", "gaims")?.kind).toBe("case");
-    const g = getProject("en", "client-portal");
+    expect(getProject("en", "does-not-exist")).toBeNull();
+    // The fixtures have no case study for client-portal, so the gallery item is what remains.
+    const g = getProject("en", "client-portal", fixtures);
     expect(g?.kind).toBe("gallery");
     if (g?.kind === "gallery") expect(g.item.title).toBe("Client Portal");
-    expect(getProject("en", "does-not-exist")).toBeNull();
+  });
+  it("gives every gallery item a case study", () => {
+    for (const { slug } of getGalleryProjects()) expect(getProject("en", slug)?.kind, slug).toBe("case");
   });
 });

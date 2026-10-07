@@ -1,0 +1,59 @@
+---
+title: "Interactive 3D pitch decks: proposals you scroll through"
+slug: interactive-3d-pitch-decks
+summary: Scroll-driven proposal decks for enterprise pitches, built as single self-contained web pages with a 3D centrepiece, product screens and pricing. One template, re-skinned and re-written for each prospect.
+role: Designed and built the template and every deck
+period: Jun – Sep 2026
+org: My Club Group · Zenith AI
+stack: [Three.js, GSAP, Lenis, HTML, Python]
+outcome:
+  - Five decks for enterprise prospects, used in live pitches
+  - One file per deck that opens offline, from email or a USB stick
+  - New decks start from the shared template; the work is the prospect's story and numbers
+featured: false
+order: 11
+---
+
+## Context
+
+Enterprise proposals were PDF slides: easy to skim and forget. For a handful of large prospects, the team wanted something that made people stop and scroll, and that could be walked through live on a call or left behind afterwards.
+
+## Constraints
+
+- **Works anywhere.** Decks are opened from email, on locked-down corporate laptops, sometimes offline. No server, no install.
+- **Fast to adapt.** Each prospect needed its own story, brand and numbers, without rebuilding from scratch.
+- **Content first.** Motion had to support the argument, not hide it; every section still reads as a normal page.
+
+## My role
+
+I designed the template, built the 3D scenes and the scroll system, wrote the build tooling, and produced each deck with the sales team's content.
+
+## Architecture
+
+- **Template**: one HTML page with sections for the opportunity, the model, the platform, the range, pricing, timeline and next steps.
+- **3D**: a Three.js centrepiece (a lit globe or a ball) that reacts to scroll.
+- **Motion**: Lenis for smooth scrolling, GSAP ScrollTrigger for pinned and scrubbed sections.
+- **Build**: a Python script inlines fonts, images, scripts and media into a single self-contained file, so a deck opens by double-click.
+- **Theming**: brand colour and logos are variables, so a re-skin is mostly content.
+
+## Three decisions
+
+**1. One file, no server.** Inlining everything makes decks large but bulletproof: they survive email, firewalls and conference Wi-Fi.
+
+**2. A template, not a framework.** A plain page with clear sections was faster for the sales team to edit than a component system would have been.
+
+**3. One 3D object, done well.** A single scene that responds to scroll carries the "this is different" moment; the rest of the page stays quiet and readable.
+
+## Outcome
+
+- Five decks produced and used in live enterprise pitches.
+- Decks open offline, anywhere, from a single file.
+- New decks start from the template, so the effort goes into the story rather than the build.
+
+## What I'd do differently
+
+Pull the copy out into a data file per prospect from the first deck. Editing text inside a large HTML template was the slowest and most error-prone part of each new version.
+
+## Stack
+
+Three.js, GSAP, ScrollTrigger, Lenis, HTML and CSS, Python build script, Netlify for hosted versions.

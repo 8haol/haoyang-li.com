@@ -26,6 +26,7 @@
   year: 2025–2026
   tags: [AI matching, React, Base44, OpenAI]
   href: https://kitfunder.ai/
+  caseStudy: kit-funder
   image: /images/work/kit-funder/cover.jpg
   zh:
     org: Kit Funder（非营利）
@@ -46,6 +47,7 @@
   year: '2026'
   tags: [Next.js, GSAP, Three.js]
   href: https://zenithai.one/
+  caseStudy: zenith-ai-website
   image: /images/work/zenith-ai-website/cover.jpg
   zh:
     title: Zenith AI 官网
@@ -56,12 +58,14 @@
   year: '2026'
   tags: [React 19, TanStack Query, n8n, Zoho CRM]
   href: https://myclubgroup.com/client-portal/
+  caseStudy: client-portal
   image: /images/work/client-portal/cover.jpg
   zh:
     title: 客户门户
     blurb: 面向球队的订单门户：验证码登录、按 CRM 阶段追踪订单、球衣下单表单、设计稿上传和报价确认，后端全部走 n8n webhook。
 - title: Elite Outlet
   slug: elite-outlet-portal
+  caseStudy: elite-outlet-portal
   blurb: Clearance shop for a teamwear range; basket, Stripe checkout, and stock synced from Zoho through n8n.
   org: My Club Group
   year: '2026'
@@ -75,6 +79,7 @@
   org: My Club Group
   year: '2026'
   tags: [Base44, Microsoft Graph, Permissions]
+  caseStudy: product-hub
   image: /images/work/product-hub/cover.jpg
   zh:
     blurb: 内部产品生命周期平台，从创意一路管到上架：SharePoint 文档同步、按部门授权、样品双部门签字，以及工作日早报。
@@ -84,6 +89,7 @@
   year: '2026'
   tags: [React, Supabase, Postgres]
   href: https://github.com/8haol/crowdplay
+  caseStudy: crowdplay
   image: /images/work/crowdplay/cover.jpg
   zh:
     org: 个人项目
@@ -94,6 +100,7 @@
   year: '2026'
   tags: [Next.js, pptxgenjs, pinyin-pro, OpenAI]
   href: https://github.com/8haol/selah
+  caseStudy: selah
   image: /images/work/selah/cover.jpg
   zh:
     org: 个人项目
@@ -103,6 +110,7 @@
   org: My Club Group · Zenith AI
   year: '2026'
   tags: [Three.js, GSAP, Lenis]
+  caseStudy: interactive-3d-pitch-decks
   image: /images/work/interactive-3d-pitch-decks/cover.jpg
   zh:
     title: 3D 交互式提案

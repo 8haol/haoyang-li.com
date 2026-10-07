@@ -1,0 +1,59 @@
+---
+title: "Zenith AI website: a motion-led site for an AI-native agency"
+slug: zenith-ai-website
+summary: The marketing site for Zenith AI, built around one idea, the ascent, told through scroll-driven motion, a WebGL hero and a page for each practice. Designed and built end to end in Next.js.
+role: Sole designer and developer
+period: Jul – Sep 2026
+org: Zenith AI
+stack: [Next.js, React, TypeScript, GSAP, Lenis, Three.js, Resend]
+outcome:
+  - Live at zenithai.one, replacing an earlier low-code version
+  - Services, work, approach, insights and contact pages, with the heavy 3D loaded only where it is used
+  - CI on every push; the contact form lands in email and the CRM
+featured: false
+order: 5
+---
+
+## Context
+
+Zenith AI sells AI systems, web builds, integration and growth work. Its first site was assembled quickly on a low-code builder and looked like every other agency site. The new one had to show, in the first few seconds, that the team builds things with care.
+
+## Constraints
+
+- **Motion without lag.** The site leans on scroll animation and WebGL; it still had to feel instant on a mid-range laptop and a phone.
+- **Readable first.** Visitors are business owners, not designers. Every section had to say plainly what Zenith does before it showed off.
+- **One person.** I designed it, wrote most of the copy structure and built it.
+
+## My role
+
+Everything: art direction, layout, the motion system, the Three.js scenes, content structure, the contact pipeline and deployment.
+
+## Architecture
+
+- **Next.js 15 and React 19**, statically rendered where possible.
+- **Lenis** for smooth scrolling and **GSAP ScrollTrigger** for pinned and scrubbed sections, sharing one clock so they never drift apart.
+- **Three.js** loaded on demand, only on the routes that use it, so the first paint never waits for a 3D bundle.
+- **Contact** form posting to a route that sends through Resend and optionally forwards to the CRM by webhook.
+- **CI** on GitHub Actions for lint, types and build; served behind Cloudflare.
+
+## Three decisions
+
+**1. One metaphor, carried through.** The site is an ascent: altitude markers, a hero that climbs, sections as stages. A single idea gave every design choice a test to pass.
+
+**2. Pay for 3D only where it earns it.** The WebGL is code-split per route and starts after the text is on screen. The page is readable before any of it loads.
+
+**3. Motion follows the scroll, not timers.** Animations are scrubbed by scroll position, so they never play out of sync with what the reader is looking at, and they degrade to static layouts under reduced motion.
+
+## Outcome
+
+- Live at zenithai.one, replacing the earlier low-code version.
+- A site that shows the build quality the team sells instead of describing it.
+- Lightweight to maintain: a single repository with CI, no CMS to babysit.
+
+## What I'd do differently
+
+Set the performance budget in CI from the first commit. An automatic check on bundle size and long tasks catches a heavy dependency the day it lands, not in a manual pass at the end.
+
+## Stack
+
+Next.js, React, TypeScript, GSAP, Lenis, Three.js, Resend, GitHub Actions, Cloudflare.

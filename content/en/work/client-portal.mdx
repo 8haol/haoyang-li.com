@@ -1,0 +1,60 @@
+---
+title: "Client Portal: one place for a club's kit orders"
+slug: client-portal
+summary: A logged-in portal where sports clubs, schools and kit coordinators follow every order from form to production, upload artwork, approve estimates and reuse saved kit designs, with the CRM as the source of truth.
+role: Planned the portal and built its foundation; co-developed with a second engineer
+period: Mar – May 2026
+org: My Club Group
+stack: [React 19, TypeScript, Vite, TanStack Query, React Router, n8n, Zoho CRM]
+outcome:
+  - Clubs log in with an emailed code and see every order and its stage, without asking sales
+  - The kit order form, artwork upload and estimate approval moved into one product
+  - No bespoke backend; every call goes through n8n webhooks to the CRM
+featured: false
+order: 6
+---
+
+## Context
+
+Clubs ordering custom kit used to chase progress by email: has the artwork been approved, where is the estimate, when will it ship. Each answer meant a salesperson looking up the CRM. The order form, the approval step and the designs lived in different places with different links.
+
+## Constraints
+
+- **The CRM stays the source of truth.** Deal stages, estimates and contacts already lived there; the portal could not become a second database.
+- **No passwords.** Coordinators change every season, so login had to work from an email address alone.
+- **Two brands.** The same portal serves more than one storefront brand, with its own look.
+
+## My role
+
+I wrote the plan, built the first version of the portal (auth, dashboard, orders, order detail) and moved the existing order form into it. A second engineer then took over most of the feature work while I handled integration and the n8n side.
+
+## Architecture
+
+- **Front end**: React 19, TypeScript, Vite, Tailwind with shadcn, TanStack Query for server state and React Router for the pages.
+- **Login**: a six-digit code sent by email, verified by a workflow, with a 30-day session.
+- **Orders**: progress stages mapped from CRM deal stages, so the portal shows exactly what sales sees.
+- **Order form**: multi-step (details, sizing, product selection, review), with artwork upload and estimate approval that produces a signed approval document.
+- **Backend**: none of its own. Every read and write is an n8n webhook that talks to the CRM.
+- **Mock mode**: a full set of fixtures so the whole portal runs locally with no backend, used for demos and reviews.
+
+## Three decisions
+
+**1. Webhooks instead of an API server.** The business already ran its operations through n8n. Putting the portal's backend there meant the operations team could see and change every step without a deploy.
+
+**2. Show the CRM's stages, not a new status model.** Inventing friendlier statuses would have meant keeping two models in sync. Mapping the existing stages kept the portal honest.
+
+**3. Build mock mode from the start.** Every page renders from fixtures without the backend. That made demos safe, made design reviews fast, and let the second engineer work without access to live data.
+
+## Outcome
+
+- Coordinators see every order and its stage themselves instead of emailing sales.
+- The order form, artwork, estimates and approvals live in one place with one login.
+- The portal shipped without a single new server to run.
+
+## What I'd do differently
+
+Agree the webhook contracts as typed schemas shared by both sides before building pages. Otherwise a field renamed inside a workflow is only caught at runtime.
+
+## Stack
+
+React 19, TypeScript, Vite, Tailwind, shadcn, TanStack Query, React Router, react-hook-form, Zod, n8n, Zoho CRM, Cloudflare Pages.
