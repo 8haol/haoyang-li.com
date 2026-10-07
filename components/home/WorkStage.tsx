@@ -1,11 +1,12 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { Locale } from "@/lib/site";
 import { STAGE, easeOutQuart, indexFromProgress, progressFromIndex, releaseTarget, stripOffset } from "@/lib/stageMath";
 import { getLenis } from "@/lib/lenis";
 import type { CardOutline } from "@/components/motion/StageGL";
+import { WorkStrip } from "./WorkStrip";
 
 const StageGL = dynamic(() => import("@/components/motion/StageGL").then((m) => m.StageGL), { ssr: false });
 const StageCursor = dynamic(() => import("@/components/motion/StageCursor").then((m) => m.StageCursor), { ssr: false });
@@ -16,19 +17,50 @@ type Trigger = { start: number; end: number; scroll: (v: number) => void; getVel
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-export function WorkStage({
-  slides,
-  locale,
-  eyebrow,
-  hint,
-  openLabel,
-}: {
+type Props = {
   slides: StageSlide[];
   locale: Locale;
   eyebrow: string;
   hint: string;
   openLabel: string;
-}) {
+};
+
+/**
+ * Where the pinned WebGL stage runs: a wide screen with a mouse or trackpad. Phones and tablets get the native
+ * swipe strip instead; pinning against touch momentum scrolling plus the GL pass stuttered there. Mirrors the
+ * `stage:` variant in globals.css, so the server-rendered markup already shows the right one.
+ */
+const FULL_STAGE_QUERY = "(min-width: 768px) and (hover: hover) and (pointer: fine)";
+const subscribeFull = (cb: () => void) => {
+  if (typeof window.matchMedia !== "function") return () => {};
+  const mq = window.matchMedia(FULL_STAGE_QUERY);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+};
+const getFull = () => typeof window.matchMedia === "function" && window.matchMedia(FULL_STAGE_QUERY).matches;
+const getServerFull = () => false;
+
+export function WorkStage(props: Props) {
+  const full = useSyncExternalStore(subscribeFull, getFull, getServerFull);
+  if (full) return <Stage {...props} />;
+  return (
+    <>
+      <div className="stage:hidden">
+        <WorkStrip slides={props.slides} locale={props.locale} eyebrow={props.eyebrow} openLabel={props.openLabel} />
+      </div>
+      {/* Holds the stage's height until hydration swaps the real one in on wide screens. */}
+      <div aria-hidden className="hidden h-dvh bg-black stage:block" />
+    </>
+  );
+}
+
+function Stage({
+  slides,
+  locale,
+  eyebrow,
+  hint,
+  openLabel,
+}: Props) {
   const n = slides.length;
   const prefix = locale === "en" ? "" : `/${locale}`;
   const sectionRef = useRef<HTMLElement>(null);
