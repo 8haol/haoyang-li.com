@@ -61,11 +61,16 @@ body {
    <html data-agent-panel> is set by AgentPanel; the panel's width lives here so both sides agree. */
 :root {
   --agent-panel-w: min(520px, 42vw);
+  /* How much of the viewport's right edge the panel occupies right now; fixed overlays subtract it. */
+  --agent-panel-offset: 0px;
 }
 @media (min-width: 1024px) {
-  html[data-agent-panel] body {
-    padding-right: var(--agent-panel-w);
+  html[data-agent-panel] {
+    --agent-panel-offset: var(--agent-panel-w);
   }
+}
+body {
+  padding-right: var(--agent-panel-offset);
 }
 /* While the divider is being dragged the page follows the pointer directly. */
 html[data-agent-resizing] {

@@ -4,10 +4,10 @@ import { siteConfig } from "@/lib/site";
 export async function SiteFooter() {
   const t = await getTranslations("footer");
   return (
-    <footer className="mt-32 shell pb-10">
+    <footer className="mt-32 shell @container pb-10">
       <div className="border-t border-border pt-16">
         <a href={`mailto:${siteConfig.email}`} className="group block">
-          <span className="font-display text-[clamp(2.6rem,9vw,8rem)] font-semibold leading-[0.95] tracking-[-0.04em]">
+          <span className="font-display text-[clamp(2.6rem,9cqw,8rem)] font-semibold leading-[0.95] tracking-[-0.04em]">
             {t("cta")}
             <span aria-hidden className="ml-3 inline-block transition-transform duration-500 ease-out group-hover:-translate-y-2 group-hover:translate-x-2">↗</span>
           </span>
