@@ -8,11 +8,13 @@
     "close": "Close"
   },
   "nav": {
+    "about": "About",
     "work": "Work",
-    "writing": "Writing",
+    "now": "Now",
     "openSource": "Open source",
-    "resume": "Resume",
-    "now": "Now"
+    "contact": "Contact",
+    "sections": "Sections",
+    "top": "Back to top"
   },
   "home": {
     "eyebrow": "AI systems architect · full-stack engineer · London",
