@@ -235,6 +235,21 @@ html[data-hero="silk"] .hero-scope .talk-cta :is(.font-display, .font-mono) {
     }
   }
 }
+/* Covers drift slowly while the strip is on screen (WorkStrip sets data-inview), each out of step with the next. */
+@media (prefers-reduced-motion: no-preference) {
+  .strip-kb {
+    animation: stripKenBurns 12s ease-in-out infinite alternate;
+    animation-delay: calc(var(--i, 0) * -2.7s);
+    animation-play-state: paused;
+  }
+  [data-inview] .strip-kb {
+    animation-play-state: running;
+  }
+}
+@keyframes stripKenBurns {
+  from { transform: scale(1.03) translate3d(1.5%, 1%, 0); }
+  to { transform: scale(1.12) translate3d(-1.5%, -1%, 0); }
+}
 @keyframes stripEnter {
   from { transform: translateX(40vw); opacity: 0; }
   to { transform: none; opacity: 1; }
