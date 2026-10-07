@@ -131,5 +131,20 @@
     "collapse": "缩小通话",
     "scrollHint": "往下滑也没关系，我会缩到角落里接着聊。",
     "resize": "拖动调整聊天面板宽度"
+  },
+  "contact": {
+    "intro": "有项目、职位机会，或者只是想问点什么？可以现在就和 AI 版的我聊聊，也可以给我留言，我会亲自回复，一般一两天内。",
+    "name": "名字",
+    "email": "邮箱",
+    "message": "留言",
+    "send": "发送",
+    "sending": "发送中…",
+    "note": "会直接发到我的邮箱，我会通过邮件回复你。",
+    "sentTitle": "谢谢，已经发出去了。",
+    "sentBody": "每条留言我都会亲自看，并回复到你留下的邮箱。",
+    "another": "再写一条",
+    "failed": "没有发送成功。请再试一次，或直接发邮件到 hello@haoyang-li.com。",
+    "offline": "表单暂时还没接通。请直接发邮件到 hello@haoyang-li.com，我会亲自回复。",
+    "limited": "今天发的留言有点多了，请直接发邮件到 hello@haoyang-li.com。"
   }
 }
