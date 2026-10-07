@@ -44,7 +44,7 @@ export default async function WorkDetail({ params }: { params: Params }) {
           {project.kind === "case" ? <CaseStudyArticle work={project.work} headless /> : null}
         </ProjectViewer>
         <div className="mt-16">
-          <Button href="/work" variant="ghost">
+          <Button href={{ pathname: "/", hash: "selected-work" }} variant="ghost">
             ← {c("backToWork")}
           </Button>
         </div>

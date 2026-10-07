@@ -1,17 +1,18 @@
 import { getTranslations } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
 import { Reveal } from "@/components/motion/Reveal";
-import { ScrollLink } from "@/components/ui/ScrollLink";
 
-/** Short bridge between the hero and the work stage: who I am in three lines, then straight into the work. */
+type Entry = { role: string; org: string };
+
+/** Short bridge between the hero and the work stage: who I am in three lines. */
 export async function About() {
   const t = await getTranslations("about");
-  const rows = [
-    ["nowLabel", "now"],
-    ["educationLabel", "education"],
-    ["languagesLabel", "languages"],
-  ] as const;
-  const linkClass = "font-mono text-[11px] uppercase tracking-[0.18em] text-fg-muted transition-colors hover:text-fg";
+  // Each role or degree gets its own entry, title over institution, so long names never run together.
+  const rows: { label: string; value: string | Entry[] }[] = [
+    { label: t("nowLabel"), value: t.raw("now") as Entry[] },
+    { label: t("educationLabel"), value: t.raw("education") as Entry[] },
+    { label: t("languagesLabel"), value: t("languages") },
+    { label: t("basedLabel"), value: t("based") },
+  ];
   return (
     <section className="shell @container py-24 lg:py-32">
       <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
@@ -27,21 +28,26 @@ export async function About() {
           </Reveal>
           <Reveal delay={0.1}>
             <dl className="mt-10 max-w-2xl divide-y divide-border border-y border-border">
-              {rows.map(([label, value]) => (
-                <div key={value} className="grid grid-cols-[6.5rem_1fr] gap-4 py-3.5 text-[15px] leading-6">
-                  <dt className="pt-[3px] font-mono text-[11px] uppercase tracking-[0.18em] text-fg-muted">{t(label)}</dt>
-                  <dd className="text-fg/90">{t(value)}</dd>
+              {rows.map(({ label, value }) => (
+                <div key={label} className="grid grid-cols-[6.5rem_1fr] items-baseline gap-4 py-4 text-[15px] leading-6">
+                  <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-fg-muted">{label}</dt>
+                  {typeof value === "string" ? (
+                    <dd className="text-fg/90">{value}</dd>
+                  ) : (
+                    <dd>
+                      <ul className="space-y-3">
+                        {value.map((e) => (
+                          <li key={e.role}>
+                            <span className="block text-fg/90">{e.role}</span>
+                            <span className="block text-fg-muted">{e.org}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </dd>
+                  )}
                 </div>
               ))}
             </dl>
-            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
-              <Link href="/resume" className={linkClass}>
-                [ {t("resume")} → ]
-              </Link>
-              <ScrollLink to="selected-work" className={linkClass}>
-                [ {t("work")} ↓ ]
-              </ScrollLink>
-            </div>
           </Reveal>
         </div>
       </div>

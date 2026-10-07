@@ -3,34 +3,19 @@
     "englishOnly": "This page is only available in English for now.",
     "readMore": "Read the case study",
     "backToWork": "All work",
-    "downloadCv": "Download CV (PDF)",
     "skipToContent": "Skip to content",
     "close": "Close"
   },
   "nav": {
+    "about": "About",
     "work": "Work",
-    "writing": "Writing",
-    "openSource": "Open source",
     "resume": "Resume",
-    "now": "Now"
-  },
-  "home": {
-    "eyebrow": "AI systems architect · full-stack engineer · London",
-    "title": "I take enterprise AI from discovery to production.",
-    "subtitle": "LLM decision systems, voice and chat agents, and the integration layer that makes them run inside real businesses.",
-    "ctaWork": "See the work",
-    "ctaResume": "Resume",
-    "statsPo": "purchase orders routed by an auditable LLM decision layer",
-    "statsMessages": "chat-agent messages served in production",
-    "statsWorkflows": "integration workflows connecting AI to CRM and operations",
-    "featured": "Selected case studies",
-    "nowTitle": "Now"
+    "openSource": "Open source",
+    "contact": "Contact",
+    "sections": "Sections",
+    "top": "Back to top"
   },
   "work": {
-    "title": "Work",
-    "intro": "Deep case studies first, then a gallery of everything else I have shipped.",
-    "caseStudies": "Case studies",
-    "gallery": "Selected work",
     "role": "Role",
     "period": "Period",
     "stack": "Stack",
@@ -41,25 +26,20 @@
     "next": "Next project",
     "project": "Project"
   },
-  "writing": {
-    "title": "Writing",
-    "empty": "First essay coming soon: how I design rubrics for LLM evals."
-  },
   "openSource": {
     "title": "Open source",
     "intro": "A few finished things, each with a README, a screenshot and a reason to exist.",
     "why": "Why it exists"
   },
   "resume": {
-    "title": "Resume",
+    "eyebrow": "Resume",
+    "title": "Where I've built things.",
     "experience": "Experience",
     "entrepreneurial": "Entrepreneurial",
     "education": "Education",
     "skills": "Skills",
-    "languages": "Languages"
-  },
-  "now": {
-    "title": "Now"
+    "languages": "Languages",
+    "download": "Download CV (PDF)"
   },
   "footer": {
     "builtWith": "Built with Next.js, deployed on Vercel.",
@@ -86,13 +66,31 @@
     "title": "Mathematician by training, builder by habit.",
     "body": "I studied mathematics and statistics in London, spent a year teaching frontier models what good answers look like, and now design and ship AI products for a sportswear group and my own startup. I care about systems that explain themselves, and the unglamorous integration work that makes them run in production.",
     "nowLabel": "Now",
-    "now": "Lead AI & Data Integration Architect, Zenith AI · Technical co-founder, Kelay AI",
+    "now": [
+      {
+        "role": "Lead AI & Data Integration Architect",
+        "org": "Zenith AI"
+      },
+      {
+        "role": "Technical co-founder",
+        "org": "Kelay AI"
+      }
+    ],
     "educationLabel": "Education",
-    "education": "MSc Applicable Mathematics, LSE · BSc Mathematics & Statistics, King's College London",
+    "education": [
+      {
+        "role": "MSc Applicable Mathematics",
+        "org": "London School of Economics and Political Science"
+      },
+      {
+        "role": "BSc Mathematics & Statistics",
+        "org": "King's College London"
+      }
+    ],
     "languagesLabel": "Languages",
-    "languages": "Mandarin · English · Spanish — London based, open to relocation",
-    "resume": "Full résumé",
-    "work": "Selected work"
+    "languages": "Mandarin · English · Spanish",
+    "basedLabel": "Based",
+    "based": "London"
   },
   "gallery": {
     "eyebrow": "Selected work",

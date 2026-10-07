@@ -3,34 +3,19 @@
     "englishOnly": "这一页目前只有英文版。",
     "readMore": "阅读案例",
     "backToWork": "全部作品",
-    "downloadCv": "下载简历（PDF）",
     "skipToContent": "跳到正文",
     "close": "关闭"
   },
   "nav": {
+    "about": "关于",
     "work": "作品",
-    "writing": "文章",
-    "openSource": "开源",
     "resume": "简历",
-    "now": "近况"
-  },
-  "home": {
-    "eyebrow": "AI 系统架构师 · 全栈工程师 · 伦敦",
-    "title": "把企业级 AI 从需求发现一路做到生产环境。",
-    "subtitle": "LLM 决策系统、语音与聊天 agent，以及让它们在真实业务里跑起来的集成层。",
-    "ctaWork": "看作品",
-    "ctaResume": "简历",
-    "statsPo": "张采购订单由可审计的 LLM 决策层分配",
-    "statsMessages": "条生产环境聊天 agent 消息",
-    "statsWorkflows": "条连接 AI、CRM 与运营系统的集成工作流",
-    "featured": "精选案例",
-    "nowTitle": "近况"
+    "openSource": "开源",
+    "contact": "联系",
+    "sections": "页面导航",
+    "top": "回到顶部"
   },
   "work": {
-    "title": "作品",
-    "intro": "先看深度案例，再看我交付过的其他项目。",
-    "caseStudies": "深度案例",
-    "gallery": "精选项目",
     "role": "角色",
     "period": "时间",
     "stack": "技术栈",
@@ -41,25 +26,20 @@
     "next": "下一个项目",
     "project": "项目"
   },
-  "writing": {
-    "title": "文章",
-    "empty": "第一篇即将发布：我如何为 LLM 评估设计评分标准。"
-  },
   "openSource": {
     "title": "开源",
     "intro": "几个做完整的东西，每个都有 README、截图和存在的理由。",
     "why": "为什么写它"
   },
   "resume": {
-    "title": "简历",
+    "eyebrow": "简历",
+    "title": "我在哪里做过什么。",
     "experience": "工作经历",
     "entrepreneurial": "创业经历",
     "education": "教育",
     "skills": "技能",
-    "languages": "语言"
-  },
-  "now": {
-    "title": "近况"
+    "languages": "语言",
+    "download": "下载简历（PDF）"
   },
   "footer": {
     "builtWith": "基于 Next.js 构建，部署在 Vercel。",
@@ -86,13 +66,31 @@
     "title": "数学出身，习惯动手。",
     "body": "我在伦敦读数学与统计，花了一年教前沿模型什么叫好答案，现在为一家运动服饰集团和自己的创业公司设计并交付 AI 产品。我在意能自我解释的系统，以及让它们真正跑在生产环境里的那些不起眼的集成工作。",
     "nowLabel": "现在",
-    "now": "Zenith AI 首席 AI 与数据集成架构师 · Kelay AI 技术联合创始人",
+    "now": [
+      {
+        "role": "首席 AI 与数据集成架构师",
+        "org": "Zenith AI"
+      },
+      {
+        "role": "技术联合创始人",
+        "org": "Kelay AI"
+      }
+    ],
     "educationLabel": "教育",
-    "education": "伦敦政治经济学院（LSE）应用数学硕士 · 伦敦国王学院数学与统计学士",
+    "education": [
+      {
+        "role": "应用数学硕士",
+        "org": "伦敦政治经济学院"
+      },
+      {
+        "role": "数学与统计学士",
+        "org": "伦敦国王学院"
+      }
+    ],
     "languagesLabel": "语言",
-    "languages": "中文 · 英文 · 西班牙语；常驻伦敦，可接受外派",
-    "resume": "完整简历",
-    "work": "精选作品"
+    "languages": "中文 · 英文 · 西班牙语",
+    "basedLabel": "所在地",
+    "based": "伦敦"
   },
   "gallery": {
     "eyebrow": "精选作品",
