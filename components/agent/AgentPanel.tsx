@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "motion/react";
 import { useLocale } from "next-intl";
+import { getLenis } from "@/lib/lenis";
 
 type Msg = { role: "user" | "assistant"; content: string };
 type Labels = {
@@ -24,8 +25,24 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
     return () => document.removeEventListener("keydown", onKey);
   }, [onClose]);
 
+  // Split view: the page narrows beside the panel (see globals.css) and re-measures once the transition settles.
   useEffect(() => {
-    listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
+    const root = document.documentElement;
+    root.dataset.agentPanel = "open";
+    const remeasure = () => {
+      getLenis()?.resize?.();
+      window.dispatchEvent(new Event("resize"));
+    };
+    const t = setTimeout(remeasure, 650);
+    return () => {
+      clearTimeout(t);
+      delete root.dataset.agentPanel;
+      setTimeout(remeasure, 650);
+    };
+  }, []);
+
+  useEffect(() => {
+    listRef.current?.scrollTo?.({ top: listRef.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
 
   async function send(text: string) {
@@ -65,72 +82,64 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
   }
 
   return createPortal(
-    <motion.div
-      className="fixed inset-0 z-50 flex justify-end bg-fg/20 backdrop-blur-[2px]"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      onClick={(e) => e.target === e.currentTarget && onClose()}
+    <motion.aside
+      className="fixed inset-y-0 right-0 z-50 flex w-[min(var(--agent-panel-w),100vw)] flex-col border-l border-border bg-bg shadow-[-24px_0_60px_-40px_rgba(18,18,18,0.35)]"
+      data-lenis-prevent
       role="dialog"
-      aria-modal="true"
       aria-label={labels.title}
+      initial={{ x: 40, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
     >
-      <motion.aside
-        className="flex h-full w-full max-w-[520px] flex-col border-l border-border bg-bg"
-        data-lenis-prevent
-        initial={{ x: 40, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <header className="flex items-start justify-between gap-4 border-b border-border px-6 py-5">
-          <div>
-            <h2 className="font-display text-xl font-medium tracking-tight">{labels.title}</h2>
-            <p className="mt-1 max-w-sm text-sm leading-6 text-fg-muted">{labels.subtitle}</p>
-          </div>
-          <button type="button" onClick={onClose} aria-label={labels.close} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border hover:bg-muted">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
-          </button>
-        </header>
-
-        <div ref={listRef} className="flex-1 space-y-4 overflow-y-auto px-6 py-6" data-lenis-prevent>
-          {messages.length === 0 && (
-            <div className="flex flex-wrap gap-2">
-              {labels.suggestions.map((s) => (
-                <button key={s} type="button" onClick={() => send(s)} className="rounded-full border border-border px-3 py-1.5 text-left text-sm hover:bg-muted">
-                  {s}
-                </button>
-              ))}
-            </div>
-          )}
-          {messages.map((m, i) => (
-            <div key={i} className={m.role === "user" ? "ml-10 rounded-2xl rounded-br-sm bg-fg px-4 py-3 text-[15px] leading-6 text-bg" : "mr-10 text-[15px] leading-7"}>
-              {m.content || (busy && i === messages.length - 1 ? <span className="text-fg-muted">{labels.thinking}</span> : null)}
-            </div>
-          ))}
-          {offline && <p className="rounded-xl border border-border bg-muted/60 px-4 py-3 text-sm text-fg-muted">{labels.offline}</p>}
+      <header className="flex items-start justify-between gap-4 border-b border-border px-6 py-5">
+        <div>
+          <h2 className="font-display text-xl font-medium tracking-tight">{labels.title}</h2>
+          <p className="mt-1 max-w-sm text-sm leading-6 text-fg-muted">{labels.subtitle}</p>
         </div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            send(input);
-          }}
-          className="border-t border-border px-6 py-4"
-        >
-          <div className="flex items-center gap-2 rounded-full border border-border bg-bg pl-4 pr-1.5 focus-within:border-fg/40">
-            <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder={labels.placeholder}
-              className="h-11 flex-1 bg-transparent text-[15px] outline-none placeholder:text-fg-muted/70"
-              disabled={busy}
-            />
-            <button type="submit" disabled={busy || !input.trim()} className="h-8 rounded-full bg-fg px-4 font-mono text-[11px] uppercase tracking-[0.18em] text-bg disabled:opacity-40">
-              {labels.send}
-            </button>
+        <button type="button" onClick={onClose} aria-label={labels.close} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border hover:bg-muted">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
+        </button>
+      </header>
+
+      <div ref={listRef} className="flex-1 space-y-4 overflow-y-auto px-6 py-6" data-lenis-prevent>
+        {messages.length === 0 && (
+          <div className="flex flex-wrap gap-2">
+            {labels.suggestions.map((s) => (
+              <button key={s} type="button" onClick={() => send(s)} className="rounded-full border border-border px-3 py-1.5 text-left text-sm hover:bg-muted">
+                {s}
+              </button>
+            ))}
           </div>
-          <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-fg-muted">{labels.disclosure}</p>
-        </form>
-      </motion.aside>
-    </motion.div>,
+        )}
+        {messages.map((m, i) => (
+          <div key={i} className={m.role === "user" ? "ml-10 rounded-2xl rounded-br-sm bg-fg px-4 py-3 text-[15px] leading-6 text-bg" : "mr-10 text-[15px] leading-7"}>
+            {m.content || (busy && i === messages.length - 1 ? <span className="text-fg-muted">{labels.thinking}</span> : null)}
+          </div>
+        ))}
+        {offline && <p className="rounded-xl border border-border bg-muted/60 px-4 py-3 text-sm text-fg-muted">{labels.offline}</p>}
+      </div>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          send(input);
+        }}
+        className="border-t border-border px-6 py-4"
+      >
+        <div className="flex items-center gap-2 rounded-full border border-border bg-bg pl-4 pr-1.5 focus-within:border-fg/40">
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder={labels.placeholder}
+            className="h-11 flex-1 bg-transparent text-[15px] outline-none placeholder:text-fg-muted/70"
+            disabled={busy}
+          />
+          <button type="submit" disabled={busy || !input.trim()} className="h-8 rounded-full bg-fg px-4 font-mono text-[11px] uppercase tracking-[0.18em] text-bg disabled:opacity-40">
+            {labels.send}
+          </button>
+        </div>
+        <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-fg-muted">{labels.disclosure}</p>
+      </form>
+    </motion.aside>,
     document.body,
   );
 }

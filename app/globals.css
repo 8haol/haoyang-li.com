@@ -55,6 +55,17 @@ html::-webkit-scrollbar {
 body {
   font-family: var(--font-sans);
   font-feature-settings: "ss01", "cv11";
+  transition: padding-right 0.6s var(--ease-out-expo);
+}
+/* Split view: while the text panel is open on a wide screen, the page narrows beside it and stays fully usable.
+   <html data-agent-panel> is set by AgentPanel; the panel's width lives here so both sides agree. */
+:root {
+  --agent-panel-w: min(520px, 42vw);
+}
+@media (min-width: 1024px) {
+  html[data-agent-panel] body {
+    padding-right: var(--agent-panel-w);
+  }
 }
 .font-display {
   font-family: var(--font-display);

@@ -92,13 +92,24 @@ export function VoiceDock({ labels, onUseText, onClose }: { labels: VoiceLabels;
             exit={{ opacity: 0 }}
             transition={fade}
           >
-            {call.active && (
-              <p className="absolute inset-x-0 bottom-8 flex flex-col items-center gap-3 px-6 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-fg-muted">
-                {labels.scrollHint}
-                <span aria-hidden className="block h-8 w-px animate-pulse bg-fg-muted" />
-              </p>
-            )}
           </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {!docked && call.active && (
+          <motion.p
+            key="hint"
+            className="absolute inset-x-0 bottom-[max(1.5rem,calc(50%-19rem))] flex flex-col items-center gap-3 px-6 text-center font-mono text-[12px] uppercase tracking-[0.2em] text-fg"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ ...fade, delay: 0.4 }}
+          >
+            {labels.scrollHint}
+            <svg width="16" height="24" viewBox="0 0 16 24" fill="none" aria-hidden className="motion-safe:animate-bounce">
+              <path d="M8 2v18M2 14l6 6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </motion.p>
         )}
       </AnimatePresence>
       <motion.div
