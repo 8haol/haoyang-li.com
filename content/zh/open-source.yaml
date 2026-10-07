@@ -1,0 +1,19 @@
+- name: crowdplay
+  repo: https://github.com/8haol/crowdplay
+  tagline: 线下活动的现场互动平台。
+  why: 用它从头到尾办了一场 50 人的迎新活动；现在是一套「主持大屏 + 参与者手机」活动工具的底座。
+  stack: [React, Supabase, Netlify]
+  status: live
+- name: selah
+  repo: https://github.com/8haol/selah
+  tagline: 把歌词做成幻灯片，每个汉字上方对齐拼音。
+  why: 市面上没有工具能在 PPTX 里把拼音逐字对齐到汉字上方，而敬拜团队每周都要用。
+  stack: [Next.js, Drizzle, pptxgenjs]
+  status: live
+  demo: https://selah-8haol.vercel.app/
+- name: haoyang-li.com
+  repo: https://github.com/8haol/haoyang-li.com
+  tagline: 就是这个网站。
+  why: 一个中英双语的 Next.js 内容站，带类型校验的 MDX 加载器；介绍我工作的那个 AI agent 也住在这里。
+  stack: [Next.js, next-intl, MDX]
+  status: live
