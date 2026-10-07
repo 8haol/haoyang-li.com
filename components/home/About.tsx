@@ -7,7 +7,7 @@ type Entry = { role: string; org: string };
 /** Short bridge between the hero and the work stage: who I am in three lines, then straight into the work. */
 export async function About() {
   const t = await getTranslations("about");
-  // Roles and degrees get one line each, title left and institution right, so long names never run together.
+  // Each role or degree gets its own entry, title over institution, so long names never run together.
   const rows: { label: string; value: string | Entry[] }[] = [
     { label: t("nowLabel"), value: t.raw("now") as Entry[] },
     { label: t("educationLabel"), value: t.raw("education") as Entry[] },
@@ -37,11 +37,11 @@ export async function About() {
                     <dd className="text-fg/90">{value}</dd>
                   ) : (
                     <dd>
-                      <ul className="space-y-1.5">
+                      <ul className="space-y-3">
                         {value.map((e) => (
-                          <li key={e.role} className="flex flex-wrap items-baseline justify-between gap-x-6">
-                            <span className="text-fg/90">{e.role}</span>
-                            <span className="text-fg-muted">{e.org}</span>
+                          <li key={e.role}>
+                            <span className="block text-fg/90">{e.role}</span>
+                            <span className="block text-fg-muted">{e.org}</span>
                           </li>
                         ))}
                       </ul>
