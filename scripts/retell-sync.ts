@@ -27,16 +27,13 @@ async function retell<T>(method: "GET" | "POST" | "PATCH", path: string, body?: 
 /** Updates the agent when we have its id, creates it otherwise; then publishes it so it picks up the new LLM. */
 async function upsertAgent(kind: "voice" | "chat", id: string | undefined, config: object): Promise<string> {
   const [create, update] = kind === "voice" ? ["/create-agent", "/update-agent"] : ["/create-chat-agent", "/update-chat-agent"];
-  if (id) {
-    await retell("PATCH", `${update}/${id}`, config);
-    console.log(`updated ${kind} agent ${id}`);
-  } else {
-    id = (await retell<{ agent_id: string }>("POST", create, config)).agent_id;
-    console.log(`created ${kind} agent ${id}`);
-  }
-  await retell("POST", `/publish-agent/${id}`);
-  console.log(`published ${kind} agent ${id}`);
-  return id;
+  const draft = id
+    ? await retell<{ agent_id: string; version: number }>("PATCH", `${update}/${id}`, config)
+    : await retell<{ agent_id: string; version: number }>("POST", create, config);
+  console.log(`${id ? "updated" : "created"} ${kind} agent ${draft.agent_id} (draft v${draft.version})`);
+  await retell("POST", `/publish-agent-version/${draft.agent_id}`, { version: draft.version });
+  console.log(`published ${kind} agent ${draft.agent_id} v${draft.version}`);
+  return draft.agent_id;
 }
 
 async function main() {
@@ -46,24 +43,22 @@ async function main() {
     console.log("\n--- llm config (prompt omitted) ---");
     console.log(JSON.stringify({ ...llm, general_prompt: `<${llm.general_prompt.length} chars>` }, null, 2));
     console.log("\n--- voice agent config ---");
-    console.log(JSON.stringify(voiceAgentConfig("<llm_id>"), null, 2));
+    console.log(JSON.stringify(voiceAgentConfig("<llm_id>", 0), null, 2));
     console.log("\n--- chat agent config ---");
-    console.log(JSON.stringify(chatAgentConfig("<llm_id>"), null, 2));
+    console.log(JSON.stringify(chatAgentConfig("<llm_id>", 0), null, 2));
     return;
   }
   if (!apiKey) throw new Error("RETELL_API_KEY is not set (put it in .env.local)");
 
-  let llmId = process.env.RETELL_LLM_ID;
-  if (llmId) {
-    await retell("PATCH", `/update-retell-llm/${llmId}`, llm);
-    console.log(`updated llm ${llmId}`);
-  } else {
-    llmId = (await retell<{ llm_id: string }>("POST", "/create-retell-llm", llm)).llm_id;
-    console.log(`created llm ${llmId}`);
-  }
+  const existingLlm = process.env.RETELL_LLM_ID;
+  const { llm_id: llmId, version: llmVersion } = existingLlm
+    ? await retell<{ llm_id: string; version: number }>("PATCH", `/update-retell-llm/${existingLlm}`, llm)
+    : await retell<{ llm_id: string; version: number }>("POST", "/create-retell-llm", llm);
+  console.log(`${existingLlm ? "updated" : "created"} llm ${llmId} (v${llmVersion})`);
 
-  const agentId = await upsertAgent("voice", process.env.RETELL_AGENT_ID, voiceAgentConfig(llmId));
-  const chatAgentId = await upsertAgent("chat", process.env.RETELL_CHAT_AGENT_ID, chatAgentConfig(llmId));
+  // Both agents pin the same LLM version, so publishing them ships the prompt above to voice and chat at once.
+  const agentId = await upsertAgent("voice", process.env.RETELL_AGENT_ID, voiceAgentConfig(llmId, llmVersion));
+  const chatAgentId = await upsertAgent("chat", process.env.RETELL_CHAT_AGENT_ID, chatAgentConfig(llmId, llmVersion));
   console.log(`\nMake sure .env.local and Vercel have:\nRETELL_LLM_ID=${llmId}\nRETELL_AGENT_ID=${agentId}\nRETELL_CHAT_AGENT_ID=${chatAgentId}`);
 }
 
