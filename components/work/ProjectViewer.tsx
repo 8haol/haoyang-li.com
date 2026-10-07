@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
@@ -34,6 +34,16 @@ type Props = {
 };
 
 const SWIPE_PX = 60;
+/** How long the overlay takes to fade before the route actually goes back. */
+const CLOSE_MS = 220;
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+/** Panel motion: the first open rises into place; a flip slides in from the side it was asked for. */
+const panelMotion = {
+  initial: ({ dir }: { dir: number }) => (dir === 0 ? { opacity: 0, y: 28, scale: 0.96 } : { opacity: 0, x: dir * 56, scale: 0.985 }),
+  animate: { opacity: 1, x: 0, y: 0, scale: 1 },
+  exit: ({ dir }: { dir: number }) => (dir === 0 ? { opacity: 0, y: 12, scale: 0.98 } : { opacity: 0, x: -dir * 40, scale: 0.985 }),
+};
 
 /**
  * Album-style project viewer. In modal mode it fits the screen, shows the neighbours as side strips and
@@ -45,9 +55,24 @@ export function ProjectViewer({ mode, current, prev, next, basePath, labels, chi
   const modal = mode === "modal";
   const rootRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  // Which way the next flip travels: +1 for next, -1 for prev, 0 for the first open.
+  const [dir, setDir] = useState(0);
+  const [leaving, setLeaving] = useState(false);
   const hrefFor = useCallback((slug: string) => `${basePath}/work/${slug}`, [basePath]);
-  const go = useCallback((n?: ViewerNeighbor | null) => n && router.replace(hrefFor(n.slug), { scroll: false }), [router, hrefFor]);
-  const close = useCallback(() => router.back(), [router]);
+  const go = useCallback(
+    (n?: ViewerNeighbor | null) => {
+      if (!n) return;
+      setDir(n === next ? 1 : n === prev ? -1 : 0);
+      router.replace(hrefFor(n.slug), { scroll: false });
+    },
+    [router, hrefFor, next, prev],
+  );
+  // Fade the overlay out first, then leave the route; the viewer unmounts with the route change.
+  const close = useCallback(() => {
+    if (reduceMotion) return router.back();
+    setLeaving(true);
+    window.setTimeout(() => router.back(), CLOSE_MS);
+  }, [router, reduceMotion]);
 
   // Keyboard (Esc / arrows / Tab trap) and body scroll lock (modal only). Lenis is kept off the
   // overlay by the data-lenis-prevent attribute on the root, which Lenis checks on the event path.
@@ -206,7 +231,7 @@ export function ProjectViewer({ mode, current, prev, next, basePath, labels, chi
   );
 
   return (
-    <div
+    <motion.div
       ref={rootRef}
       data-lenis-prevent
       className="fixed inset-y-0 left-0 z-50 bg-black/85"
@@ -216,6 +241,9 @@ export function ProjectViewer({ mode, current, prev, next, basePath, labels, chi
       aria-label={current.title}
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
+      initial={reduceMotion ? false : { opacity: 0 }}
+      animate={{ opacity: leaving ? 0 : 1 }}
+      transition={{ duration: leaving ? CLOSE_MS / 1000 : 0.4, ease: EASE }}
     >
       {prev && strip(prev, "prev")}
       {next && strip(next, "next")}
@@ -230,22 +258,24 @@ export function ProjectViewer({ mode, current, prev, next, basePath, labels, chi
         </svg>
       </button>
       <div className="flex h-full items-center justify-center p-3 md:px-24" onClick={(e) => e.target === e.currentTarget && close()}>
-        <AnimatePresence mode="wait" initial={false}>
+        <AnimatePresence mode="wait" initial={!reduceMotion} custom={{ dir }}>
           <motion.div
             key={current.slug}
             ref={panelRef}
             tabIndex={-1}
             data-lenis-prevent
+            custom={{ dir }}
+            variants={panelMotion}
+            initial="initial"
+            animate={leaving ? { opacity: 0, y: 16, scale: 0.97 } : "animate"}
+            exit="exit"
+            transition={{ duration: leaving ? CLOSE_MS / 1000 : 0.5, ease: EASE }}
             className="no-scrollbar h-[min(86dvh,900px)] w-[min(1200px,92%)] overflow-y-auto rounded-3xl bg-bg px-5 py-10 text-fg shadow-2xl outline-none sm:px-10 sm:py-14 lg:px-16"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
           >
             {body}
           </motion.div>
         </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   );
 }
