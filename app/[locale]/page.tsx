@@ -1,18 +1,17 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { getGalleryProjects, getPage, loadYaml } from "@/lib/content/load";
+import { getGalleryProjects, loadYaml } from "@/lib/content/load";
 import { OpenSource } from "@/lib/content/schema";
 import type { Locale } from "@/lib/site";
 import { Link } from "@/i18n/navigation";
 import { Hero } from "@/components/home/Hero";
 import { About } from "@/components/home/About";
+import { Experience } from "@/components/home/Experience";
 import { WorkStage, type StageSlide } from "@/components/home/WorkStage";
 import { Reveal } from "@/components/motion/Reveal";
-import { MdxContent } from "@/components/mdx/MdxContent";
 
 export default async function HomePage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations("home");
   const g = await getTranslations("gallery");
   const os = await getTranslations("openSource");
   const slides: StageSlide[] = getGalleryProjects().map(({ slug, item }) => ({
@@ -21,7 +20,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
     title: item.title,
     meta: `${item.org} · ${item.year}`,
   }));
-  const now = getPage(locale, "now");
   const open = loadYaml("open-source.yaml", OpenSource).slice(0, 3);
 
   return (
@@ -33,22 +31,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       <div id="selected-work">
         <WorkStage slides={slides} locale={locale} eyebrow={g("eyebrow")} hint={g("hint")} openLabel={g("open")} />
       </div>
-      {now && (
-        <section id="now" className="shell py-24">
-          <div className="grid gap-8 border-t border-border pt-10 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
-            <Reveal>
-              <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-fg-muted">
-                {t("nowTitle")} · {now.frontmatter.updated}
-              </p>
-            </Reveal>
-            <Reveal delay={0.05}>
-              <div className="max-w-2xl text-[17px]">
-                <MdxContent source={now.body} />
-              </div>
-            </Reveal>
-          </div>
-        </section>
-      )}
+      <div id="experience">
+        <Experience />
+      </div>
       <section id="open-source" className="shell py-24">
         <div className="border-t border-border pt-10">
           <Reveal>

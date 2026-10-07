@@ -10,7 +10,7 @@
   "nav": {
     "about": "关于",
     "work": "作品",
-    "now": "近况",
+    "experience": "经历",
     "openSource": "开源",
     "contact": "联系",
     "sections": "页面导航",
@@ -25,8 +25,7 @@
     "statsPo": "张采购订单由可审计的 LLM 决策层分配",
     "statsMessages": "条生产环境聊天 agent 消息",
     "statsWorkflows": "条连接 AI、CRM 与运营系统的集成工作流",
-    "featured": "精选案例",
-    "nowTitle": "近况"
+    "featured": "精选案例"
   },
   "work": {
     "title": "作品",
@@ -115,6 +114,15 @@
     "based": "伦敦",
     "resume": "完整简历",
     "work": "精选作品"
+  },
+  "experience": {
+    "eyebrow": "经历",
+    "title": "我在哪里做过什么。",
+    "work": "工作",
+    "ventures": "创业",
+    "education": "教育",
+    "resume": "完整简历",
+    "download": "下载简历"
   },
   "gallery": {
     "eyebrow": "精选作品",

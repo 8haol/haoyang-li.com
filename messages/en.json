@@ -10,7 +10,7 @@
   "nav": {
     "about": "About",
     "work": "Work",
-    "now": "Now",
+    "experience": "Experience",
     "openSource": "Open source",
     "contact": "Contact",
     "sections": "Sections",
@@ -25,8 +25,7 @@
     "statsPo": "purchase orders routed by an auditable LLM decision layer",
     "statsMessages": "chat-agent messages served in production",
     "statsWorkflows": "integration workflows connecting AI to CRM and operations",
-    "featured": "Selected case studies",
-    "nowTitle": "Now"
+    "featured": "Selected case studies"
   },
   "work": {
     "title": "Work",
@@ -115,6 +114,15 @@
     "based": "London",
     "resume": "Full résumé",
     "work": "Selected work"
+  },
+  "experience": {
+    "eyebrow": "Experience",
+    "title": "Where I've built things.",
+    "work": "Work",
+    "ventures": "Ventures",
+    "education": "Education",
+    "resume": "Full résumé",
+    "download": "Download CV"
   },
   "gallery": {
     "eyebrow": "Selected work",
