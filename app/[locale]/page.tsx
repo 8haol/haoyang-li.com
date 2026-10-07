@@ -27,12 +27,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   return (
     <main id="content">
       <Hero />
-      <About />
+      <div id="about">
+        <About />
+      </div>
       <div id="selected-work">
         <WorkStage slides={slides} locale={locale} eyebrow={g("eyebrow")} hint={g("hint")} openLabel={g("open")} />
       </div>
       {now && (
-        <section className="shell py-24">
+        <section id="now" className="shell py-24">
           <div className="grid gap-8 border-t border-border pt-10 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
             <Reveal>
               <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-fg-muted">
@@ -47,7 +49,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
           </div>
         </section>
       )}
-      <section className="shell py-24">
+      <section id="open-source" className="shell py-24">
         <div className="border-t border-border pt-10">
           <Reveal>
             <div className="flex items-end justify-between">

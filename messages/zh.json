@@ -8,11 +8,13 @@
     "close": "关闭"
   },
   "nav": {
+    "about": "关于",
     "work": "作品",
-    "writing": "文章",
+    "now": "近况",
     "openSource": "开源",
-    "resume": "简历",
-    "now": "近况"
+    "contact": "联系",
+    "sections": "页面导航",
+    "top": "回到顶部"
   },
   "home": {
     "eyebrow": "AI 系统架构师 · 全栈工程师 · 伦敦",
