@@ -1,11 +1,10 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site";
-import { allProjectSlugs, allSlugs } from "@/lib/content/load";
-
-const staticPaths = ["", "/work", "/writing", "/open-source", "/resume", "/now"];
+import { allProjectSlugs } from "@/lib/content/load";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const paths = [...staticPaths, ...allProjectSlugs().map((s) => `/work/${s}`), ...allSlugs("writing").map((s) => `/writing/${s}`)];
+  // One page plus the project detail views the work gallery opens.
+  const paths = ["", ...allProjectSlugs().map((s) => `/work/${s}`)];
   const now = new Date();
   return paths.flatMap((p) => [
     {
