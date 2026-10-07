@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { siteConfig } from "@/lib/site";
 import { SiteNav, type NavSection } from "./SiteNav";
 
 /** The home page's sections, in page order; ids match the anchors in app/[locale]/page.tsx and the footer. */
@@ -13,6 +14,8 @@ const sections = [
 export async function SiteHeader() {
   const t = await getTranslations("nav");
   const c = await getTranslations("common");
-  const items: NavSection[] = sections.map(({ key, ...s }) => ({ ...s, label: t(key) }));
+  const items: NavSection[] = sections
+    .filter((s) => s.id !== "open-source" || siteConfig.showOpenSource)
+    .map(({ key, ...s }) => ({ ...s, label: t(key) }));
   return <SiteNav sections={items} labels={{ skip: c("skipToContent"), top: t("top"), sections: t("sections") }} />;
 }

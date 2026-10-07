@@ -1,6 +1,6 @@
 import { listWork, loadYaml, getPage } from "@/lib/content/load";
 import { Resume, OpenSource, Persona } from "@/lib/content/schema";
-import type { Locale } from "@/lib/site";
+import { siteConfig, type Locale } from "@/lib/site";
 
 export type Knowledge = {
   name: string;
@@ -34,7 +34,7 @@ export function buildKnowledge(locale: Locale = "en"): Knowledge {
     .map((w) => `### ${w.frontmatter.title} (${w.frontmatter.org}, ${w.frontmatter.period})\nRole: ${w.frontmatter.role}\nOutcomes: ${w.frontmatter.outcome.join("; ")}\nStack: ${w.frontmatter.stack.join(", ")}\n\n${w.body.trim()}`)
     .join("\n\n");
 
-  const oss = open.map((o) => `- ${o.name} (${o.status}): ${o.tagline} ${o.why} ${o.repo}`).join("\n");
+  const oss = !siteConfig.showOpenSource ? "" : open.map((o) => `- ${o.name} (${o.status}): ${o.tagline} ${o.why} ${o.repo}`).join("\n");
 
   return { name: r.name, email: r.email, resume, cases, oss, now: now?.body.trim() ?? "", persona };
 }
