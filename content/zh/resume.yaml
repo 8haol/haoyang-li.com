@@ -2,7 +2,7 @@ name: Haoyang Li
 headline: AI 系统架构师、全栈工程师
 location: 英国伦敦
 email: hello@haoyang-li.com
-summary: AI 系统架构师、全栈工程师。负责企业级 AI 产品从需求调研到上线生产的全过程，涵盖大模型应用、SaaS 架构、系统集成与自动化，也直接面向客户做技术交付。
+summary: AI 系统架构师、全栈工程师。负责企业 AI 产品从需求调研到上线的整个过程，主要做大模型应用、SaaS 架构、系统集成和自动化，也直接对接客户做技术交付。
 experience:
   - org: Zenith AI / My Club Group
     url: https://zenithai.one/
@@ -10,20 +10,20 @@ experience:
     location: 英国伦敦
     period: 2025.05 – 至今
     bullets:
-      - 负责企业 AI 项目的端到端交付：从客户需求调研、架构设计，到全栈开发、部署上线，并和业务方一起持续迭代。
-      - 独立设计并开发 GAIMS：一个可审计的 AI 供应商分配决策层（专利申请中），上线八个月处理了 3,000 多张采购订单。系统结合前沿大模型、历史与风险数据、品牌专属规则和人工审核反馈，并实现了租户隔离与敏感数据脱敏。
-      - 为四家英国运动服饰集团定制 GAIMS 演示，在保密协议阶段的评估中向高管和 IT 团队讲解架构与业务价值。
-      - 上线 Voiceflow 聊天 agent，累计 4 万多条消息、1.5 万多名用户；搭建 Retell 语音 agent，打通 Zoho CRM 的线索录入、通话摘要、通话记录和按意图分配销售。
-      - 搭建 50 多个 n8n 工作流，把 AI 产品和 CRM、运营数据连起来，支持订单状态查询、销售通话预约和跨系统业务流程。
-      - 交付 Kit Funder、客户门户和 Zenith AI 官网，开发覆盖登录认证、支付、订单追踪和 CRM 集成的全栈客户流程。
+      - 端到端负责企业 AI 项目：调研客户需求、设计架构、全栈开发、部署上线，之后和业务团队一起持续迭代。
+      - 独立设计和开发 GAIMS，一套可追溯的 AI 供应商分配系统（专利申请中），上线八个月处理了 3,000 多张采购订单。系统综合大模型、历史和风险数据、各品牌的规则以及人工审核反馈来做决定，并做了租户隔离和敏感数据脱敏。
+      - 为四家英国运动服饰集团定制 GAIMS 演示，在签保密协议后的评估阶段，向对方高管和 IT 团队讲解架构和业务价值。
+      - 上线 Voiceflow 聊天 Agent，累计 4 万多条消息、1.5 万多名用户；搭建 Retell 语音 Agent，对接 Zoho CRM，自动录入线索、生成通话摘要、保存通话记录，并按来电意图分给对应的销售。
+      - 搭建 50 多个 n8n 工作流，把 AI 产品和 CRM、运营数据串起来，用于查询订单状态、预约销售电话和处理跨系统的业务流程。
+      - 交付 Kit Funder、客户门户和 Zenith AI 官网，开发了登录、支付、订单追踪和 CRM 对接等全栈客户流程。
   - org: Outlier AI
     url: https://outlier.ai/
     title: AI 训练工程师
     location: 远程
     period: 2024.10 – 2025.05
     bullets:
-      - 为前沿大模型的后训练（RLHF）设计评分标准和对抗性提示词，评估推理、代码生成、指令遵循和工具调用能力，把系统性的失败模式反馈给模型训练团队。
-      - 带领 15 人的评估团队，制定质量基准，并用标准答案校准评审员。
+      - 参与前沿大模型的后训练（RLHF）：设计评分标准和对抗性提示词，评估模型的推理、写代码、遵循指令和调用工具的能力，把反复出现的问题整理后反馈给训练团队。
+      - 带领 15 人的评估小组，制定质量标准，用标准答案统一评审员的打分尺度。
   - org: 国联民生证券股份有限公司
     title: 量化研究员
     location: 中国郑州
@@ -36,8 +36,8 @@ entrepreneurial:
     location: 英国伦敦
     period: 2026.05 – 至今
     bullets:
-      - 用 Next.js、TypeScript 和 PostgreSQL 开发面向小商户的语音 AI 预约应用（试点阶段），在多租户架构下实现 Retell agent 的自动创建和中英双语对话。
-      - 实现预约、改期和取消工具、Webhook 签名校验和幂等的通话存储；通过真实通话测试解决来电号码识别和模型延迟问题。
+      - 用 Next.js、TypeScript 和 PostgreSQL 开发给小商户用的 AI 语音预约应用（试点阶段）。多租户架构，每个商户自动生成自己的 Retell Agent，支持中英双语通话。
+      - 开发预约、改约和取消功能，做了 Webhook 签名校验和通话记录的防重复写入；通过真实通话测试，解决了来电号码识别和模型响应慢的问题。
 education:
   - school: 伦敦政治经济学院（LSE）
     degree: 应用数学硕士
@@ -48,7 +48,7 @@ education:
     period: 2020.09 – 2023.06
     coursework: [Python 计算方法, 统计建模, 线性代数, 金融随机微积分]
 skills:
-  - group: 工程
+  - group: 语言与框架
     items: [TypeScript, JavaScript, Python, SQL, React, Next.js, Node.js]
   - group: AI 与集成
     items: [大模型 API, RAG, 提示词工程, 工具调用, REST API, n8n, Zoho CRM, Retell AI, Voiceflow]
