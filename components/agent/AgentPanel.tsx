@@ -1,14 +1,36 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "motion/react";
 import { useLocale } from "next-intl";
 import { getLenis } from "@/lib/lenis";
 
 type Msg = { role: "user" | "assistant"; content: string };
+
+const PANEL_MIN = 360;
+const PANEL_KEY = "agent-panel-w";
+/** The widest the panel may go: leave the page at least 480px, never more than 70% of the window. */
+const panelMax = () => Math.max(PANEL_MIN, Math.min(window.innerWidth * 0.7, window.innerWidth - 480));
+const clampWidth = (w: number) => Math.round(Math.min(panelMax(), Math.max(PANEL_MIN, w)));
+const applyWidth = (w: number) => document.documentElement.style.setProperty("--agent-panel-w", `${w}px`);
+const readStoredWidth = (): number | null => {
+  try {
+    const v = Number(localStorage.getItem(PANEL_KEY));
+    return v > 0 ? v : null;
+  } catch {
+    return null;
+  }
+};
+const storeWidth = (w: number) => {
+  try {
+    localStorage.setItem(PANEL_KEY, String(w));
+  } catch {
+    /* private mode or blocked storage: the width simply is not remembered */
+  }
+};
 type Labels = {
   title: string; subtitle: string; placeholder: string; send: string;
-  disclosure: string; offline: string; suggestions: string[]; close: string; thinking: string;
+  disclosure: string; offline: string; suggestions: string[]; close: string; thinking: string; resize: string;
 };
 
 export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: Labels }) {
@@ -17,6 +39,11 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [offline, setOffline] = useState(false);
+  // Remembered from the last visit (per browser); null means the CSS default.
+  const [width, setWidth] = useState<number | null>(() => {
+    const stored = readStoredWidth();
+    return stored ? clampWidth(stored) : null;
+  });
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -37,9 +64,46 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
     return () => {
       clearTimeout(t);
       delete root.dataset.agentPanel;
+      root.style.removeProperty("--agent-panel-w");
       setTimeout(remeasure, 650);
     };
   }, []);
+
+  useEffect(() => {
+    if (width != null) applyWidth(width);
+  }, [width]);
+
+  // The divider on the panel's left edge: drag it, or nudge it with the arrow keys.
+  const resizeTo = useCallback((w: number) => {
+    const next = clampWidth(w);
+    setWidth(next);
+    return next;
+  }, []);
+  const onDividerPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const root = document.documentElement;
+    root.dataset.agentResizing = "";
+    const move = (ev: PointerEvent) => resizeTo(window.innerWidth - ev.clientX);
+    const up = (ev: PointerEvent) => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+      window.removeEventListener("pointercancel", up);
+      delete root.dataset.agentResizing;
+      storeWidth(resizeTo(window.innerWidth - ev.clientX));
+      getLenis()?.resize?.();
+      window.dispatchEvent(new Event("resize"));
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+    window.addEventListener("pointercancel", up);
+  };
+  const onDividerKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const step = e.key === "ArrowLeft" ? 24 : e.key === "ArrowRight" ? -24 : 0;
+    if (!step) return;
+    e.preventDefault();
+    const current = width ?? Math.min(520, window.innerWidth * 0.42);
+    storeWidth(resizeTo(current + step));
+  };
 
   useEffect(() => {
     listRef.current?.scrollTo?.({ top: listRef.current.scrollHeight, behavior: "smooth" });
@@ -91,6 +155,21 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
     >
+      {/* Drag handle. A 12px hit area straddling the border; the visible line appears on hover and while focused. */}
+      <div
+        role="separator"
+        aria-orientation="vertical"
+        aria-label={labels.resize}
+        aria-valuemin={PANEL_MIN}
+        aria-valuenow={width ?? undefined}
+        tabIndex={0}
+        onPointerDown={onDividerPointerDown}
+        onKeyDown={onDividerKeyDown}
+        className="group absolute inset-y-0 -left-1.5 z-10 hidden w-3 cursor-col-resize touch-none lg:block focus-visible:outline-none"
+      >
+        <span aria-hidden className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-fg/0 transition-colors duration-300 group-hover:bg-fg/40 group-focus-visible:bg-fg/60" />
+        <span aria-hidden className="absolute left-1/2 top-1/2 h-10 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-fg/15 transition-colors duration-300 group-hover:bg-fg/50 group-focus-visible:bg-fg/60" />
+      </div>
       <header className="flex items-start justify-between gap-4 border-b border-border px-6 py-5">
         <div>
           <h2 className="font-display text-xl font-medium tracking-tight">{labels.title}</h2>

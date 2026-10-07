@@ -124,6 +124,7 @@
     "useText": "Type instead",
     "expand": "Expand the call",
     "collapse": "Minimise the call",
-    "scrollHint": "Scroll on to keep browsing. I'll tuck into the corner and keep talking."
+    "scrollHint": "Scroll on to keep browsing. I'll tuck into the corner and keep talking.",
+    "resize": "Drag to resize the chat"
   }
 }

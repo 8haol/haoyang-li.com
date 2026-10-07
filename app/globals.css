@@ -67,6 +67,14 @@ body {
     padding-right: var(--agent-panel-w);
   }
 }
+/* While the divider is being dragged the page follows the pointer directly. */
+html[data-agent-resizing] {
+  cursor: col-resize;
+  user-select: none;
+}
+html[data-agent-resizing] body {
+  transition: none;
+}
 .font-display {
   font-family: var(--font-display);
   font-variation-settings: "wdth" 100, "opsz" 96;

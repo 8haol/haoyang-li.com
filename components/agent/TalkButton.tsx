@@ -54,6 +54,7 @@ export function TalkButton({ label, sub }: { label: string; sub: string }) {
           labels={{
             title: t("title"), subtitle: t("subtitle"), placeholder: t("placeholder"), send: t("send"), disclosure: t("disclosure"),
             offline: t("offline"), suggestions: [t("suggest1"), t("suggest2"), t("suggest3")], close: t("close"), thinking: t("thinking"),
+            resize: t("resize"),
           }}
         />
       )}
