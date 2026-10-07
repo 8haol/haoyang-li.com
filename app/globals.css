@@ -184,6 +184,6 @@ html[data-hero="silk"]:not([data-header-past-hero]):has(.hero-scope) header.site
   text-shadow: 0 0 12px rgba(10, 14, 22, 0.55), 0 1px 2px rgba(10, 14, 22, 0.35);
 }
 html[data-hero="silk"] .hero-scope .talk-cta,
-html[data-hero="silk"] .hero-scope .talk-cta .font-mono {
+html[data-hero="silk"] .hero-scope .talk-cta :is(.font-display, .font-mono) {
   text-shadow: none;
 }
