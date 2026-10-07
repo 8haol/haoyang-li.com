@@ -1,5 +1,3 @@
-"use client";
-import type { MouseEvent, ReactNode } from "react";
 import { getLenis } from "@/lib/lenis";
 
 /** Glide to a page offset through Lenis when it is running, native scrolling otherwise (a jump under reduced motion). */
@@ -16,16 +14,4 @@ export function scrollToId(id: string, options?: { immediate?: boolean }): boole
   if (!el) return false;
   scrollToY(el.getBoundingClientRect().top + window.scrollY, options);
   return true;
-}
-
-/** In-page anchor that glides through Lenis when it is running and falls back to native scrolling. */
-export function ScrollLink({ to, className, children }: { to: string; className?: string; children: ReactNode }) {
-  const onClick = (e: MouseEvent<HTMLAnchorElement>) => {
-    if (scrollToId(to)) e.preventDefault();
-  };
-  return (
-    <a href={`#${to}`} onClick={onClick} className={className}>
-      {children}
-    </a>
-  );
 }

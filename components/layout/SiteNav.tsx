@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
 import { Link, usePathname } from "@/i18n/navigation";
-import { scrollToId, scrollToY } from "@/components/ui/ScrollLink";
+import { scrollToId, scrollToY } from "@/lib/scroll";
 import { railState } from "@/lib/sectionRail";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 

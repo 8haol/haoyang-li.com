@@ -1,21 +1,18 @@
 import { getTranslations } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
 import { Reveal } from "@/components/motion/Reveal";
-import { ScrollLink } from "@/components/ui/ScrollLink";
 
 type Entry = { role: string; org: string };
 
-/** Short bridge between the hero and the work stage: who I am in three lines, then straight into the work. */
+/** Short bridge between the hero and the work stage: who I am in three lines. */
 export async function About() {
   const t = await getTranslations("about");
-  // Roles and degrees get one line each, title left and institution right, so long names never run together.
+  // Each role or degree gets its own entry, title over institution, so long names never run together.
   const rows: { label: string; value: string | Entry[] }[] = [
     { label: t("nowLabel"), value: t.raw("now") as Entry[] },
     { label: t("educationLabel"), value: t.raw("education") as Entry[] },
     { label: t("languagesLabel"), value: t("languages") },
     { label: t("basedLabel"), value: t("based") },
   ];
-  const linkClass = "font-mono text-[11px] uppercase tracking-[0.18em] text-fg-muted transition-colors hover:text-fg";
   return (
     <section className="shell py-24 lg:py-32">
       <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
@@ -38,11 +35,11 @@ export async function About() {
                     <dd className="text-fg/90">{value}</dd>
                   ) : (
                     <dd>
-                      <ul className="space-y-1.5">
+                      <ul className="space-y-3">
                         {value.map((e) => (
-                          <li key={e.role} className="flex flex-wrap items-baseline justify-between gap-x-6">
-                            <span className="text-fg/90">{e.role}</span>
-                            <span className="text-fg-muted">{e.org}</span>
+                          <li key={e.role}>
+                            <span className="block text-fg/90">{e.role}</span>
+                            <span className="block text-fg-muted">{e.org}</span>
                           </li>
                         ))}
                       </ul>
@@ -51,14 +48,6 @@ export async function About() {
                 </div>
               ))}
             </dl>
-            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
-              <Link href="/resume" className={linkClass}>
-                [ {t("resume")} → ]
-              </Link>
-              <ScrollLink to="selected-work" className={linkClass}>
-                [ {t("work")} ↓ ]
-              </ScrollLink>
-            </div>
           </Reveal>
         </div>
       </div>
