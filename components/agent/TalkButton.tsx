@@ -34,7 +34,14 @@ export function TalkButton({ label, sub }: { label: string; sub: string }) {
               {label}
             </span>
           </span>
-          <span className="block font-mono text-[10px] uppercase tracking-[0.18em] text-bg/65 transition-colors duration-500 group-hover:text-bg/90">{sub}</span>
+          <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-bg/65 transition-colors duration-500 group-hover:text-bg/90">
+            {/* "Online" dot: the agent picks up any time, no booking needed. */}
+            <span aria-hidden className="relative flex h-1.5 w-1.5">
+              <span className="absolute inset-0 rounded-full bg-emerald-500 opacity-75 motion-safe:animate-ping [animation-duration:2s]" />
+              <span className="relative h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            </span>
+            {sub}
+          </span>
         </span>
       </button>
       {mode === "voice" && (
