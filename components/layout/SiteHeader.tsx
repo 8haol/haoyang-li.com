@@ -14,7 +14,7 @@ export async function SiteHeader() {
   const t = await getTranslations("nav");
   const c = await getTranslations("common");
   return (
-    <header className="sticky top-0 z-40">
+    <header className="site-header sticky top-0 z-40">
       <a href="#content" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4">
         {c("skipToContent")}
       </a>

@@ -132,7 +132,7 @@ body {
    until it has scrolled past the hero. <html data-hero> comes from HERO_BACKDROP (lib/hero.ts) on the server, so
    the first paint is already right; the `?hero=` preview flips it on the client. */
 html[data-hero="silk"] .hero-scope,
-html[data-hero="silk"]:not([data-header-past-hero]):has(.hero-scope) header {
+html[data-hero="silk"]:not([data-header-past-hero]):has(.hero-scope) header.site-header {
   --color-fg: #ffffff;
   --color-fg-muted: rgba(255, 255, 255, 0.86);
   --color-border: rgba(255, 255, 255, 0.2);
@@ -151,7 +151,7 @@ html[data-hero="silk"] .hero-scope .font-serif {
   text-shadow: 0 0 22px rgba(24, 34, 52, 0.55), 0 1px 3px rgba(24, 34, 52, 0.3);
 }
 html[data-hero="silk"] .hero-scope .font-mono,
-html[data-hero="silk"]:not([data-header-past-hero]):has(.hero-scope) header :is(.font-mono, a) {
+html[data-hero="silk"]:not([data-header-past-hero]):has(.hero-scope) header.site-header :is(.font-mono, a) {
   text-shadow: 0 0 12px rgba(10, 14, 22, 0.55), 0 1px 2px rgba(10, 14, 22, 0.35);
 }
 html[data-hero="silk"] .hero-scope .talk-cta,
