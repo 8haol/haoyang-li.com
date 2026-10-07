@@ -11,13 +11,15 @@ const NAME =
 export async function Hero() {
   const t = await getTranslations("hero");
   const roles = t.raw("roles") as string[];
+  // Sized to the large viewport so the backdrop also runs under the phone browser's bottom toolbar (no paper band
+  // below the photo); the extra bottom padding keeps the call to action above that toolbar.
   return (
-    <section className="hero-scope @container relative isolate flex min-h-[calc(100dvh-3.5rem)] flex-col">
+    <section className="hero-scope @container relative isolate flex min-h-[calc(100lvh-3.5rem)] flex-col">
       {/* Grey-on-paper watercolour wash, full bleed; reaches up behind the transparent sticky header so the
           wash has no seam. Tune it live in development at /?tune and paste the JSX it gives you here. */}
       <HeroWash className="pointer-events-none absolute inset-x-0 -top-14 bottom-0 -z-10" />
 
-      <div className="shell flex flex-1 flex-col pb-8 pt-8 sm:pt-10 lg:pb-10">
+      <div className="shell flex flex-1 flex-col pb-[calc(2rem+100lvh-100svh)] pt-8 sm:pt-10 lg:pb-10">
         {/* The name splits across two rows: HAOYANG on its own, then LI with the pitch and the roles on the same
             line, everything sitting on LI's baseline. One h1 for assistive tech; the visible halves are
             presentational. On phones it stacks name, pitch, roles. */}
