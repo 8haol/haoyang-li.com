@@ -58,14 +58,18 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
     return () => document.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  // Split view: the page narrows beside the panel in one step (see globals.css) and re-measures once.
+  // Split view: the page narrows beside the panel in one step (see globals.css) and re-measures once. Below the
+  // split-view width the panel covers the screen instead, and the page behind it stops scrolling.
   useEffect(() => {
     const root = document.documentElement;
     root.dataset.agentPanel = "open";
+    const fullScreen = typeof window.matchMedia === "function" && window.matchMedia("(width < 64rem)").matches;
+    if (fullScreen) getLenis()?.stop?.();
     remeasure();
     return () => {
       delete root.dataset.agentPanel;
       root.style.removeProperty("--agent-panel-w");
+      if (fullScreen) getLenis()?.start?.();
       remeasure();
     };
   }, []);
@@ -151,7 +155,7 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
 
   return createPortal(
     <motion.aside
-      className="fixed inset-y-0 right-0 z-50 flex w-[min(var(--agent-panel-w),100vw)] flex-col border-l border-border bg-bg shadow-[-24px_0_60px_-40px_rgba(18,18,18,0.35)]"
+      className="fixed inset-0 z-50 flex h-dvh flex-col overscroll-contain bg-bg lg:left-auto lg:h-auto lg:w-[min(var(--agent-panel-w),100vw)] lg:border-l lg:border-border lg:shadow-[-24px_0_60px_-40px_rgba(18,18,18,0.35)]"
       data-lenis-prevent
       role="dialog"
       aria-label={labels.title}
@@ -174,7 +178,7 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
         <span aria-hidden className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-fg/0 transition-colors duration-300 group-hover:bg-fg/40 group-focus-visible:bg-fg/60" />
         <span aria-hidden className="absolute left-1/2 top-1/2 h-10 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-fg/15 transition-colors duration-300 group-hover:bg-fg/50 group-focus-visible:bg-fg/60" />
       </div>
-      <header className="flex items-start justify-between gap-4 border-b border-border px-6 py-5">
+      <header className="flex items-start justify-between gap-4 border-b border-border px-5 py-5 sm:px-6">
         <div>
           <h2 className="font-display text-xl font-medium tracking-tight">{labels.title}</h2>
           <p className="mt-1 max-w-sm text-sm leading-6 text-fg-muted">{labels.subtitle}</p>
@@ -184,7 +188,7 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
         </button>
       </header>
 
-      <div ref={listRef} className="no-scrollbar flex-1 space-y-4 overflow-y-auto px-6 py-6" data-lenis-prevent>
+      <div ref={listRef} className="no-scrollbar flex-1 space-y-4 overflow-y-auto overscroll-contain px-5 py-6 sm:px-6" data-lenis-prevent>
         {messages.length === 0 && (
           <div className="flex flex-wrap gap-2">
             {labels.suggestions.map((s) => (
@@ -206,14 +210,14 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
           e.preventDefault();
           send(input);
         }}
-        className="border-t border-border px-6 py-4"
+        className="border-t border-border px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 sm:px-6"
       >
         <div className="flex items-center gap-2 rounded-full border border-border bg-bg pl-4 pr-1.5 focus-within:border-fg/40">
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={labels.placeholder}
-            className="h-11 flex-1 bg-transparent text-[15px] outline-none placeholder:text-fg-muted/70"
+            className="h-11 min-w-0 flex-1 bg-transparent text-[16px] outline-none sm:text-[15px] placeholder:text-fg-muted/70"
             disabled={busy}
           />
           <button type="submit" disabled={busy || !input.trim()} className="h-8 rounded-full bg-fg px-4 font-mono text-[11px] uppercase tracking-[0.18em] text-bg disabled:opacity-40">
