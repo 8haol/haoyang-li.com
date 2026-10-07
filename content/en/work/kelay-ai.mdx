@@ -1,0 +1,61 @@
+---
+title: "Kelay AI: a voice receptionist that books, reschedules and takes deposits"
+slug: kelay-ai
+summary: Multi-tenant voice AI for UK small businesses. A new tenant gets a working phone agent from an onboarding wizard; the agent speaks English and Mandarin and writes real bookings.
+role: Technical co-founder; built the product end to end
+period: May 2026 – present
+org: Kelay AI
+stack: [Next.js, TypeScript, PostgreSQL, Drizzle, Retell, Twilio, Stripe, Resend, OpenAI]
+outcome:
+  - Pilot tenants live with real inbound calls
+  - Booking, rescheduling and cancellation handled in-call with idempotent storage
+  - English and Mandarin conversations in one agent
+featured: true
+cover: /images/work/kelay-ai/cover.svg
+order: 2
+---
+
+## Context
+
+Chinese-owned restaurants, massage studios, nail salons and pet groomers in the UK miss calls because everyone is working. Missed calls are missed bookings. Existing phone bots are English-only, generic, and need a developer to configure. Kelay is a receptionist you set up in a form.
+
+## Constraints
+
+- **Non-technical owners.** Setup had to be a wizard, not a config file, and the owner had to hear the agent before going live.
+- **Real money.** Deposits through Stripe meant payments and bookings had to be exactly-once even when telephony webhooks retried.
+- **Two languages in one call.** Callers switch between Mandarin and English mid-sentence.
+- **Two founders, no funding.** Every component had to be a managed service with a free tier until pilots paid.
+
+## My role
+
+Everything technical: multi-tenant data model, authentication, onboarding wizard, Retell agent provisioning, tool implementations, webhook handling, Stripe deposits, the admin dashboard, and the live-call debugging that made it work on real phones.
+
+## Architecture
+
+- **Tenants** own locations, services, staff, opening hours and a booking calendar in PostgreSQL (Drizzle). Industry templates (`verticals`) seed sensible defaults.
+- **Onboarding wizard** collects the business profile and, on completion, provisions a Retell agent with a generated prompt, a Twilio number and a set of tools. The owner places a browser test call before publishing.
+- **Tools** exposed to the agent: check availability, create booking, reschedule, cancel, take deposit. Each is an HTTP endpoint that verifies the Retell signature, checks an idempotency key, then acts.
+- **Call storage**: transcripts, summaries and tool results are stored per call with idempotent upserts, so webhook retries never duplicate a booking or a deposit.
+- **Deposits** are Stripe Checkout links sent by SMS during the call; confirmation flows back by webhook into the booking.
+
+## Three decisions
+
+**1. Provision agents from data, not by hand.** The agent prompt, voice and tool set are generated from the tenant record. Changing opening hours regenerates the agent. This is what makes onboarding a form instead of a service engagement.
+
+**2. Idempotency at the tool boundary.** Telephony providers retry. Every tool call carries a key derived from call ID and turn; the handler is safe to run twice. This replaced a class of "double booking" bugs with a single invariant.
+
+**3. Fix latency with measurement, not model swaps.** Early calls felt slow. Live-call tracing showed most of the delay was in our tool round-trips and caller-ID lookups, not the model. Caching tenant context per call and resolving caller ID asynchronously cut perceived latency more than any model change.
+
+## Outcome
+
+- Pilot businesses live with real inbound calls, bookings written to their calendars, deposits collected.
+- One agent handling English and Mandarin, switching per utterance.
+- Booking, rescheduling and cancellation completed in-call without a human.
+
+## What I'd do differently
+
+Build the call-replay tool first. Being able to replay a recorded call against a new prompt or tool version, offline, would have saved days of live testing. It is now on the roadmap, and it is the pattern I would start any voice product with.
+
+## Stack
+
+Next.js, TypeScript, PostgreSQL on Neon, Drizzle, better-auth, Retell, Twilio, Stripe, Resend, OpenAI.

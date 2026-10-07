@@ -1,0 +1,118 @@
+{
+  "common": {
+    "englishOnly": "This page is only available in English for now.",
+    "readMore": "Read the case study",
+    "backToWork": "All work",
+    "downloadCv": "Download CV (PDF)",
+    "skipToContent": "Skip to content",
+    "close": "Close"
+  },
+  "nav": {
+    "work": "Work",
+    "writing": "Writing",
+    "openSource": "Open source",
+    "resume": "Resume",
+    "now": "Now"
+  },
+  "home": {
+    "eyebrow": "AI systems architect · full-stack engineer · London",
+    "title": "I take enterprise AI from discovery to production.",
+    "subtitle": "LLM decision systems, voice and chat agents, and the integration layer that makes them run inside real businesses.",
+    "ctaWork": "See the work",
+    "ctaResume": "Resume",
+    "statsPo": "purchase orders routed by an auditable LLM decision layer",
+    "statsMessages": "chat-agent messages served in production",
+    "statsWorkflows": "integration workflows connecting AI to CRM and operations",
+    "featured": "Selected case studies",
+    "nowTitle": "Now"
+  },
+  "work": {
+    "title": "Work",
+    "intro": "Deep case studies first, then a gallery of everything else I have shipped.",
+    "caseStudies": "Case studies",
+    "gallery": "Selected work",
+    "role": "Role",
+    "period": "Period",
+    "stack": "Stack",
+    "outcome": "Outcome",
+    "visit": "Visit site ↗",
+    "readCase": "Read the case study",
+    "prev": "Previous project",
+    "next": "Next project",
+    "project": "Project"
+  },
+  "writing": {
+    "title": "Writing",
+    "empty": "First essay coming soon: how I design rubrics for LLM evals."
+  },
+  "openSource": {
+    "title": "Open source",
+    "intro": "A few finished things, each with a README, a screenshot and a reason to exist.",
+    "why": "Why it exists"
+  },
+  "resume": {
+    "title": "Resume",
+    "experience": "Experience",
+    "entrepreneurial": "Entrepreneurial",
+    "education": "Education",
+    "skills": "Skills",
+    "languages": "Languages"
+  },
+  "now": {
+    "title": "Now"
+  },
+  "footer": {
+    "builtWith": "Built with Next.js, deployed on Vercel.",
+    "source": "Source on GitHub",
+    "cta": "Let's talk",
+    "email": "hello@haoyang-li.com",
+    "copy": "All rights reserved."
+  },
+  "hero": {
+    "role": "AI Systems Architect · Full-Stack Engineer",
+    "based": "London",
+    "line": "I build AI systems that run inside real businesses, from the first conversation to production.",
+    "scroll": "Scroll",
+    "talk": "Talk to me",
+    "talkSub": "AI · text now, voice soon",
+    "roles": [
+      "AI Systems Architect",
+      "Full-Stack Engineer",
+      "Forward Deployed"
+    ]
+  },
+  "about": {
+    "eyebrow": "About",
+    "title": "Mathematician by training, builder by habit.",
+    "body": "I studied mathematics and statistics in London, spent a year teaching frontier models what good answers look like, and now design and ship AI products for a sportswear group and my own startup. I care about systems that explain themselves, and the unglamorous integration work that makes them run in production.",
+    "nowLabel": "Now",
+    "now": "Lead AI & Data Integration Architect, Zenith AI · Technical co-founder, Kelay AI",
+    "educationLabel": "Education",
+    "education": "MSc Applicable Mathematics, LSE · BSc Mathematics & Statistics, King's College London",
+    "languagesLabel": "Languages",
+    "languages": "Mandarin · English · Spanish — London based, open to relocation",
+    "resume": "Full résumé",
+    "work": "Selected work"
+  },
+  "gallery": {
+    "eyebrow": "Selected work",
+    "hint": "Scroll or drag · click to open",
+    "open": "Open"
+  },
+  "agent": {
+    "title": "Ask about my work",
+    "subtitle": "An AI that knows my CV and case studies. For anything else it will point you to the real me.",
+    "voice": "Voice",
+    "text": "Text",
+    "voiceSoon": "The voice line is being wired up. Until then, type below or email me.",
+    "placeholder": "Ask about GAIMS, Kelay, agents, or how I work…",
+    "send": "Send",
+    "disclosure": "AI assistant, not Haoyang. It may be wrong; it will not invent facts.",
+    "offline": "The assistant isn't connected yet. Email hello@haoyang-li.com and I'll reply myself.",
+    "suggest1": "What did you build at GAIMS?",
+    "suggest2": "How do you make LLM decisions auditable?",
+    "suggest3": "What's Kelay AI?",
+    "close": "Close",
+    "thinking": "Thinking…"
+  }
+}

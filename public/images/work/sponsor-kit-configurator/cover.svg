@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<defs><radialGradient id="g" cx="0.85" cy="0.1" r="0.9"><stop offset="0" stop-color="#a1702c" stop-opacity="0.18"/><stop offset="1" stop-color="#a1702c" stop-opacity="0"/></radialGradient>
+<pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M80 0H0V80" fill="none" stroke="#a1702c" stroke-opacity="0.08"/></pattern></defs>
+<rect width="1600" height="1000" fill="#f4ecdd"/><rect width="1600" height="1000" fill="url(#grid)"/><rect width="1600" height="1000" fill="url(#g)"/>
+<text x="96" y="132" font-family="ui-monospace,Menlo,monospace" font-size="26" letter-spacing="6" fill="#a1702c" fill-opacity="0.75">KIT FUNDER · 2026</text>
+<text x="96" y="640" font-family="-apple-system,Inter,Helvetica,Arial,sans-serif" font-size="84" font-weight="700" letter-spacing="-4" fill="#121212">Sponsor kit configurator</text>
+<text x="96" y="730" font-family="-apple-system,Inter,Helvetica,Arial,sans-serif" font-size="32" fill="#121212" fill-opacity="0.7"><tspan x="96" dy="0">Demo for a beverage brand&#x27;s sponsored-kit</tspan><tspan x="96" dy="44">selection flow with a printable user guide.</tspan></text>
+<text x="1504" y="920" text-anchor="end" font-family="ui-monospace,Menlo,monospace" font-size="28" fill="#a1702c" fill-opacity="0.7">11 / 13</text>
+<circle cx="1480" cy="128" r="14" fill="#a1702c"/></svg>
