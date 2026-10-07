@@ -101,9 +101,7 @@
   },
   "agent": {
     "title": "Ask about my work",
-    "subtitle": "Call me and we'll talk, or type. It's my voice and my material, run by an AI; for anything it can't answer it will point you to the real me.",
-    "voice": "Voice",
-    "text": "Text",
+    "subtitle": "Type to the AI version of me. It knows my CV, my case studies and a fair bit about me; for anything else it will point you to the real me.",
     "placeholder": "Ask about GAIMS, Kelay, agents, or how I work…",
     "send": "Send",
     "disclosure": "AI assistant, not Haoyang. It may be wrong; it will not invent facts.",
@@ -113,18 +111,18 @@
     "suggest3": "What's Kelay AI?",
     "close": "Close",
     "thinking": "Thinking…",
-    "voiceIntro": "A live call in the browser, in my voice. Ask me anything; it needs your microphone.",
-    "startCall": "Start call",
     "connecting": "Connecting…",
-    "live": "Live. Just talk; interrupt me whenever.",
+    "live": "Live. Just talk, interrupt me whenever. Scroll on and I'll tuck into the corner.",
     "endCall": "End call",
     "mute": "Mute",
     "unmute": "Unmute",
-    "callEnded": "Thanks for the call. Call again, or type if you prefer.",
+    "callEnded": "Thanks for the call. Call again, type instead, or just keep browsing.",
     "callAgain": "Call again",
     "micDenied": "I need your microphone for this. Allow it in the browser and try again, or type instead.",
     "voiceOffline": "The voice line isn't connected right now. Type below, or email hello@haoyang-li.com.",
     "callFailed": "The call dropped. Try again, or type instead.",
-    "useText": "Type instead"
+    "useText": "Type instead",
+    "expand": "Expand the call",
+    "collapse": "Minimise the call"
   }
 }
