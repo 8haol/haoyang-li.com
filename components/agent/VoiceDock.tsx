@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useLocale } from "next-intl";
+import { useRichMotion } from "@/lib/richMotion";
 import { useVoiceCall } from "./useVoiceCall";
 
 export type VoiceLabels = {
@@ -20,6 +21,8 @@ export function VoiceDock({ labels, onUseText, onClose }: { labels: VoiceLabels;
   const locale = useLocale();
   const call = useVoiceCall(locale);
   const reduced = useReducedMotion();
+  // Phones and tablets: no layout morph and no full-screen blur; both stutter under touch scrolling on iOS.
+  const rich = useRichMotion();
   const [scrolled, setScrolled] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const { start } = call;
@@ -58,8 +61,10 @@ export function VoiceDock({ labels, onUseText, onClose }: { labels: VoiceLabels;
     : state === "mic" ? labels.mic
     : state === "offline" ? labels.offline
     : labels.failed;
-  // Unhurried: the card glides into the corner over about a second instead of snapping.
+  // Unhurried: the card glides into the corner over about a second instead of snapping. Phones swap the card
+  // for the pill with a short fade and slide instead (transform and opacity only).
   const transition = reduced ? { duration: 0 } : { type: "spring" as const, stiffness: 110, damping: 22, mass: 1 };
+  const swap = reduced ? { duration: 0 } : { duration: 0.28, ease: [0.16, 1, 0.3, 1] as const };
   const fade = reduced ? { duration: 0 } : { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const };
 
   const orb = (size: string, icon: string) => (
@@ -86,7 +91,7 @@ export function VoiceDock({ labels, onUseText, onClose }: { labels: VoiceLabels;
           <motion.div
             key="veil"
             aria-hidden
-            className="absolute inset-0 bg-bg/40 backdrop-blur-md"
+            className="absolute inset-0 bg-bg/80 rich:bg-bg/40 rich:backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -113,11 +118,14 @@ export function VoiceDock({ labels, onUseText, onClose }: { labels: VoiceLabels;
         )}
       </AnimatePresence>
       <motion.div
-        layout
-        transition={transition}
+        key={rich ? "card" : docked ? "pill" : "card"}
+        layout={rich}
+        initial={rich ? false : { opacity: 0, y: docked ? 16 : 8, scale: docked ? 0.9 : 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={rich ? transition : swap}
         role="dialog"
         aria-label={labels.live}
-        className={`pointer-events-auto relative border border-border bg-bg/95 shadow-[0_30px_80px_-30px_rgba(18,18,18,0.5)] backdrop-blur-md ${docked ? "flex items-center gap-3 rounded-full py-2 pl-2 pr-3" : "flex w-[min(92vw,480px)] flex-col items-center gap-8 rounded-[32px] px-8 pb-8 pt-9 text-center"}`}
+        className={`pointer-events-auto relative border border-border bg-bg shadow-[0_30px_80px_-30px_rgba(18,18,18,0.5)] rich:bg-bg/95 rich:backdrop-blur-md ${docked ? "flex items-center gap-3 rounded-full py-2 pl-2 pr-3" : "flex w-[min(92vw,480px)] flex-col items-center gap-8 rounded-[32px] px-8 pb-8 pt-9 text-center"}`}
       >
         {docked ? (
           <>
