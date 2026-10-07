@@ -10,7 +10,7 @@ import type { CardOutline } from "@/components/motion/StageGL";
 const StageGL = dynamic(() => import("@/components/motion/StageGL").then((m) => m.StageGL), { ssr: false });
 const StageCursor = dynamic(() => import("@/components/motion/StageCursor").then((m) => m.StageCursor), { ssr: false });
 
-export type StageSlide = { image: string; slug: string; title: string; meta: string };
+export type StageSlide = { image: string; video?: string; slug: string; title: string; meta: string; blurb: string };
 
 type Trigger = { start: number; end: number; scroll: (v: number) => void; getVelocity: () => number; kill: () => void };
 
@@ -263,7 +263,7 @@ export function WorkStage({
         <p className="hidden font-mono text-[11px] uppercase tracking-[0.22em] text-white/55 sm:block">{hint}</p>
       </div>
 
-      <StageGL images={slides.map((s) => s.image)} cardsRef={cardsRef} velocityRef={velocityRef} activeRef={activeRef} hoverRef={hoverRef} reducedMotion={reduced} outlineRef={outlineRef} />
+      <StageGL cards={slides} cardsRef={cardsRef} velocityRef={velocityRef} activeRef={activeRef} hoverRef={hoverRef} reducedMotion={reduced} outlineRef={outlineRef} />
       <StageCursor scopeRef={sectionRef} outlineRef={outlineRef} label={openLabel} reducedMotion={reduced} />
 
       <div className="absolute inset-x-0 top-0 md:top-1/2 md:-translate-y-1/2">
@@ -306,9 +306,11 @@ export function WorkStage({
       </div>
 
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between px-4 pb-8 sm:px-6 lg:px-10">
-        <div key={current?.slug ?? "none"} className="animate-[fadeUp_.5s_var(--ease-out-expo)_both]">
+        {/* The title is drawn on the card itself; the caption carries the one-line story instead. */}
+        <div key={current?.slug ?? "none"} className="max-w-[min(36rem,70vw)] animate-[fadeUp_.5s_var(--ease-out-expo)_both]">
           <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-white/55">{current?.meta}</p>
-          <h3 className="font-display mt-2 text-[clamp(1.6rem,3.4vw,2.8rem)] font-medium leading-none tracking-[-0.03em]">{current?.title}</h3>
+          <h3 className="sr-only">{current?.title}</h3>
+          <p className="mt-3 hidden text-pretty text-[15px] leading-[1.55] text-white/75 md:block">{current?.blurb}</p>
         </div>
         <p className="font-mono text-[12px] tabular-nums text-white/55">
           {pad(n ? index + 1 : 0)} / {pad(n)}

@@ -19,9 +19,9 @@ vi.mock("gsap/ScrollTrigger", () => ({
 import { WorkStage, type StageSlide } from "@/components/home/WorkStage";
 
 const slides: StageSlide[] = [
-  { image: "/a.svg", slug: "gaims", title: "GAIMS", meta: "My Club Group · 2025" },
-  { image: "/b.svg", slug: "kit-funder", title: "Kit Funder", meta: "Kit Funder · 2026" },
-  { image: "/c.svg", slug: "selah", title: "Selah", meta: "Open source · 2026" },
+  { image: "/a.jpg", video: "/a.mp4", slug: "gaims", title: "GAIMS", meta: "My Club Group · 2025", blurb: "Routes orders to factories." },
+  { image: "/b.jpg", slug: "kit-funder", title: "Kit Funder", meta: "Kit Funder · 2026", blurb: "Matches clubs with sponsors." },
+  { image: "/c.jpg", slug: "selah", title: "Selah", meta: "Open source · 2026", blurb: "Lyrics to slides." },
 ];
 const props = { eyebrow: "Selected work", hint: "Scroll or drag · click to open", openLabel: "Open" };
 
@@ -44,8 +44,14 @@ describe("WorkStage", () => {
   it("shows the first title and a zero-padded counter", () => {
     render(<WorkStage slides={slides} locale="en" {...props} />);
     expect(screen.getByRole("heading", { level: 3 })).toHaveTextContent("GAIMS");
+    expect(screen.getByText("Routes orders to factories.")).toBeInTheDocument();
     expect(screen.getByText("01 / 03")).toBeInTheDocument();
     expect(screen.getByText(/Selected work/)).toBeInTheDocument();
+  });
+  it("hands the GL layer each card's poster, loop and title", async () => {
+    render(<WorkStage slides={slides} locale="en" {...props} />);
+    await screen.findByTestId("gl");
+    expect(lastGlProps.cards).toEqual(slides);
   });
   it("renders with no slides", () => {
     render(<WorkStage slides={[]} locale="en" {...props} />);
