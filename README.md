@@ -27,12 +27,10 @@ Dev-only switches:
 - `?hero=silk` or `?hero=wash` previews either cover. The default is `HERO_BACKDROP` in [`lib/hero.ts`](lib/hero.ts).
 - `?tune` opens a slider panel for the watercolour shader, which copies out the JSX props.
 
-The chat endpoint (`/api/chat`) answers only when `ANTHROPIC_API_KEY` is set. Without it, the endpoint returns 503 and the rest of the site works normally.
+"Talk to me" runs on [Retell](https://www.retellai.com/): one Retell LLM (the prompt) behind two agents, a voice agent for the web call and a chat agent for the typed panel. The browser talks only to `/api/voice` and `/api/chat`, which hold the key and pin every session to our agents, so nothing secret reaches the client. Each session passes `{{channel}}` (`voice` or `chat`) and `{{locale}}` so the one prompt can switch between spoken and written style. It needs:
 
-The voice line ("Talk to me") is a [Retell](https://www.retellai.com/) web call. The browser SDK posts to `/api/voice`, which holds the key and pins the call to the agent, so nothing secret reaches the client. It needs:
-
-- `RETELL_API_KEY`, `RETELL_AGENT_ID` at runtime (503 and a "type instead" fallback without them).
-- `npm run retell:sync` to create or update the agent from the site's own content: the prompt in [`lib/agent/voicePrompt.ts`](lib/agent/voicePrompt.ts) is built from `content/resume.yaml`, the case studies and [`content/persona.yaml`](content/persona.yaml) (the personal material, in first person). The script reads `RETELL_LLM_ID` / `RETELL_AGENT_ID` to update instead of create and `RETELL_VOICE_ID` to pick the voice (a cloned one, for instance). `-- --dry` prints the prompt without touching Retell.
+- `RETELL_API_KEY`, `RETELL_AGENT_ID` and `RETELL_CHAT_AGENT_ID` at runtime. Without them the matching endpoint returns 503 and the rest of the site works normally.
+- `npm run retell:sync` to create or update the LLM and both agents from the site's own content: the prompt in [`lib/agent/prompt.ts`](lib/agent/prompt.ts) is built from `content/resume.yaml`, the case studies and [`content/persona.yaml`](content/persona.yaml) (the personal material, in first person). The script reads `RETELL_LLM_ID` / `RETELL_AGENT_ID` / `RETELL_CHAT_AGENT_ID` to update instead of create and `RETELL_VOICE_ID` to pick the voice (a cloned one, for instance). `-- --dry` prints the prompt without touching Retell. Change settings in code and re-run the sync rather than editing the Retell dashboard, which the next sync overwrites.
 
 ## Make it yours
 
