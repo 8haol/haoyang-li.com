@@ -23,9 +23,9 @@
   padding-inline: clamp(1rem, 4vw, 4.5rem);
 }
 
-/* Screens that get the pinned WebGL work stage (wide, mouse or trackpad); everything else gets the swipe strip.
-   Keep in sync with FULL_STAGE_QUERY in components/home/WorkStage.tsx. */
-@custom-variant stage (@media (min-width: 768px) and (hover: hover) and (pointer: fine));
+/* Screens that get the heavy effects (WebGL work stage, backdrop blurs): wide, mouse or trackpad. Phones and
+   tablets get lighter versions. Keep in sync with RICH_MOTION_QUERY in lib/richMotion.ts. */
+@custom-variant rich (@media (min-width: 768px) and (hover: hover) and (pointer: fine));
 
 /* Inner scroll areas (the project viewer, the chat) scroll without a native bar, like the page itself. */
 @utility no-scrollbar {
