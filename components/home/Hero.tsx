@@ -22,8 +22,8 @@ export async function Hero() {
       <div className="shell flex flex-1 flex-col pb-[calc(2rem+100lvh-100svh)] pt-8 sm:pt-10 lg:pb-10">
         {/* The name splits across two rows: HAOYANG on its own, then LI with the pitch and the roles on the same
             line, everything sitting on LI's baseline. One h1 for assistive tech; the visible halves are
-            presentational. On phones it stacks name, pitch, roles. */}
-        <div className="flex flex-1 flex-col justify-center py-10">
+            presentational. On phones it stacks name, pitch, roles, sitting low so the photo has the top. */}
+        <div className="flex flex-1 flex-col justify-end py-10 lg:justify-center">
           <h1 className="sr-only">Haoyang Li</h1>
           <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr_auto]">
             <HeroReveal className="lg:col-span-3">
@@ -51,8 +51,9 @@ export async function Hero() {
           </div>
         </div>
 
-        {/* Clocks bottom-left, call to action centred on the page, scroll cue bottom-right. */}
-        <div className="grid grid-cols-1 items-center justify-items-center gap-5 border-t border-fg/10 pt-6 sm:grid-cols-[1fr_auto_1fr]">
+        {/* Clocks bottom-left, call to action centred on the page, scroll cue bottom-right. Phones keep the type's
+            left edge: call to action, then the clocks. */}
+        <div className="grid grid-cols-1 items-center justify-items-start gap-5 border-t border-fg/10 pt-6 sm:grid-cols-[1fr_auto_1fr] sm:justify-items-center">
           <div className="order-2 sm:order-none sm:justify-self-start">
             <Clocks />
           </div>
