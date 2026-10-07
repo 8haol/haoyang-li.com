@@ -28,7 +28,7 @@ export async function POST(req: Request) {
 
   const incoming = await req.json().catch(() => ({}));
   const locale = req.headers.get("x-locale") === "zh" ? "zh" : "en";
-  const body = webCallBody(incoming, cfg.agentId, { source: "haoyang-li.com", locale });
+  const body = webCallBody(incoming, cfg.agentId, locale, { source: "haoyang-li.com", locale });
 
   const upstream = await fetch(`${RETELL_API}/v3/create-web-call`, {
     method: "POST",
