@@ -1,8 +1,8 @@
 import { defineRouting } from "next-intl/routing";
-import { siteConfig } from "@/lib/site";
+import { liveLocales, siteConfig } from "@/lib/site";
 
 export const routing = defineRouting({
-  locales: siteConfig.locales,
+  locales: liveLocales,
   defaultLocale: siteConfig.defaultLocale,
   localePrefix: "as-needed",
 });

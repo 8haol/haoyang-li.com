@@ -6,6 +6,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // One page plus the project detail views the work gallery opens.
   const paths = ["", ...allProjectSlugs().map((s) => `/work/${s}`)];
   const now = new Date();
+  if (!siteConfig.showChinese) return paths.map((p) => ({ url: `${siteConfig.url}${p}`, lastModified: now }));
   return paths.flatMap((p) => [
     {
       url: `${siteConfig.url}${p}`,

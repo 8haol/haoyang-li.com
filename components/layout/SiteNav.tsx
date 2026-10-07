@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from "re
 import { Link, usePathname } from "@/i18n/navigation";
 import { scrollToId, scrollToY } from "@/lib/scroll";
 import { railState } from "@/lib/sectionRail";
+import { siteConfig } from "@/lib/site";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 
 /** `short` marks the few sections that also fit in the phone bar. */
@@ -130,7 +131,7 @@ export function SiteNav({ sections, labels }: { sections: NavSection[]; labels: 
                   </SectionLink>
                 ))}
             </nav>
-            <LocaleSwitcher />
+            {siteConfig.showChinese && <LocaleSwitcher />}
           </div>
         </div>
       </header>

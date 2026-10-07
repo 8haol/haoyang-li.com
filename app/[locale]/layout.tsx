@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: { default: siteConfig.name, template: `%s · ${siteConfig.name}` },
   description: "AI systems architect and full-stack engineer delivering enterprise AI from discovery to production.",
-  alternates: { canonical: "/", languages: { en: "/", zh: "/zh" } },
+  alternates: { canonical: "/", languages: siteConfig.showChinese ? { en: "/", zh: "/zh" } : undefined },
   openGraph: { type: "website", siteName: siteConfig.name, locale: "en_GB" },
   twitter: { card: "summary_large_image" },
 };
