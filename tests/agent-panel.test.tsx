@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
 
 vi.mock("next-intl", () => ({ useLocale: () => "en" }));
 
@@ -46,5 +46,27 @@ describe("AgentPanel", () => {
     expect(root.style.getPropertyValue("--agent-panel-w")).toBe("");
     render(<AgentPanel onClose={() => {}} labels={labels} />);
     expect(root.style.getPropertyValue("--agent-panel-w")).toBe("384px");
+  });
+
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("sends one message at a time and keeps the chat id Retell gave it", async () => {
+    const fetchMock = vi.fn(async (_url: string, init: RequestInit) => {
+      const { chat_id } = JSON.parse(init.body as string);
+      return new Response(JSON.stringify({ chat_id: "chat_1", reply: chat_id ? "Second." : "First." }), { headers: { "content-type": "application/json" } });
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    render(<AgentPanel onClose={() => {}} labels={labels} />);
+    fireEvent.click(screen.getByRole("button", { name: "One" }));
+    expect(await screen.findByText("First.")).toBeInTheDocument();
+    fireEvent.change(screen.getByPlaceholderText("Type"), { target: { value: "again" } });
+    fireEvent.click(screen.getByRole("button", { name: "Send" }));
+    expect(await screen.findByText("Second.")).toBeInTheDocument();
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+    const bodies = fetchMock.mock.calls.map(([, init]) => JSON.parse(init.body as string));
+    expect(bodies).toEqual([
+      { chat_id: null, message: "One", locale: "en" },
+      { chat_id: "chat_1", message: "again", locale: "en" },
+    ]);
   });
 });
