@@ -32,6 +32,8 @@ Dev-only switches:
 - `RETELL_API_KEY`, `RETELL_AGENT_ID` and `RETELL_CHAT_AGENT_ID` at runtime. Without them the matching endpoint returns 503 and the rest of the site works normally.
 - `npm run retell:sync` to create or update both agents and their LLMs from the site's own content: the prompt in [`lib/agent/prompt.ts`](lib/agent/prompt.ts) is built from `content/resume.yaml`, the case studies and [`content/persona.yaml`](content/persona.yaml) (the personal material, in first person). The script reads `RETELL_AGENT_ID` + `RETELL_LLM_ID` and `RETELL_CHAT_AGENT_ID` + `RETELL_CHAT_LLM_ID` to update instead of create and `RETELL_VOICE_ID` to pick the voice (a cloned one, for instance). `-- --dry` prints the prompt without touching Retell. Change settings in code and re-run the sync rather than editing the Retell dashboard, which the next sync overwrites.
 
+The contact form in the footer posts to `/api/contact`, which emails the message through [Resend](https://resend.com) with the visitor as Reply-To. It needs `RESEND_API_KEY` and `CONTACT_TO_EMAIL` (the inbox that receives the messages); without them the endpoint returns 503 and the form points visitors to the email address instead. `CONTACT_FROM_EMAIL` is optional: until a sending domain is verified in Resend, mail goes out from `onboarding@resend.dev`, which Resend only delivers to the account's own inbox.
+
 ## Make it yours
 
 The code is MIT; the content is not (see [LICENSE](LICENSE)). To reuse the site:
