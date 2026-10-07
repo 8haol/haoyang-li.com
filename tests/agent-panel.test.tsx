@@ -2,6 +2,8 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
 
 vi.mock("next-intl", () => ({ useLocale: () => "en" }));
+const lenis = { scrollTo: vi.fn(), stop: vi.fn(), start: vi.fn() };
+vi.mock("@/lib/lenis", () => ({ getLenis: () => lenis }));
 
 import { AgentPanel } from "@/components/agent/AgentPanel";
 
@@ -18,6 +20,25 @@ describe("AgentPanel", () => {
     expect(screen.getByRole("button", { name: "One" })).toBeInTheDocument();
     unmount();
     expect(document.documentElement.dataset.agentPanel).toBeUndefined();
+  });
+
+  it("covers the screen on phones and holds the page still until it closes", () => {
+    const original = window.matchMedia;
+    window.matchMedia = ((q: string) => ({ matches: q === "(width < 64rem)", media: q, addEventListener: () => {}, removeEventListener: () => {} })) as unknown as typeof window.matchMedia;
+    lenis.stop.mockClear();
+    lenis.start.mockClear();
+    const { unmount } = render(<AgentPanel onClose={() => {}} labels={labels} />);
+    expect(lenis.stop).toHaveBeenCalledOnce();
+    unmount();
+    expect(lenis.start).toHaveBeenCalledOnce();
+    window.matchMedia = original;
+  });
+
+  it("leaves page scrolling alone in split view", () => {
+    lenis.stop.mockClear();
+    const { unmount } = render(<AgentPanel onClose={() => {}} labels={labels} />);
+    expect(lenis.stop).not.toHaveBeenCalled();
+    unmount();
   });
 
   const frame = () => act(() => new Promise<void>((r) => requestAnimationFrame(() => r())));
