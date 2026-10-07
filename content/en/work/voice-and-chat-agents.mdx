@@ -1,17 +1,17 @@
 ---
 title: "Voice and chat agents wired into the business"
 slug: voice-and-chat-agents
-summary: Chat agents serving 40K+ messages to 15K+ users, voice agents that capture leads into the CRM with summaries and intent routing, and the 50+ integration workflows that connect them to orders, bookings and operations.
+summary: Chat agents in six languages serving 40K+ messages to 15K+ users, voice agents that capture leads into the CRM with summaries and intent routing, and the 50+ integration workflows that connect them to orders, bookings and operations.
 role: Designed and built the agents and the integration layer
 period: May 2025 – present
 org: My Club Group · Zenith AI
-stack: [Voiceflow, Retell, Zoho CRM, n8n, Node.js, Stripe, Resend]
+stack: [Voiceflow, Retell, Zoho CRM, n8n, Node.js, Resend]
 outcome:
   - 40K+ chat messages, 15K+ users served in production
   - Voice calls land in the CRM with transcript, summary and intent-based routing to the right salesperson
   - 50+ workflows covering order status, sales-call booking and cross-system processes
 featured: true
-cover: /images/work/voice-and-chat-agents/cover.svg
+cover: /images/work/voice-and-chat-agents/cover.jpg
 order: 3
 ---
 
@@ -27,14 +27,14 @@ A sportswear manufacturer with thousands of club customers gets the same questio
 
 ## My role
 
-I designed the conversation flows, built the agents, and built and operated the integration layer between them and the business systems. I also owned the order-form front end whose backend is entirely this integration layer.
+I designed the conversation flows, built the agents, and built and operated the integration layer between them and the business systems. I also wired the kit order form and the client portal into this layer.
 
 ## Architecture
 
-- **Chat**: Voiceflow agents on the public sites with a knowledge base, price-list grounding and hand-off to humans. 40K+ messages, 15K+ users.
+- **Chat**: Voiceflow agents on the public sites in six languages (English, EU English, Spanish, French, German, Italian): a global intent router, product agents grounded in a knowledge base and price lists, and separate order-support agents. 40K+ messages, 15K+ users.
 - **Voice**: Retell agents answering inbound sales lines. On call end, a webhook delivers transcript and summary; a workflow classifies intent, creates or updates the CRM lead, and routes it to the right salesperson with the summary attached.
 - **Integration layer**: 50+ n8n workflows acting as the API surface for the agents and the web apps. Order-status lookups, sales-call booking, estimate generation, approval notifications and CRM synchronisation are all workflows with webhook triggers.
-- **Webhook-only backend**: the multi-step kit order form is a React app whose every server interaction is a signed webhook into this layer. There is no bespoke API server to maintain.
+- **Webhook-only backend**: the kit order form and the client portal talk to this layer through webhooks. There is no bespoke API server to maintain.
 
 ## Three decisions
 
@@ -46,14 +46,14 @@ I designed the conversation flows, built the agents, and built and operated the 
 
 ## Outcome
 
-- 40K+ chat messages and 15K+ users served without a support hire.
+- 40K+ chat messages and 15K+ users served.
 - Every inbound sales call becomes a CRM record with transcript, summary and an owner within seconds of hang-up.
 - 50+ production workflows carrying order status, bookings and approvals across systems.
 
 ## What I'd do differently
 
-Add evaluation earlier. I added a weekly sample review of agent transcripts after launch; starting with a scored sample from week one would have caught two bad flows sooner. I would also centralise webhook signature verification and retries in one library instead of per-workflow (that library is now an open-source project).
+Add evaluation earlier. I added a weekly sample review of agent transcripts after launch; starting with a scored sample from week one would have caught two bad flows sooner. I would also wire a real human hand-off from day one: a later audit found the bot telling customers their details had been passed on while the ticket flow behind it was disconnected. And I would centralise webhook verification and retries in one shared library instead of per workflow.
 
 ## Stack
 
-Voiceflow, Retell, Zoho CRM, n8n, Node.js, Stripe, Resend, React.
+Voiceflow, Retell, Zoho CRM, n8n, Node.js, Resend, React.

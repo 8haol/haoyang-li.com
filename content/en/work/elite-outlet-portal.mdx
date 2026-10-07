@@ -1,0 +1,58 @@
+---
+title: "Elite Outlet: a clearance shop that never oversells"
+slug: elite-outlet-portal
+summary: A storefront for end-of-line teamwear, up to 60% off, with a basket, Stripe checkout and stock that follows the warehouse system, so a sold-out size disappears before anyone can pay for it.
+role: Built it end to end, working with an AI app builder
+period: Mar – Apr 2026
+org: My Club Group
+stack: [React, Vite, Base44, Stripe, Zoho, n8n, Resend]
+outcome:
+  - Live at outlet.myclubgroup.com
+  - Ten products across 110 size and colour variants, sold through Stripe Checkout
+  - Stock re-checked on the server at checkout and decremented when payment lands
+featured: false
+order: 7
+---
+
+## Context
+
+End-of-line teamwear was sitting in the warehouse. Selling it through the main store would have undercut full-price ranges, and selling it by email meant manual invoices and stock mistakes. The company wanted a separate outlet that could run without anyone watching it.
+
+## Constraints
+
+- **No overselling.** Stock lives in the inventory system; the shop must never take money for a size that is gone.
+- **Prices cannot be trusted from the browser.** Totals and coupons had to be recalculated on the server.
+- **Finance needs a record.** Every paid order had to reach the finance team without anyone copying it across.
+
+## My role
+
+I designed and built the shop, the checkout functions and the stock sync, using an AI app builder for routine UI and writing the payment and inventory logic myself.
+
+## Architecture
+
+- **Storefront**: React and Vite on Base44; product data with colour and size variants, a basket, and a hero film.
+- **Checkout**: a server function creates the Stripe Checkout session after re-validating every line's price and stock and applying coupons.
+- **Stock**: the warehouse system pushes levels through an n8n webhook; the shop shows the lower of that and its own count, which is decremented when Stripe confirms payment.
+- **Email**: order confirmation to the customer and an order summary to finance, both through Resend.
+
+## Three decisions
+
+**1. Two counts, take the minimum.** The warehouse feed can lag. Keeping a local count that drops on payment, and showing the lower of the two, closed the window where two people could buy the last item.
+
+**2. Validate everything again on the server.** The browser only says what the customer wants; the checkout function decides what it costs and whether it is available.
+
+**3. Stripe Checkout, not a custom payment form.** Hosted checkout meant no card data near the app, and wallets and receipts for free.
+
+## Outcome
+
+- Live at outlet.myclubgroup.com, selling end-of-line stock without manual invoicing.
+- Stock is re-checked at checkout and decremented on payment, so a sold-out size cannot be bought.
+- Finance receives every paid order automatically.
+
+## What I'd do differently
+
+Move the product catalogue out of code into the inventory system from the start. It began as a static list because it was quick, and every product change since has needed a deploy.
+
+## Stack
+
+React, Vite, Base44 with Deno functions, Stripe Checkout, Zoho inventory via n8n, Resend.
