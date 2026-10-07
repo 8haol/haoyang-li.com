@@ -44,21 +44,28 @@ export function agentReply(messages: unknown): string {
     .join("\n\n");
 }
 
-/** Retell LLM (the "brain") settings, shared by the voice and chat agents. Synced by `npm run retell:sync`. */
-export function agentLlmConfig() {
-  return {
+/**
+ * Retell LLM (the "brain") settings. Retell versions an agent and its LLM together, so each agent has its own LLM,
+ * but both are written from here with the same prompt and model. Synced by `npm run retell:sync`.
+ */
+export function agentLlmConfig(channel: Channel) {
+  const shared = {
     model: "gpt-5.6-terra",
     model_high_priority: false,
     model_temperature: 0.5,
+    general_prompt: buildAgentPrompt(),
+    default_dynamic_variables: sessionVariables(channel, "en"),
+  };
+  if (channel === "chat") return { ...shared, start_speaker: "user", general_tools: [] };
+  return {
+    ...shared,
     start_speaker: "agent",
     begin_message: VOICE_BEGIN_MESSAGE,
-    general_prompt: buildAgentPrompt(),
-    default_dynamic_variables: sessionVariables("voice", "en"),
     general_tools: [
       {
         type: "end_call",
         name: "end_call",
-        description: "End a voice call once the visitor has said goodbye or the conversation has clearly wrapped up. Never use in chat.",
+        description: "End the call once the visitor has said goodbye or the conversation has clearly wrapped up.",
       },
     ],
   };
@@ -71,14 +78,14 @@ const ANALYSIS_FIELDS = [
   { type: "string", name: "follow_up", description: "Anything Haoyang should follow up on by email, or 'none'.", examples: ["send CV to the visitor", "none"] },
 ];
 
-/** Pins an agent to one LLM version; without a version Retell may attach an old one. */
-const responseEngine = (llmId: string, llmVersion?: number) => ({ type: "retell-llm", llm_id: llmId, ...(llmVersion === undefined ? {} : { version: llmVersion }) });
+/** Retell requires an agent version to run the LLM version with the same number. */
+const responseEngine = (llmId: string, version: number) => ({ type: "retell-llm", llm_id: llmId, version });
 
 /** Retell voice agent (voice, turn-taking, limits) settings. Synced by `npm run retell:sync`. */
-export function voiceAgentConfig(llmId: string, llmVersion?: number, voiceId = process.env.RETELL_VOICE_ID ?? "11labs-Adrian") {
+export function voiceAgentConfig(llmId: string, version: number, voiceId = process.env.RETELL_VOICE_ID ?? "11labs-Adrian") {
   return {
     agent_name: "Haoyang Li — haoyang-li.com",
-    response_engine: responseEngine(llmId, llmVersion),
+    response_engine: responseEngine(llmId, version),
     voice_id: voiceId,
     voice_temperature: 1,
     voice_speed: 1,
@@ -96,11 +103,11 @@ export function voiceAgentConfig(llmId: string, llmVersion?: number, voiceId = p
   };
 }
 
-/** Retell chat agent settings: the same LLM as the voice agent, typed instead of spoken. Synced by `npm run retell:sync`. */
-export function chatAgentConfig(llmId: string, llmVersion?: number) {
+/** Retell chat agent settings: the same prompt as the voice agent, typed instead of spoken. Synced by `npm run retell:sync`. */
+export function chatAgentConfig(llmId: string, version: number) {
   return {
     agent_name: "Haoyang Li — haoyang-li.com (chat)",
-    response_engine: responseEngine(llmId, llmVersion),
+    response_engine: responseEngine(llmId, version),
     language: ["en-GB", "zh-CN"],
     end_chat_after_silence_ms: 30 * 60 * 1000,
     post_chat_analysis_data: ANALYSIS_FIELDS,

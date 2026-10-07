@@ -51,16 +51,27 @@ describe("persona", () => {
 });
 
 describe("retell config", () => {
-  it("wires the LLM to the prompt with an end_call tool and voice defaults", () => {
-    const llm = agentLlmConfig();
-    expect(llm.general_prompt).toBe(buildAgentPrompt());
-    expect(llm.begin_message).toBe(VOICE_BEGIN_MESSAGE);
-    expect(llm.general_tools.map((t) => t.type)).toContain("end_call");
-    expect(llm.default_dynamic_variables).toEqual({ channel: "voice", locale: "en" });
+  it("writes both LLMs from the same prompt and model", () => {
+    const voice = agentLlmConfig("voice");
+    const chat = agentLlmConfig("chat");
+    expect(voice.general_prompt).toBe(buildAgentPrompt());
+    expect(chat.general_prompt).toBe(voice.general_prompt);
+    expect(chat.model).toBe(voice.model);
+    expect(voice.default_dynamic_variables).toEqual({ channel: "voice", locale: "en" });
+    expect(chat.default_dynamic_variables).toEqual({ channel: "chat", locale: "en" });
   });
-  it("points the chat agent at the same LLM version, in English and Chinese", () => {
-    const chat = chatAgentConfig("llm_x", 6);
-    expect(chat.response_engine).toEqual(voiceAgentConfig("llm_x", 6).response_engine);
+  it("greets and can hang up on a call, waits for the visitor in chat", () => {
+    const voice = agentLlmConfig("voice");
+    const chat = agentLlmConfig("chat");
+    expect(voice).toMatchObject({ start_speaker: "agent", begin_message: VOICE_BEGIN_MESSAGE });
+    expect(voice.general_tools.map((t) => t.type)).toContain("end_call");
+    expect(chat.start_speaker).toBe("user");
+    expect(chat).not.toHaveProperty("begin_message");
+    expect(chat.general_tools).toEqual([]);
+  });
+  it("runs the chat agent on its LLM's matching version, in English and Chinese", () => {
+    const chat = chatAgentConfig("llm_chat", 3);
+    expect(chat.response_engine).toEqual({ type: "retell-llm", llm_id: "llm_chat", version: 3 });
     expect(chat.language).toEqual(["en-GB", "zh-CN"]);
   });
   it("reads a separate agent id per channel", () => {
