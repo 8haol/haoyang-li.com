@@ -26,7 +26,7 @@ export function TalkButton({ label, sub }: { label: string; sub: string }) {
             <path d="M6 21c1.8-2.4 3.8-3.6 6-3.6s4.2 1.2 6 3.6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
           </svg>
         </span>
-        <span className="text-center">
+        <span className="text-left">
           {/* Label rolls up to a fresh copy on hover. */}
           <span className="font-display relative block overflow-hidden text-[17px] font-medium leading-[1.4] tracking-tight">
             <span className="block transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:-translate-y-full">{label}</span>
