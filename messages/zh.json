@@ -20,7 +20,7 @@
     "period": "时间",
     "stack": "技术栈",
     "outcome": "成果",
-    "visit": "访问网站 ↗",
+    "visit": "访问网站",
     "readCase": "查看案例",
     "prev": "上一个项目",
     "next": "下一个项目",
@@ -44,7 +44,9 @@
     "education": "教育",
     "skills": "技能",
     "languages": "语言",
-    "download": "下载简历（PDF）"
+    "download": "下载简历（PDF）",
+    "more": "展开其余 {count} 条",
+    "less": "收起"
   },
   "footer": {
     "builtWith": "基于 Next.js 构建，部署在 Vercel。",

@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { ArrowUpRight } from "lucide-react";
 
 export type ViewerProject = {
   slug: string;
@@ -151,6 +152,7 @@ export function ProjectViewer({ mode, current, prev, next, basePath, labels, chi
                 }`}
               >
                 {labels.visit}
+                <ArrowUpRight aria-hidden strokeWidth={2} className="ml-1 inline-block size-[1.05em] align-[-0.15em]" />
               </a>
             )}
           </div>

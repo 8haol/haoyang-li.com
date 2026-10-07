@@ -20,7 +20,7 @@
     "period": "Period",
     "stack": "Stack",
     "outcome": "Outcome",
-    "visit": "Visit site ↗",
+    "visit": "Visit site",
     "readCase": "Read the case study",
     "prev": "Previous project",
     "next": "Next project",
@@ -44,7 +44,9 @@
     "education": "Education",
     "skills": "Skills",
     "languages": "Languages",
-    "download": "Download CV (PDF)"
+    "download": "Download CV (PDF)",
+    "more": "{count} more",
+    "less": "Show less"
   },
   "footer": {
     "builtWith": "Built with Next.js, deployed on Vercel.",
