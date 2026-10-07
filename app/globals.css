@@ -177,6 +177,16 @@ html[data-hero="silk"]:not([data-header-past-hero]):has(.hero-scope) header.site
 html[data-hero="silk"]:not([data-header-past-hero]):has(.hero-scope) {
   background: #6a6a6e;
 }
+/* Phones and tablets keep the top bar over every section, including the black work stage: give it the paper
+   background, except while it floats over the home hero's backdrop. */
+@media (width < 64rem) {
+  header.site-header {
+    background: var(--bg);
+  }
+  html:not([data-header-past-hero]):has(.hero-scope) header.site-header {
+    background: transparent;
+  }
+}
 /* Readability comes from a soft cool halo hugging the type, not from shading the photo. */
 html[data-hero="silk"] .hero-scope .font-display {
   text-shadow: 0 0 28px rgba(24, 34, 52, 0.22), 0 1px 3px rgba(24, 34, 52, 0.16);
