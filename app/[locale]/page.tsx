@@ -21,8 +21,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   }));
   const open = loadYaml("open-source.yaml", OpenSource);
 
+  // main paints its own paper: the page background turns slate while the silk hero is on screen (globals.css).
   return (
-    <main id="content">
+    <main id="content" className="bg-bg">
       <Hero />
       <div id="about">
         <About />
