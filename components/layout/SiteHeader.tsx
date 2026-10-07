@@ -3,9 +3,9 @@ import { SiteNav, type NavSection } from "./SiteNav";
 
 /** The home page's sections, in page order; ids match the anchors in app/[locale]/page.tsx and the footer. */
 const sections = [
-  { id: "about", key: "about", short: true },
+  { id: "about", key: "about" },
   { id: "selected-work", key: "work", short: true },
-  { id: "now", key: "now" },
+  { id: "resume", key: "resume", short: true },
   { id: "open-source", key: "openSource" },
   { id: "contact", key: "contact", short: true },
 ] as const;
