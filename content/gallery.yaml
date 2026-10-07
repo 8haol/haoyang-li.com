@@ -1,128 +1,109 @@
+# Selected work, in stage order. Covers are 16:10 (1600×1000 JPEG); a muted 16:10 loop at
+# public/images/work/<slug>/loop.mp4 is picked up automatically (cut one with scripts/cut-cover-loop.sh).
+# `zh` overrides title, blurb or org for the Chinese site; anything left out stays English.
 - title: GAIMS
-  blurb: Auditable LLM decision layer for supplier allocation; 3,000+ purchase orders routed in production.
+  blurb: Auditable LLM decision layer that routes purchase orders to partner factories, with a rationale a person can approve or overrule; 3,000+ orders in production.
   org: My Club Group
   year: 2025–2026
-  tags:
-  - LLM
-  - Decision systems
-  - Hono
-  - Postgres
+  tags: [LLM, Decision systems, Hono, Postgres]
   caseStudy: gaims
-  image: /images/work/gaims/cover.svg
+  image: /images/work/gaims/cover.jpg
+  zh:
+    blurb: 可审计的 LLM 决策层：把采购订单分配给合作工厂，并给出人可以批准或推翻的理由；已在生产环境处理 3,000 多张订单。
 - title: Kelay AI
-  blurb: Multi-tenant voice AI receptionist for UK small businesses; books, reschedules and takes deposits in English and Mandarin.
+  blurb: Multi-tenant AI phone receptionist for UK small businesses; answers calls and books, reschedules and cancels in English and Mandarin. Pilot-ready.
   org: Kelay AI (co-founder)
   year: '2026'
-  tags:
-  - Retell
-  - Next.js
-  - Stripe
-  - Multi-tenant
+  tags: [Retell, Next.js, Postgres, Multi-tenant]
   caseStudy: kelay-ai
-  image: /images/work/kelay-ai/cover.svg
-- title: Voice & chat agents
-  blurb: Chat agents with 40K+ messages and voice agents wired into CRM lead capture, summaries and intent-based routing.
-  org: My Club Group
-  year: 2025–2026
-  tags:
-  - Voiceflow
-  - Retell
-  - Zoho CRM
-  - n8n
-  caseStudy: voice-and-chat-agents
-  image: /images/work/voice-and-chat-agents/cover.svg
+  image: /images/work/kelay-ai/cover.jpg
+  zh:
+    org: Kelay AI（联合创始人）
+    blurb: 面向英国小商户的多租户 AI 电话前台：接电话，用中英文帮客人预约、改期和取消。已具备试点条件。
 - title: Kit Funder
-  blurb: AI matching between grassroots sports clubs and sponsors across 50+ compatibility factors; 100+ clubs registered pre-launch.
+  blurb: Not-for-profit platform matching UK grassroots clubs with local sponsors; nine-dimension scoring (eight rules plus an LLM judgement), mutual opt-in and in-app messaging.
   org: Kit Funder (not-for-profit)
   year: 2025–2026
-  tags:
-  - AI matching
-  - Messaging
-  - Webflow
+  tags: [AI matching, React, Base44, OpenAI]
   href: https://kitfunder.ai/
-  image: /images/work/kit-funder/cover.svg
+  image: /images/work/kit-funder/cover.jpg
+  zh:
+    org: Kit Funder（非营利）
+    blurb: 非营利平台，为英国草根球队匹配本地赞助商：九个维度打分（八项规则加一项 LLM 判断），双方都同意才能联系，之后在站内直接沟通。
+- title: Voice & chat agents
+  blurb: Chat agents in six languages that answer from live order data (40K+ messages), and voice agents that log every call to the CRM with a summary and intent routing.
+  org: My Club Group
+  year: 2025–2026
+  tags: [Voiceflow, Retell, Zoho CRM, n8n]
+  caseStudy: voice-and-chat-agents
+  image: /images/work/voice-and-chat-agents/cover.jpg
+  zh:
+    title: 语音与聊天 Agent
+    blurb: 六种语言的聊天 agent，回答基于实时订单数据（累计 4 万多条消息）；语音 agent 把每通电话连同摘要写进 CRM，并按意图分给对应的销售。
 - title: Zenith AI website
   blurb: Motion-led marketing site for an AI-native agency; GSAP, Lenis and Three.js on Next.js.
   org: Zenith AI
   year: '2026'
-  tags:
-  - Next.js
-  - GSAP
-  - Three.js
+  tags: [Next.js, GSAP, Three.js]
   href: https://zenithai.one/
-  image: /images/work/zenith-ai-website/cover.svg
+  image: /images/work/zenith-ai-website/cover.jpg
+  zh:
+    title: Zenith AI 官网
+    blurb: 一家 AI 原生代理公司的官网，以动效为核心；Next.js 搭配 GSAP、Lenis 和 Three.js。
 - title: Client Portal
-  blurb: Order tracking, estimates, artwork approval and one-time-code login for sports clubs.
+  blurb: Order portal for sports clubs; one-time-code login, order tracking through CRM stages, the kit order form, artwork upload and estimate approval, all on n8n webhooks.
   org: My Club Group
   year: '2026'
-  tags:
-  - React 19
-  - TanStack Query
-  - Stripe
-  - Sentry
+  tags: [React 19, TanStack Query, n8n, Zoho CRM]
   href: https://myclubgroup.com/client-portal/
-  image: /images/work/client-portal/cover.svg
+  image: /images/work/client-portal/cover.jpg
+  zh:
+    title: 客户门户
+    blurb: 面向球队的订单门户：验证码登录、按 CRM 阶段追踪订单、球衣下单表单、设计稿上传和报价确认，后端全部走 n8n webhook。
+- title: Elite Outlet
+  slug: elite-outlet-portal
+  blurb: Clearance shop for a teamwear range; basket, Stripe checkout, and stock synced from Zoho through n8n.
+  org: My Club Group
+  year: '2026'
+  tags: [Base44, Stripe, Zoho, n8n]
+  href: https://outlet.myclubgroup.com/
+  image: /images/work/elite-outlet-portal/cover.jpg
+  zh:
+    blurb: 团队运动服清仓商城：购物车、Stripe 结账，库存经 n8n 从 Zoho 同步。
 - title: Product Hub
-  blurb: Internal product-lifecycle hub with Microsoft 365 document sync, department permissions and daily digests.
+  blurb: Internal product-lifecycle hub, from idea to catalogue; SharePoint document sync, department permissions, sample sign-offs and a weekday digest.
   org: My Club Group
   year: '2026'
-  tags:
-  - Microsoft Graph
-  - Permissions
-  - n8n
-  image: /images/work/product-hub/cover.svg
-- title: Elite Outlet portal
-  blurb: B2B clearance catalogue with enquiry basket, checkout and CRM-synced stock.
-  org: My Club Group
+  tags: [Base44, Microsoft Graph, Permissions]
+  image: /images/work/product-hub/cover.jpg
+  zh:
+    blurb: 内部产品生命周期平台，从创意一路管到上架：SharePoint 文档同步、按部门授权、样品双部门签字，以及工作日早报。
+- title: Crowdplay
+  blurb: Phone-based platform for in-person events; QR join, team stations scored by staff, a projector board and themes such as a Mid-Autumn stamp card. Game logic lives in Postgres RPCs.
+  org: Personal
   year: '2026'
-  tags:
-  - Zoho
-  - Stripe
-  - Catalogue
-  image: /images/work/elite-outlet-portal/cover.svg
-- title: Kit order form
-  blurb: Multi-step kit ordering with estimates, approvals and PDF previews; the backend is nothing but webhooks.
-  org: My Club Group
-  year: 2025–2026
-  tags:
-  - React
-  - n8n
-  - Stripe
-  - PDF
-  image: /images/work/kit-order-form/cover.svg
+  tags: [React, Supabase, Postgres]
+  href: https://github.com/8haol/crowdplay
+  image: /images/work/crowdplay/cover.jpg
+  zh:
+    org: 个人项目
+    blurb: 线下活动的手机互动平台：扫码入场、工作人员给各站计分、现场大屏，还有中秋集章卡这样的主题玩法。游戏逻辑全部写在 Postgres RPC 里。
+- title: Selah
+  blurb: Worship lyrics to PPTX with pinyin aligned over every character; 18 themes, a shared song library and photo-to-lyrics recognition.
+  org: Personal
+  year: '2026'
+  tags: [Next.js, pptxgenjs, pinyin-pro, OpenAI]
+  href: https://github.com/8haol/selah
+  image: /images/work/selah/cover.jpg
+  zh:
+    org: 个人项目
+    blurb: 把敬拜歌词做成 PPTX，每个汉字上方对齐拼音；18 套主题、共享歌库，还能拍照识别歌谱。
 - title: Interactive 3D pitch decks
-  blurb: Browser-based 3D presentation decks used in enterprise evaluations; one template, many brands.
+  blurb: Scroll-driven 3D proposal decks for enterprise pitches; one template, re-skinned for each prospect.
   org: My Club Group · Zenith AI
   year: '2026'
-  tags:
-  - Three.js
-  - Presentations
-  image: /images/work/interactive-3d-pitch-decks/cover.svg
-- title: Sponsor kit configurator
-  blurb: Demo for a beverage brand's sponsored-kit selection flow with a printable user guide.
-  org: Kit Funder
-  year: '2026'
-  tags:
-  - Demo
-  - Static site
-  image: /images/work/sponsor-kit-configurator/cover.svg
-- title: Crowdplay
-  blurb: Live event platform for in-person activities; stations, scoring, shared photo wall, host control room and projector views.
-  org: Personal
-  year: '2026'
-  tags:
-  - Supabase
-  - React
-  - Realtime
-  href: https://github.com/8haol/crowdplay
-  image: /images/work/crowdplay/cover.svg
-- title: Selah
-  blurb: Worship-lyrics to PPTX generator with character-aligned pinyin, 17 themes and a song library.
-  org: Personal
-  year: '2026'
-  tags:
-  - Next.js
-  - pptxgenjs
-  - OpenAI
-  href: https://github.com/8haol/selah
-  image: /images/work/selah/cover.svg
+  tags: [Three.js, GSAP, Lenis]
+  image: /images/work/interactive-3d-pitch-decks/cover.jpg
+  zh:
+    title: 3D 交互式提案
+    blurb: 滚动驱动的 3D 提案页面，用在企业客户提案中；一套模板，按客户换皮。
