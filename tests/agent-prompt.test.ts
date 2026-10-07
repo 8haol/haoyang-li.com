@@ -58,8 +58,10 @@ describe("retell config", () => {
     expect(llm.general_tools.map((t) => t.type)).toContain("end_call");
     expect(llm.default_dynamic_variables).toEqual({ channel: "voice", locale: "en" });
   });
-  it("points the chat agent at the same LLM", () => {
-    expect(chatAgentConfig("llm_x").response_engine).toEqual(voiceAgentConfig("llm_x").response_engine);
+  it("points the chat agent at the same LLM version, in English and Chinese", () => {
+    const chat = chatAgentConfig("llm_x", 6);
+    expect(chat.response_engine).toEqual(voiceAgentConfig("llm_x", 6).response_engine);
+    expect(chat.language).toEqual(["en-GB", "zh-CN"]);
   });
   it("reads a separate agent id per channel", () => {
     const env = { RETELL_API_KEY: "k", RETELL_AGENT_ID: "agent_voice", RETELL_CHAT_AGENT_ID: "agent_chat" } as unknown as NodeJS.ProcessEnv;
@@ -68,8 +70,8 @@ describe("retell config", () => {
     expect(retellConfig("chat", { RETELL_API_KEY: "k" } as unknown as NodeJS.ProcessEnv)).toBeNull();
   });
   it("points the agent at the LLM, caps call length and takes the voice from the environment", () => {
-    const agent = voiceAgentConfig("llm_x", "11labs-Haoyang");
-    expect(agent.response_engine).toEqual({ type: "retell-llm", llm_id: "llm_x" });
+    const agent = voiceAgentConfig("llm_x", 6, "11labs-Haoyang");
+    expect(agent.response_engine).toEqual({ type: "retell-llm", llm_id: "llm_x", version: 6 });
     expect(agent.voice_id).toBe("11labs-Haoyang");
     expect(agent.max_call_duration_ms).toBeLessThanOrEqual(15 * 60 * 1000);
   });
