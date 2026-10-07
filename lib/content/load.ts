@@ -82,6 +82,12 @@ export function loadYaml<T>(file: string, schema: z.ZodType<T>, root = defaultRo
   return result.data;
 }
 
+/** `content/<locale>/<file>` when that translation exists, otherwise the default `content/<file>`. */
+export function loadLocalizedYaml<T>(file: string, schema: z.ZodType<T>, locale: Locale, root = defaultRoot()): T {
+  const own = path.join(locale, file);
+  return fs.existsSync(path.join(root, own)) ? loadYaml(own, schema, root) : loadYaml(file, schema, root);
+}
+
 /** "Voice & chat agents" → "voice-chat-agents". */
 export function slugify(title: string): string {
   return title
