@@ -59,7 +59,7 @@
     "line": "我搭建能在真实业务里落地的 AI 系统，从第一次需求沟通一直做到上线。",
     "scroll": "向下滚动",
     "talk": "和我聊聊",
-    "talkSub": "AI 版的我 · 语音或文字",
+    "talkSub": "24 小时在线",
     "roles": [
       "AI 系统架构师",
       "全栈工程师",
@@ -107,7 +107,7 @@
     "subtitle": "这是 AI 版的我，可以直接打字聊。它熟悉我的简历、项目和不少个人情况；答不上来的，会请你联系我本人。",
     "placeholder": "问问 GAIMS、Kelay、AI agent，或者我是怎么工作的……",
     "send": "发送",
-    "disclosure": "你在和 AI 助手对话，不是 Haoyang 本人。它可能出错，但不会编造事实。",
+    "disclosure": "这是 AI 版的我，不是我本人。可能会说错，但不会乱编。",
     "offline": "助手暂时没有接通。可以发邮件到 hello@haoyang-li.com，我会亲自回复。",
     "suggest1": "GAIMS 是个什么系统？",
     "suggest2": "LLM 的决策怎么做到可审计？",

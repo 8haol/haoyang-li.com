@@ -1,13 +1,15 @@
 /**
- * Creates or updates the "Talk to me" voice agent on Retell from the site's content.
+ * Creates or updates the "Talk to me" agents on Retell from the site's content: a voice agent and a chat agent,
+ * each with its own Retell LLM, both written from the same prompt.
  *
- *   npm run retell:sync            create/update the Retell LLM + agent and publish it
+ *   npm run retell:sync            write a new draft of each agent and its LLM, then publish it
  *   npm run retell:sync -- --dry   print the prompt and the config without calling Retell
  *
- * Reads RETELL_API_KEY (required), RETELL_LLM_ID / RETELL_AGENT_ID (update instead of create) and
- * RETELL_VOICE_ID (defaults to a stock voice) from .env.local. Prints the ids to add to .env.local and Vercel.
+ * Reads RETELL_API_KEY (required), RETELL_AGENT_ID + RETELL_LLM_ID and RETELL_CHAT_AGENT_ID + RETELL_CHAT_LLM_ID
+ * (update instead of create; set both of a pair or neither) and RETELL_VOICE_ID (defaults to a stock voice) from
+ * .env.local. Prints the ids to add to .env.local and Vercel.
  */
-import { RETELL_API, voiceAgentConfig, voiceLlmConfig } from "@/lib/agent/retell";
+import { agentLlmConfig, chatAgentConfig, RETELL_API, voiceAgentConfig, type Channel } from "@/lib/agent/retell";
 
 const dry = process.argv.includes("--dry");
 const apiKey = process.env.RETELL_API_KEY;
@@ -23,42 +25,69 @@ async function retell<T>(method: "GET" | "POST" | "PATCH", path: string, body?: 
   return (text ? JSON.parse(text) : {}) as T;
 }
 
+type Version = { version: number; is_published?: boolean };
+
+const AGENTS = {
+  voice: {
+    env: ["RETELL_AGENT_ID", "RETELL_LLM_ID"],
+    paths: { get: "/get-agent", create: "/create-agent", update: "/update-agent", draft: "/create-agent-version" },
+    config: (llmId: string, version: number) => voiceAgentConfig(llmId, version),
+  },
+  chat: {
+    env: ["RETELL_CHAT_AGENT_ID", "RETELL_CHAT_LLM_ID"],
+    paths: { get: "/get-chat-agent", create: "/create-chat-agent", update: "/update-chat-agent", draft: "/create-chat-agent-version" },
+    config: (llmId: string, version: number) => chatAgentConfig(llmId, version),
+  },
+} as const;
+
+/**
+ * Retell versions an agent and its LLM in step (agent v7 runs LLM v7), so a change goes: open a draft if the latest
+ * version is published, write the LLM and the agent into that draft, publish it.
+ */
+async function syncAgent(channel: Channel): Promise<{ agentId: string; llmId: string }> {
+  const { env, paths, config } = AGENTS[channel];
+  const agentId = process.env[env[0]];
+  const llmId = process.env[env[1]];
+  const llm = agentLlmConfig(channel);
+
+  if (!agentId || !llmId) {
+    if (agentId || llmId) throw new Error(`${channel}: set both ${env.join(" and ")}, or neither to create a new pair`);
+    const createdLlm = await retell<{ llm_id: string } & Version>("POST", "/create-retell-llm", llm);
+    const created = await retell<{ agent_id: string } & Version>("POST", paths.create, config(createdLlm.llm_id, createdLlm.version));
+    await retell("POST", `/publish-agent-version/${created.agent_id}`, { version: created.version });
+    console.log(`created and published ${channel} agent ${created.agent_id} v${created.version} with llm ${createdLlm.llm_id}`);
+    return { agentId: created.agent_id, llmId: createdLlm.llm_id };
+  }
+
+  const latest = await retell<Version>("GET", `${paths.get}/${agentId}`);
+  const draft = latest.is_published ? (await retell<Version>("POST", `${paths.draft}/${agentId}`, { base_version: latest.version })).version : latest.version;
+  const updatedLlm = await retell<Version>("PATCH", `/update-retell-llm/${llmId}?version=${draft}`, llm);
+  if (updatedLlm.version !== draft) throw new Error(`${channel}: llm ${llmId} is at v${updatedLlm.version} but the agent draft is v${draft}`);
+  await retell("PATCH", `${paths.update}/${agentId}?version=${draft}`, config(llmId, draft));
+  await retell("POST", `/publish-agent-version/${agentId}`, { version: draft });
+  console.log(`published ${channel} agent ${agentId} v${draft}`);
+  return { agentId, llmId };
+}
+
 async function main() {
-  const llm = voiceLlmConfig();
   if (dry) {
-    console.log(llm.general_prompt);
-    console.log("\n--- llm config (prompt omitted) ---");
-    console.log(JSON.stringify({ ...llm, general_prompt: `<${llm.general_prompt.length} chars>` }, null, 2));
-    console.log("\n--- agent config ---");
-    console.log(JSON.stringify(voiceAgentConfig("<llm_id>"), null, 2));
+    console.log(agentLlmConfig("voice").general_prompt);
+    for (const channel of ["voice", "chat"] as const) {
+      const llm = agentLlmConfig(channel);
+      console.log(`\n--- ${channel} llm config (prompt omitted) ---`);
+      console.log(JSON.stringify({ ...llm, general_prompt: `<${llm.general_prompt.length} chars>` }, null, 2));
+      console.log(`\n--- ${channel} agent config ---`);
+      console.log(JSON.stringify(AGENTS[channel].config("<llm_id>", 0), null, 2));
+    }
     return;
   }
   if (!apiKey) throw new Error("RETELL_API_KEY is not set (put it in .env.local)");
 
-  let llmId = process.env.RETELL_LLM_ID;
-  if (llmId) {
-    await retell("PATCH", `/update-retell-llm/${llmId}`, llm);
-    console.log(`updated llm ${llmId}`);
-  } else {
-    const created = await retell<{ llm_id: string }>("POST", "/create-retell-llm", llm);
-    llmId = created.llm_id;
-    console.log(`created llm ${llmId}`);
-  }
-
-  const agent = voiceAgentConfig(llmId);
-  let agentId = process.env.RETELL_AGENT_ID;
-  if (agentId) {
-    await retell("PATCH", `/update-agent/${agentId}`, agent);
-    console.log(`updated agent ${agentId}`);
-  } else {
-    const created = await retell<{ agent_id: string }>("POST", "/create-agent", agent);
-    agentId = created.agent_id;
-    console.log(`created agent ${agentId}`);
-  }
-
-  await retell("POST", `/publish-agent/${agentId}`);
-  console.log(`published agent ${agentId}`);
-  console.log(`\nMake sure .env.local and Vercel have:\nRETELL_LLM_ID=${llmId}\nRETELL_AGENT_ID=${agentId}`);
+  const voice = await syncAgent("voice");
+  const chat = await syncAgent("chat");
+  console.log(
+    `\nMake sure .env.local and Vercel have:\nRETELL_AGENT_ID=${voice.agentId}\nRETELL_LLM_ID=${voice.llmId}\nRETELL_CHAT_AGENT_ID=${chat.agentId}\nRETELL_CHAT_LLM_ID=${chat.llmId}`,
+  );
 }
 
 main().catch((err) => {
