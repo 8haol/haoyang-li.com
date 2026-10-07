@@ -70,7 +70,8 @@ describe("StageCursor", () => {
       expect(overlay()).not.toHaveAttribute("data-framed");
       act(() => void vi.advanceTimersByTime(300));
       expect(overlay()).toHaveAttribute("data-framed");
-      expect(overlay()).toHaveTextContent("Open ↗");
+      expect(overlay()).toHaveTextContent("Open");
+      expect(overlay()?.querySelector("svg")).not.toBeNull();
       move(getByTestId("gap"));
       act(() => void vi.advanceTimersByTime(400));
       expect(overlay()).not.toHaveAttribute("data-framed");

@@ -32,7 +32,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       <div id="resume">
         <Resume />
       </div>
-      <section id="open-source" className="shell py-24">
+      <section id="open-source" className="shell py-16 sm:py-24">
         <div className="border-t border-border pt-10">
           <Reveal>
             <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-fg-muted">{os("title")}</p>

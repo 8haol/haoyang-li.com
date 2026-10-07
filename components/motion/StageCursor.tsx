@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
+import { ArrowUpRight } from "lucide-react";
 import { STAGE, roundedRectPoint } from "@/lib/stageMath";
 import type { CardOutline } from "@/components/motion/StageGL";
 
@@ -341,7 +342,7 @@ export function StageCursor({
               transition: `opacity 0.25s ease ${framed ? "0.12s" : "0s"}, transform 0.35s cubic-bezier(0.22,1,0.36,1) ${framed ? "0.12s" : "0s"}`,
             }}
           >
-            {label} ↗
+            {label} <ArrowUpRight aria-hidden strokeWidth={2.5} className="inline-block size-[1.1em] align-[-0.2em]" />
           </div>
         </div>
       )}

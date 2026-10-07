@@ -51,9 +51,9 @@ export async function Hero() {
           </div>
         </div>
 
-        {/* Clocks bottom-left, call to action centred on the page, scroll cue bottom-right. Phones keep the type's
-            left edge: call to action, then the clocks. */}
-        <div className="grid grid-cols-1 items-center justify-items-start gap-5 border-t border-fg/10 pt-6 sm:grid-cols-[1fr_auto_1fr] sm:justify-items-center">
+        {/* Clocks bottom-left, call to action centred on the page, scroll cue bottom-right. On phones both sit
+            on the right, under the thumb: call to action, then the clocks. */}
+        <div className="grid grid-cols-1 items-center justify-items-end gap-5 border-t border-fg/10 pt-6 sm:grid-cols-[1fr_auto_1fr] sm:justify-items-center">
           <div className="order-2 sm:order-none sm:justify-self-start">
             <Clocks />
           </div>
