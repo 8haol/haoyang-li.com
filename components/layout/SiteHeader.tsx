@@ -5,7 +5,7 @@ import { SiteNav, type NavSection } from "./SiteNav";
 const sections = [
   { id: "about", key: "about" },
   { id: "selected-work", key: "work", short: true },
-  { id: "experience", key: "experience", short: true },
+  { id: "resume", key: "resume", short: true },
   { id: "open-source", key: "openSource" },
   { id: "contact", key: "contact", short: true },
 ] as const;

@@ -2,10 +2,9 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getGalleryProjects, loadYaml } from "@/lib/content/load";
 import { OpenSource } from "@/lib/content/schema";
 import type { Locale } from "@/lib/site";
-import { Link } from "@/i18n/navigation";
 import { Hero } from "@/components/home/Hero";
 import { About } from "@/components/home/About";
-import { Experience } from "@/components/home/Experience";
+import { Resume } from "@/components/home/Resume";
 import { WorkStage, type StageSlide } from "@/components/home/WorkStage";
 import { Reveal } from "@/components/motion/Reveal";
 
@@ -20,7 +19,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
     title: item.title,
     meta: `${item.org} · ${item.year}`,
   }));
-  const open = loadYaml("open-source.yaml", OpenSource).slice(0, 3);
+  const open = loadYaml("open-source.yaml", OpenSource);
 
   return (
     <main id="content">
@@ -31,18 +30,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       <div id="selected-work">
         <WorkStage slides={slides} locale={locale} eyebrow={g("eyebrow")} hint={g("hint")} openLabel={g("open")} />
       </div>
-      <div id="experience">
-        <Experience />
+      <div id="resume">
+        <Resume />
       </div>
       <section id="open-source" className="shell py-24">
         <div className="border-t border-border pt-10">
           <Reveal>
-            <div className="flex items-end justify-between">
-              <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-fg-muted">{os("title")}</p>
-              <Link href="/open-source" className="font-mono text-[11px] uppercase tracking-[0.18em] text-fg-muted hover:text-fg">
-                [ {os("title")} → ]
-              </Link>
-            </div>
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-fg-muted">{os("title")}</p>
+            <p className="mt-5 max-w-2xl text-[19px] leading-[1.6] text-fg/90">{os("intro")}</p>
           </Reveal>
           <ul className="mt-8 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-3">
             {open.map((o, i) => (
@@ -53,7 +48,20 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     {o.name}
                   </a>
                   <p className="mt-2 text-[15px] leading-6 text-fg/85">{o.tagline}</p>
-                  <p className="mt-auto pt-6 font-mono text-[11px] text-fg-muted">{o.stack.join(" · ")}</p>
+                  <p className="mt-4 text-[14px] leading-6 text-fg-muted">
+                    <span className="text-fg/85">{os("why")}:</span> {o.why}
+                  </p>
+                  <p className="mt-auto pt-6 font-mono text-[11px] text-fg-muted">
+                    {o.stack.join(" · ")}
+                    {o.demo && (
+                      <>
+                        {" · "}
+                        <a href={o.demo} className="underline underline-offset-2 hover:text-fg">
+                          demo
+                        </a>
+                      </>
+                    )}
+                  </p>
                 </li>
               </Reveal>
             ))}

@@ -3,35 +3,19 @@
     "englishOnly": "This page is only available in English for now.",
     "readMore": "Read the case study",
     "backToWork": "All work",
-    "downloadCv": "Download CV (PDF)",
     "skipToContent": "Skip to content",
     "close": "Close"
   },
   "nav": {
     "about": "About",
     "work": "Work",
-    "experience": "Experience",
+    "resume": "Resume",
     "openSource": "Open source",
     "contact": "Contact",
     "sections": "Sections",
     "top": "Back to top"
   },
-  "home": {
-    "eyebrow": "AI systems architect · full-stack engineer · London",
-    "title": "I take enterprise AI from discovery to production.",
-    "subtitle": "LLM decision systems, voice and chat agents, and the integration layer that makes them run inside real businesses.",
-    "ctaWork": "See the work",
-    "ctaResume": "Resume",
-    "statsPo": "purchase orders routed by an auditable LLM decision layer",
-    "statsMessages": "chat-agent messages served in production",
-    "statsWorkflows": "integration workflows connecting AI to CRM and operations",
-    "featured": "Selected case studies"
-  },
   "work": {
-    "title": "Work",
-    "intro": "Deep case studies first, then a gallery of everything else I have shipped.",
-    "caseStudies": "Case studies",
-    "gallery": "Selected work",
     "role": "Role",
     "period": "Period",
     "stack": "Stack",
@@ -42,25 +26,20 @@
     "next": "Next project",
     "project": "Project"
   },
-  "writing": {
-    "title": "Writing",
-    "empty": "First essay coming soon: how I design rubrics for LLM evals."
-  },
   "openSource": {
     "title": "Open source",
     "intro": "A few finished things, each with a README, a screenshot and a reason to exist.",
     "why": "Why it exists"
   },
   "resume": {
-    "title": "Resume",
+    "eyebrow": "Resume",
+    "title": "Where I've built things.",
     "experience": "Experience",
     "entrepreneurial": "Entrepreneurial",
     "education": "Education",
     "skills": "Skills",
-    "languages": "Languages"
-  },
-  "now": {
-    "title": "Now"
+    "languages": "Languages",
+    "download": "Download CV (PDF)"
   },
   "footer": {
     "builtWith": "Built with Next.js, deployed on Vercel.",
@@ -114,15 +93,6 @@
     "based": "London",
     "resume": "Full résumé",
     "work": "Selected work"
-  },
-  "experience": {
-    "eyebrow": "Experience",
-    "title": "Where I've built things.",
-    "work": "Work",
-    "ventures": "Ventures",
-    "education": "Education",
-    "resume": "Full résumé",
-    "download": "Download CV"
   },
   "gallery": {
     "eyebrow": "Selected work",

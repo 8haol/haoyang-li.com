@@ -1,5 +1,4 @@
 import { getTranslations } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
 import { Reveal } from "@/components/motion/Reveal";
 import { ScrollLink } from "@/components/ui/ScrollLink";
 
@@ -52,9 +51,9 @@ export async function About() {
               ))}
             </dl>
             <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
-              <Link href="/resume" className={linkClass}>
-                [ {t("resume")} → ]
-              </Link>
+              <ScrollLink to="resume" className={linkClass}>
+                [ {t("resume")} ↓ ]
+              </ScrollLink>
               <ScrollLink to="selected-work" className={linkClass}>
                 [ {t("work")} ↓ ]
               </ScrollLink>
