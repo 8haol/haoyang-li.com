@@ -2,16 +2,18 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { useLocale } from "next-intl";
+import { VoiceCall, type VoiceLabels } from "./VoiceCall";
 
 type Msg = { role: "user" | "assistant"; content: string };
 type Labels = {
-  title: string; subtitle: string; voice: string; text: string; voiceSoon: string; placeholder: string; send: string;
+  title: string; subtitle: string; voice: string; text: string; placeholder: string; send: string;
   disclosure: string; offline: string; suggestions: string[]; close: string; thinking: string;
+  call: VoiceLabels;
 };
 
 export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: Labels }) {
   const locale = useLocale();
-  const [tab, setTab] = useState<"text" | "voice">("text");
+  const [tab, setTab] = useState<"text" | "voice">("voice");
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -91,23 +93,19 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
           </button>
         </header>
 
-        <div className="flex gap-1 border-b border-border px-6 py-3 font-mono text-[11px] uppercase tracking-[0.18em]">
-          {(["text", "voice"] as const).map((k) => (
-            <button key={k} type="button" onClick={() => setTab(k)} className={`rounded-full px-3 py-1.5 transition ${tab === k ? "bg-fg text-bg" : "text-fg-muted hover:text-fg"}`}>
+        <div className="flex gap-1 border-b border-border px-6 py-3 font-mono text-[11px] uppercase tracking-[0.18em]" role="tablist">
+          {(["voice", "text"] as const).map((k) => (
+            <button key={k} type="button" role="tab" aria-selected={tab === k} onClick={() => setTab(k)} className={`rounded-full px-3 py-1.5 transition ${tab === k ? "bg-fg text-bg" : "text-fg-muted hover:text-fg"}`}>
               {labels[k]}
             </button>
           ))}
         </div>
 
         {tab === "voice" ? (
-          <div className="flex flex-1 flex-col items-center justify-center gap-6 px-6 text-center">
-            <span className="relative flex h-24 w-24 items-center justify-center rounded-full bg-fg/5">
-              <span aria-hidden className="absolute inset-0 rounded-full border border-fg/15 animate-ping [animation-duration:3s]" />
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M12 3v10M8 7v3M16 7v3M4 10v1M20 10v1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>
-            </span>
-            <p className="max-w-xs text-sm leading-6 text-fg-muted">{labels.voiceSoon}</p>
-            <a href="mailto:hello@haoyang-li.com" className="font-mono text-[11px] uppercase tracking-[0.18em] underline underline-offset-4">hello@haoyang-li.com</a>
-          </div>
+          <>
+            <VoiceCall labels={labels.call} onUseText={() => setTab("text")} />
+            <p className="border-t border-border px-6 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-fg-muted">{labels.disclosure}</p>
+          </>
         ) : (
           <>
             <div ref={listRef} className="flex-1 space-y-4 overflow-y-auto px-6 py-6" data-lenis-prevent>

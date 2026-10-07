@@ -74,7 +74,7 @@
     "line": "我做的是能在真实业务里跑起来的 AI 系统，从第一次对话到生产环境。",
     "scroll": "向下滚动",
     "talk": "和我聊聊",
-    "talkSub": "AI · 文字已开通，语音即将上线",
+    "talkSub": "AI · 语音或文字",
     "roles": [
       "AI 系统架构师",
       "全栈工程师",
@@ -101,10 +101,9 @@
   },
   "agent": {
     "title": "问问我的工作",
-    "subtitle": "一个了解我简历和案例的 AI。超出范围的问题它会把你引向真人。",
+    "subtitle": "可以直接和我通话，也可以打字。声音和内容都是我的，由 AI 驱动；答不上来的问题它会把你引向真人。",
     "voice": "语音",
     "text": "文字",
-    "voiceSoon": "语音线路还在接入。你可以先打字，或者直接发邮件。",
     "placeholder": "问问 GAIMS、Kelay、agent，或者我怎么工作……",
     "send": "发送",
     "disclosure": "这是 AI 助手，不是 Haoyang 本人。可能出错，但不会编造事实。",
@@ -113,6 +112,19 @@
     "suggest2": "怎么让 LLM 决策可审计？",
     "suggest3": "Kelay AI 是什么？",
     "close": "关闭",
-    "thinking": "思考中……"
+    "thinking": "思考中……",
+    "voiceIntro": "在浏览器里直接通话，用我的声音。想问什么都行，需要麦克风权限。",
+    "startCall": "开始通话",
+    "connecting": "接通中……",
+    "live": "已接通。直接说就好，随时可以打断我。",
+    "endCall": "挂断",
+    "mute": "静音",
+    "unmute": "取消静音",
+    "callEnded": "谢谢你的来电。可以再打一次，也可以改成打字。",
+    "callAgain": "再打一次",
+    "micDenied": "这需要麦克风权限。请在浏览器里允许后重试，或者改成打字。",
+    "voiceOffline": "语音线路现在没有接通。可以在下面打字，或发邮件到 hello@haoyang-li.com。",
+    "callFailed": "通话断开了。再试一次，或者改成打字。",
+    "useText": "改成打字"
   }
 }

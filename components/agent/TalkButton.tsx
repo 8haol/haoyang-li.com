@@ -40,9 +40,14 @@ export function TalkButton({ label, sub }: { label: string; sub: string }) {
         <AgentPanel
           onClose={() => setOpen(false)}
           labels={{
-            title: t("title"), subtitle: t("subtitle"), voice: t("voice"), text: t("text"), voiceSoon: t("voiceSoon"),
+            title: t("title"), subtitle: t("subtitle"), voice: t("voice"), text: t("text"),
             placeholder: t("placeholder"), send: t("send"), disclosure: t("disclosure"), offline: t("offline"),
             suggestions: [t("suggest1"), t("suggest2"), t("suggest3")], close: t("close"), thinking: t("thinking"),
+            call: {
+              intro: t("voiceIntro"), start: t("startCall"), connecting: t("connecting"), live: t("live"), end: t("endCall"),
+              mute: t("mute"), unmute: t("unmute"), ended: t("callEnded"), again: t("callAgain"), mic: t("micDenied"),
+              offline: t("voiceOffline"), failed: t("callFailed"), useText: t("useText"),
+            },
           }}
         />
       )}
