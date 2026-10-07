@@ -102,7 +102,7 @@
     "subtitle": "和 AI 版的我打字聊。它了解我的简历、案例和不少我的个人情况；其它问题会把你引向真人。",
     "placeholder": "问问 GAIMS、Kelay、agent，或者我怎么工作……",
     "send": "发送",
-    "disclosure": "这是 AI 助手，不是 Haoyang 本人。可能出错，但不会编造事实。",
+    "disclosure": "这是 AI 版的我，不是我本人。可能会说错，但不会乱编。",
     "offline": "助手还没接通。给 hello@haoyang-li.com 发邮件，我亲自回复。",
     "suggest1": "你在 GAIMS 做了什么？",
     "suggest2": "怎么让 LLM 决策可审计？",
