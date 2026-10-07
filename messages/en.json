@@ -71,7 +71,7 @@
   "about": {
     "eyebrow": "About",
     "title": "AI systems architect, trained as a mathematician.",
-    "body": "I studied mathematics and statistics in London, then spent a year on frontier-model post-training, writing the rubrics that decide what a good answer looks like. Today I'm Lead AI & Data Integration Architect at Zenith AI: I design and build AI systems for businesses, from the first customer conversation through architecture and build to production. I'm also technical co-founder of Kelay AI. I care about AI that can explain its decisions, and about the unglamorous integration work that keeps it running.",
+    "body": "I studied mathematics and statistics in London, then spent eight months on frontier-model post-training, writing the rubrics that decide what a good answer looks like. Today I'm Lead AI & Data Integration Architect at Zenith AI: I design and build AI systems for businesses, from the first customer conversation through architecture and build to production. I'm also technical co-founder of Kelay AI. I care about AI that can explain its decisions, and about the unglamorous integration work that keeps it running.",
     "nowLabel": "Now",
     "now": [
       {
@@ -109,7 +109,7 @@
     "subtitle": "Type to the AI version of me. It knows my CV, my case studies and a fair bit about me; for anything else it will point you to the real me.",
     "placeholder": "Ask about GAIMS, Kelay, agents, or how I work…",
     "send": "Send",
-    "disclosure": "The AI version of me, not me in person. It can be wrong, but it won't make things up.",
+    "disclosure": "The AI version of me, not me in person. It can be wrong; when it doesn't know, it says so.",
     "offline": "The assistant isn't connected yet. Email hello@haoyang-li.com and I'll reply myself.",
     "suggest1": "What did you build at GAIMS?",
     "suggest2": "How do you make LLM decisions auditable?",

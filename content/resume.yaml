@@ -13,8 +13,8 @@ experience:
     period: May 2025 – Present
     bullets:
       - Own enterprise AI delivery from customer discovery and architecture design through full-stack development, deployment and iteration with business stakeholders.
-      - Independently designed and built GAIMS, a patent-pending, auditable AI decision layer for supplier allocation, processing 3,000+ purchase orders over eight months in production. Combines frontier LLMs, historical and risk data, brand-specific criteria and human-review feedback; implements tenant isolation and sensitive-data redaction.
-      - Build tailored GAIMS demos for four UK sportswear groups; present architecture and business value to executives and IT teams during NDA-stage evaluations.
+      - Independently designed and built GAIMS, a patent-pending, auditable AI decision layer for supplier allocation, processing 3,000+ purchase orders in production. Combines frontier LLMs, historical and risk data, brand-specific criteria and human-review feedback; implements tenant isolation and sensitive-data redaction.
+      - Built tailored GAIMS demos for four UK sportswear groups; presented architecture and business value to executives and IT teams during NDA-stage evaluations.
       - Deployed Voiceflow chat agents with 40K+ messages and 15K+ users; built Retell voice agents integrating Zoho CRM lead capture, call summaries, transcripts and intent-based sales routing.
       - Built 50+ n8n workflows integrating AI products with CRM and operational data, supporting order-status retrieval, sales-call booking and cross-system business processes.
       - Delivered Kit Funder, a client portal and Zenith AI's website; built full-stack customer workflows spanning authentication, payments, order tracking and CRM integration.
@@ -38,24 +38,24 @@ entrepreneurial:
     location: London, UK
     period: May 2026 – Present
     bullets:
-      - Built a pilot-stage voice AI booking application for small businesses using Next.js, TypeScript and PostgreSQL; integrated Retell agent provisioning and English/Mandarin conversations within a multi-tenant architecture.
-      - Implemented booking, rescheduling and cancellation tools, webhook signature verification and idempotent call storage; resolved caller-ID and model-latency issues through live-call testing.
+      - Built a pilot-ready voice AI booking application for small businesses using Next.js, TypeScript and PostgreSQL; integrated Retell agent provisioning and English/Mandarin conversations within a multi-tenant architecture.
+      - Implemented booking, rescheduling and cancellation tools, webhook signature verification and idempotent call storage; resolved caller-ID and model-latency issues through test calls.
 education:
   - school: London School of Economics and Political Science
     degree: MSc Applicable Mathematics
     period: Sep 2023 – Sep 2024
-    coursework: [Algorithmic Techniques in Machine Learning, Algorithms and Data Structures, Optimization Methods]
+    coursework: [Algorithmic Techniques in Machine Learning, Algorithms and Data Structures, Optimisation Methods]
   - school: King's College London
     degree: BSc Mathematics & Statistics
     period: Sep 2020 – Jun 2023
-    coursework: [Computational Methods with Python, Statistical Modeling, Linear Algebra, Stochastic Calculus in Finance]
+    coursework: [Computational Methods with Python, Statistical Modelling, Linear Algebra, Stochastic Calculus in Finance]
 skills:
   - group: Engineering
     items: [TypeScript, JavaScript, Python, SQL, React, Next.js, Node.js]
   - group: AI & integration
-    items: [LLM APIs, RAG, prompt engineering, tool calling, REST APIs, n8n, Zoho CRM, Retell AI, Voiceflow]
+    items: [LLM APIs, RAG, prompt engineering, tool calling, REST APIs, n8n, Zoho CRM, Retell, Voiceflow]
   - group: Data & deployment
     items: [PostgreSQL/Neon, Supabase, Airtable, Railway, Vercel, Netlify, Cloudflare]
   - group: Developer tools
     items: [Git/GitHub, Claude Code, Codex, Cursor, Base44]
-languages: [Mandarin (native), English (proficient), Spanish (proficient)]
+languages: [Mandarin (native), English (fluent), Spanish (proficient)]
