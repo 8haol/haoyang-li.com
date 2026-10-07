@@ -100,7 +100,7 @@ export function SiteNav({ sections, labels }: { sections: NavSection[]; labels: 
     <>
       {/* Keyboard focus (not a mouse click) brings the bar back even after the rail has taken over. */}
       <header
-        className={`sticky top-0 z-40 transition duration-500 ease-out-expo ${
+        className={`site-header sticky top-0 z-40 transition duration-500 ease-out-expo ${
           handover ? "lg:pointer-events-none lg:-translate-y-3 lg:opacity-0 lg:has-[:focus-visible]:pointer-events-auto lg:has-[:focus-visible]:translate-y-0 lg:has-[:focus-visible]:opacity-100" : ""
         }`}
       >

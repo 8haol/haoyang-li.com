@@ -54,7 +54,7 @@
     "line": "I build AI systems that run inside real businesses, from the first conversation to production.",
     "scroll": "Scroll",
     "talk": "Talk to me",
-    "talkSub": "AI · text now, voice soon",
+    "talkSub": "AI · voice or text",
     "roles": [
       "AI Systems Architect",
       "Full-Stack Engineer",
@@ -99,10 +99,7 @@
   },
   "agent": {
     "title": "Ask about my work",
-    "subtitle": "An AI that knows my CV and case studies. For anything else it will point you to the real me.",
-    "voice": "Voice",
-    "text": "Text",
-    "voiceSoon": "The voice line is being wired up. Until then, type below or email me.",
+    "subtitle": "Type to the AI version of me. It knows my CV, my case studies and a fair bit about me; for anything else it will point you to the real me.",
     "placeholder": "Ask about GAIMS, Kelay, agents, or how I work…",
     "send": "Send",
     "disclosure": "AI assistant, not Haoyang. It may be wrong; it will not invent facts.",
@@ -111,6 +108,21 @@
     "suggest2": "How do you make LLM decisions auditable?",
     "suggest3": "What's Kelay AI?",
     "close": "Close",
-    "thinking": "Thinking…"
+    "thinking": "Thinking…",
+    "connecting": "Connecting…",
+    "live": "Live. Just talk, interrupt me whenever. Scroll on and I'll tuck into the corner.",
+    "endCall": "End call",
+    "mute": "Mute",
+    "unmute": "Unmute",
+    "callEnded": "Thanks for the call. Call again, type instead, or just keep browsing.",
+    "callAgain": "Call again",
+    "micDenied": "I need your microphone for this. Allow it in the browser and try again, or type instead.",
+    "voiceOffline": "The voice line isn't connected right now. Type below, or email hello@haoyang-li.com.",
+    "callFailed": "The call dropped. Try again, or type instead.",
+    "useText": "Type instead",
+    "expand": "Expand the call",
+    "collapse": "Minimise the call",
+    "scrollHint": "Scroll on to keep browsing. I'll tuck into the corner and keep talking.",
+    "resize": "Drag to resize the chat"
   }
 }
