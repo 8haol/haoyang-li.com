@@ -1,14 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useLocale } from "next-intl";
 import { useVoiceCall } from "./useVoiceCall";
 
 export type VoiceLabels = {
   connecting: string; live: string; end: string; mute: string; unmute: string; ended: string; again: string;
   mic: string; offline: string; failed: string; useText: string; close: string; expand: string; collapse: string;
-  disclosure: string;
+  disclosure: string; scrollHint: string;
 };
 
 /**
@@ -32,7 +32,7 @@ export function VoiceDock({ labels, onUseText, onClose }: { labels: VoiceLabels;
   useEffect(() => {
     const origin = window.scrollY;
     const onScroll = () => {
-      if (Math.abs(window.scrollY - origin) > 40) {
+      if (Math.abs(window.scrollY - origin) > 60) {
         setScrolled(true);
         setExpanded(false);
       }
@@ -58,7 +58,9 @@ export function VoiceDock({ labels, onUseText, onClose }: { labels: VoiceLabels;
     : state === "mic" ? labels.mic
     : state === "offline" ? labels.offline
     : labels.failed;
-  const transition = reduced ? { duration: 0 } : { type: "spring" as const, stiffness: 260, damping: 30 };
+  // Unhurried: the card glides into the corner over about a second instead of snapping.
+  const transition = reduced ? { duration: 0 } : { type: "spring" as const, stiffness: 110, damping: 22, mass: 1 };
+  const fade = reduced ? { duration: 0 } : { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const };
 
   const orb = (size: string, icon: string) => (
     <span className={`relative flex ${size} shrink-0 items-center justify-center`}>
@@ -77,12 +79,34 @@ export function VoiceDock({ labels, onUseText, onClose }: { labels: VoiceLabels;
   // Portalled to <body>: the hero is an isolated stacking context, so a fixed child would paint under later sections.
   return createPortal(
     <div className={`pointer-events-none fixed inset-0 z-50 flex p-4 sm:p-6 ${docked ? "items-end justify-end" : "items-center justify-center"}`} data-docked={docked}>
+      {/* Soft veil behind the expanded card. Pointer events pass through it, so the page still scrolls, and the
+          hint at the bottom says so. */}
+      <AnimatePresence>
+        {!docked && (
+          <motion.div
+            key="veil"
+            aria-hidden
+            className="absolute inset-0 bg-bg/40 backdrop-blur-md"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={fade}
+          >
+            {call.active && (
+              <p className="absolute inset-x-0 bottom-8 flex flex-col items-center gap-3 px-6 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-fg-muted">
+                {labels.scrollHint}
+                <span aria-hidden className="block h-8 w-px animate-pulse bg-fg-muted" />
+              </p>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
       <motion.div
         layout
         transition={transition}
         role="dialog"
         aria-label={labels.live}
-        className={`pointer-events-auto border border-border bg-bg/95 shadow-[0_30px_80px_-30px_rgba(18,18,18,0.5)] backdrop-blur-md ${docked ? "flex items-center gap-3 rounded-full py-2 pl-2 pr-3" : "flex w-[min(92vw,360px)] flex-col items-center gap-6 rounded-[28px] px-6 pb-6 pt-8 text-center"}`}
+        className={`pointer-events-auto relative border border-border bg-bg/95 shadow-[0_30px_80px_-30px_rgba(18,18,18,0.5)] backdrop-blur-md ${docked ? "flex items-center gap-3 rounded-full py-2 pl-2 pr-3" : "flex w-[min(92vw,480px)] flex-col items-center gap-8 rounded-[32px] px-8 pb-8 pt-9 text-center"}`}
       >
         {docked ? (
           <>
@@ -104,7 +128,7 @@ export function VoiceDock({ labels, onUseText, onClose }: { labels: VoiceLabels;
           <>
             <div className="flex w-full items-start justify-between">
               <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-fg-muted">{labels.disclosure}</span>
-              <button type="button" onClick={scrolled ? () => setExpanded(false) : onClose} aria-label={scrolled ? labels.collapse : labels.close} className="-mr-2 -mt-3 flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted">
+              <button type="button" onClick={scrolled ? () => setExpanded(false) : onClose} aria-label={scrolled ? labels.collapse : labels.close} className="-mr-3 -mt-4 flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted">
                 {scrolled ? (
                   <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden><path d="M10 2v4h4M6 14v-4H2M14 2l-4 4M2 14l4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
                 ) : (
@@ -112,10 +136,10 @@ export function VoiceDock({ labels, onUseText, onClose }: { labels: VoiceLabels;
                 )}
               </button>
             </div>
-            {orb("h-28 w-28", "28")}
+            {orb("h-44 w-44", "40")}
             <div className="flex flex-col items-center gap-2">
-              {state === "live" && <p className="font-mono text-lg tabular-nums tracking-[0.12em]">{mm}:{ss}</p>}
-              <p className="max-w-xs text-sm leading-6 text-fg-muted">{message}</p>
+              {state === "live" && <p className="font-mono text-2xl tabular-nums tracking-[0.12em]">{mm}:{ss}</p>}
+              <p className="max-w-sm text-[15px] leading-7 text-fg-muted">{message}</p>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-2">
               {state === "live" && (

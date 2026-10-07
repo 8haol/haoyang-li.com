@@ -44,7 +44,7 @@ export function TalkButton({ label, sub }: { label: string; sub: string }) {
           labels={{
             connecting: t("connecting"), live: t("live"), end: t("endCall"), mute: t("mute"), unmute: t("unmute"), ended: t("callEnded"),
             again: t("callAgain"), mic: t("micDenied"), offline: t("voiceOffline"), failed: t("callFailed"), useText: t("useText"),
-            close: t("close"), expand: t("expand"), collapse: t("collapse"), disclosure: t("disclosure"),
+            close: t("close"), expand: t("expand"), collapse: t("collapse"), disclosure: t("disclosure"), scrollHint: t("scrollHint"),
           }}
         />
       )}

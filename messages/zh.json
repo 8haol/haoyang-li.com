@@ -123,6 +123,7 @@
     "callFailed": "通话断开了。再试一次，或者改成打字。",
     "useText": "改成打字",
     "expand": "放大通话",
-    "collapse": "缩小通话"
+    "collapse": "缩小通话",
+    "scrollHint": "继续往下滚也没关系，我会缩到角落里接着聊。"
   }
 }

@@ -123,6 +123,7 @@
     "callFailed": "The call dropped. Try again, or type instead.",
     "useText": "Type instead",
     "expand": "Expand the call",
-    "collapse": "Minimise the call"
+    "collapse": "Minimise the call",
+    "scrollHint": "Scroll on to keep browsing. I'll tuck into the corner and keep talking."
   }
 }

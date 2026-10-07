@@ -24,7 +24,7 @@ import { VoiceDock } from "@/components/agent/VoiceDock";
 const labels = {
   connecting: "Connecting", live: "Live now", end: "End call", mute: "Mute", unmute: "Unmute", ended: "Call ended", again: "Call again",
   mic: "Mic needed", offline: "Voice offline", failed: "Call failed", useText: "Type instead", close: "Close", expand: "Expand", collapse: "Minimise",
-  disclosure: "AI, not Haoyang",
+  disclosure: "AI, not Haoyang", scrollHint: "Scroll on",
 };
 
 const scrollTo = (y: number) => {
@@ -62,8 +62,9 @@ describe("VoiceDock", () => {
     act(() => sessions[0].hooks.onStatus?.("live"));
     const root = document.querySelector("[data-docked]") as HTMLElement;
     expect(root.dataset.docked).toBe("false");
-    scrollTo(10);
+    scrollTo(30);
     expect(root.dataset.docked).toBe("false");
+    expect(screen.getByText("Scroll on")).toBeInTheDocument();
     scrollTo(300);
     expect(root.dataset.docked).toBe("true");
     expect(screen.getByRole("button", { name: "End call" })).toBeInTheDocument();
