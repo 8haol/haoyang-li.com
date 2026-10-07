@@ -84,6 +84,13 @@ body {
 body {
   padding-right: var(--agent-panel-offset);
 }
+/* Below split-view width the text panel covers the screen; the page behind it must not scroll. */
+@media (width < 64rem) {
+  html[data-agent-panel],
+  html[data-agent-panel] body {
+    overflow: hidden;
+  }
+}
 /* While the divider is being dragged. */
 html[data-agent-resizing] {
   cursor: col-resize;
