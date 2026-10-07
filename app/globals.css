@@ -207,3 +207,47 @@ html[data-hero="silk"] .hero-scope .talk-cta,
 html[data-hero="silk"] .hero-scope .talk-cta :is(.font-display, .font-mono) {
   text-shadow: none;
 }
+
+/* Work strip (phones and tablets): scroll-driven, so the browser runs it off the main thread. Each card eases up
+   to full size and brightness as it reaches the centre of the strip, its cover drifts the other way inside the
+   frame, and the whole strip slides in from the right as the section enters the screen. Without support (or
+   with reduced motion) the strip is simply static. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .strip-list {
+      animation: stripEnter linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 35%;
+    }
+    .strip-card {
+      animation: stripFocus linear both;
+      animation-timeline: view(inline);
+    }
+    .strip-media {
+      inset: 0 -9%;
+      animation: stripDrift linear both;
+      animation-timeline: view(inline);
+    }
+    .strip-text {
+      animation: stripText linear both;
+      animation-timeline: view(inline);
+      animation-range: cover 15% cover 85%;
+    }
+  }
+}
+@keyframes stripEnter {
+  from { transform: translateX(40vw); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@keyframes stripFocus {
+  0%, 100% { transform: scale(0.9); opacity: 0.45; }
+  50% { transform: none; opacity: 1; }
+}
+@keyframes stripDrift {
+  from { transform: translateX(8%); }
+  to { transform: translateX(-8%); }
+}
+@keyframes stripText {
+  0%, 100% { transform: translateY(10px); opacity: 0; }
+  50% { transform: none; opacity: 1; }
+}
