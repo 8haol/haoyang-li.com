@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 
 let lastGlProps: Record<string, unknown> = {};
@@ -24,6 +24,39 @@ const slides: StageSlide[] = [
   { image: "/c.svg", slug: "selah", title: "Selah", meta: "Open source · 2026" },
 ];
 const props = { eyebrow: "Selected work", hint: "Scroll or drag · click to open", openLabel: "Open" };
+
+/** jsdom has no matchMedia; `wide` decides whether the full-stage query matches (every other query stays false). */
+let wide = true;
+beforeEach(() => {
+  wide = true;
+  window.matchMedia = ((query: string) => ({
+    matches: query.includes("min-width: 768px") ? wide : false,
+    media: query,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+  })) as unknown as typeof window.matchMedia;
+});
+
+describe("WorkStage on phones and tablets", () => {
+  it("renders the swipe strip without the GL layer", () => {
+    wide = false;
+    render(<WorkStage slides={slides} locale="en" {...props} />);
+    expect(screen.queryByTestId("gl")).not.toBeInTheDocument();
+    expect(screen.getAllByRole("article")).toHaveLength(3);
+    expect(screen.getAllByRole("heading", { level: 3 }).map((h) => h.textContent)).toEqual(["GAIMS", "Kit Funder", "Selah"]);
+    expect(screen.getByText("01 / 03")).toBeInTheDocument();
+  });
+  it("links every card to its case study, locale-prefixed", () => {
+    wide = false;
+    render(<WorkStage slides={slides} locale="zh" {...props} />);
+    expect(screen.getByRole("link", { name: /Open: Kit Funder/ })).toHaveAttribute("href", "/zh/work/kit-funder");
+  });
+  it("renders with no slides", () => {
+    wide = false;
+    render(<WorkStage slides={[]} locale="en" {...props} />);
+    expect(screen.getByText("00 / 00")).toBeInTheDocument();
+  });
+});
 
 describe("WorkStage", () => {
   it("renders one article per slide with a focusable link", () => {
