@@ -3,14 +3,18 @@ import { Link } from "@/i18n/navigation";
 import { Reveal } from "@/components/motion/Reveal";
 import { ScrollLink } from "@/components/ui/ScrollLink";
 
+type Entry = { role: string; org: string };
+
 /** Short bridge between the hero and the work stage: who I am in three lines, then straight into the work. */
 export async function About() {
   const t = await getTranslations("about");
-  const rows = [
-    ["nowLabel", "now"],
-    ["educationLabel", "education"],
-    ["languagesLabel", "languages"],
-  ] as const;
+  // Roles and degrees get one line each, title left and institution right, so long names never run together.
+  const rows: { label: string; value: string | Entry[] }[] = [
+    { label: t("nowLabel"), value: t.raw("now") as Entry[] },
+    { label: t("educationLabel"), value: t.raw("education") as Entry[] },
+    { label: t("languagesLabel"), value: t("languages") },
+    { label: t("basedLabel"), value: t("based") },
+  ];
   const linkClass = "font-mono text-[11px] uppercase tracking-[0.18em] text-fg-muted transition-colors hover:text-fg";
   return (
     <section className="shell py-24 lg:py-32">
@@ -27,10 +31,23 @@ export async function About() {
           </Reveal>
           <Reveal delay={0.1}>
             <dl className="mt-10 max-w-2xl divide-y divide-border border-y border-border">
-              {rows.map(([label, value]) => (
-                <div key={value} className="grid grid-cols-[6.5rem_1fr] gap-4 py-3.5 text-[15px] leading-6">
-                  <dt className="pt-[3px] font-mono text-[11px] uppercase tracking-[0.18em] text-fg-muted">{t(label)}</dt>
-                  <dd className="text-fg/90">{t(value)}</dd>
+              {rows.map(({ label, value }) => (
+                <div key={label} className="grid grid-cols-[6.5rem_1fr] items-baseline gap-4 py-4 text-[15px] leading-6">
+                  <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-fg-muted">{label}</dt>
+                  {typeof value === "string" ? (
+                    <dd className="text-fg/90">{value}</dd>
+                  ) : (
+                    <dd>
+                      <ul className="space-y-1.5">
+                        {value.map((e) => (
+                          <li key={e.role} className="flex flex-wrap items-baseline justify-between gap-x-6">
+                            <span className="text-fg/90">{e.role}</span>
+                            <span className="text-fg-muted">{e.org}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </dd>
+                  )}
                 </div>
               ))}
             </dl>
