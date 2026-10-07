@@ -4,6 +4,9 @@ export type LenisLike = {
   scrollTo: (value: number, options?: LenisScrollOptions) => void;
   /** Re-measure the scrollable height (call after layout changes Lenis cannot observe, e.g. a pin spacer). */
   resize?: () => void;
+  /** Pause and resume smooth scrolling (e.g. while a full-screen panel covers the page). */
+  stop?: () => void;
+  start?: () => void;
 };
 
 let current: LenisLike | null = null;

@@ -23,9 +23,9 @@
   padding-inline: clamp(1rem, 4vw, 4.5rem);
 }
 
-/* Screens that get the pinned WebGL work stage (wide, mouse or trackpad); everything else gets the swipe strip.
-   Keep in sync with FULL_STAGE_QUERY in components/home/WorkStage.tsx. */
-@custom-variant stage (@media (min-width: 768px) and (hover: hover) and (pointer: fine));
+/* Screens that get the heavy effects (WebGL work stage, backdrop blurs): wide, mouse or trackpad. Phones and
+   tablets get lighter versions. Keep in sync with RICH_MOTION_QUERY in lib/richMotion.ts. */
+@custom-variant rich (@media (min-width: 768px) and (hover: hover) and (pointer: fine));
 
 /* Inner scroll areas (the project viewer, the chat) scroll without a native bar, like the page itself. */
 @utility no-scrollbar {
@@ -83,6 +83,13 @@ body {
 }
 body {
   padding-right: var(--agent-panel-offset);
+}
+/* Below split-view width the text panel covers the screen; the page behind it must not scroll. */
+@media (width < 64rem) {
+  html[data-agent-panel],
+  html[data-agent-panel] body {
+    overflow: hidden;
+  }
 }
 /* While the divider is being dragged. */
 html[data-agent-resizing] {
@@ -206,4 +213,78 @@ html[data-hero="silk"]:not([data-header-past-hero]):has(.hero-scope) header.site
 html[data-hero="silk"] .hero-scope .talk-cta,
 html[data-hero="silk"] .hero-scope .talk-cta :is(.font-display, .font-mono) {
   text-shadow: none;
+}
+
+/* Work strip (phones and tablets): scroll-driven, so the browser runs it off the main thread. Each card eases up
+   to full size and brightness as it reaches the centre of the strip, its cover drifts the other way inside the
+   frame, and the whole strip slides in from the right as the section enters the screen. Without support (or
+   with reduced motion) the strip is simply static. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .strip-list {
+      animation: stripEnter linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 35%;
+    }
+    .strip-card {
+      animation: stripFocus linear both;
+      animation-timeline: view(inline);
+    }
+    .strip-media {
+      inset: 0 -9%;
+      animation: stripDrift linear both;
+      animation-timeline: view(inline);
+    }
+    .strip-text {
+      animation: stripText linear both;
+      animation-timeline: view(inline);
+      animation-range: cover 15% cover 85%;
+    }
+  }
+}
+/* Covers drift slowly while the strip is on screen (WorkStrip sets data-inview), each out of step with the next. */
+@media (prefers-reduced-motion: no-preference) {
+  .strip-kb {
+    animation: stripKenBurns 12s ease-in-out infinite alternate;
+    animation-delay: calc(var(--i, 0) * -2.7s);
+    animation-play-state: paused;
+  }
+  [data-inview] .strip-kb {
+    animation-play-state: running;
+  }
+}
+@keyframes stripKenBurns {
+  from { transform: scale(1.03) translate3d(1.5%, 1%, 0); }
+  to { transform: scale(1.12) translate3d(-1.5%, -1%, 0); }
+}
+@keyframes stripEnter {
+  from { transform: translateX(40vw); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@keyframes stripFocus {
+  0%, 100% { transform: scale(0.9); opacity: 0.45; }
+  50% { transform: none; opacity: 1; }
+}
+@keyframes stripDrift {
+  from { transform: translateX(8%); }
+  to { transform: translateX(-8%); }
+}
+@keyframes stripText {
+  0%, 100% { transform: translateY(10px); opacity: 0; }
+  50% { transform: none; opacity: 1; }
+}
+
+/* Résumé timeline (phones): the rail beside each role fills as the role scrolls through the screen. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .rail-fill {
+      animation: railFill linear both;
+      animation-timeline: view();
+      animation-range: entry 30% cover 55%;
+    }
+  }
+}
+@keyframes railFill {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
 }

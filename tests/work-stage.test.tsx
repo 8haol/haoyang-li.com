@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 
 let lastGlProps: Record<string, unknown> = {};
 vi.mock("@/components/motion/StageGL", () => ({
@@ -55,6 +55,39 @@ describe("WorkStage on phones and tablets", () => {
     wide = false;
     render(<WorkStage slides={[]} locale="en" {...props} />);
     expect(screen.getByText("00 / 00")).toBeInTheDocument();
+  });
+});
+
+describe("WorkStrip auto-advance", () => {
+  it("advances to the next card every few seconds while on screen, and holds after a touch", async () => {
+    wide = false;
+    vi.useFakeTimers();
+    let fire: ((e: { isIntersecting: boolean }[]) => void) | undefined;
+    const OriginalIO = window.IntersectionObserver;
+    window.IntersectionObserver = class {
+      constructor(cb: (e: { isIntersecting: boolean }[]) => void) {
+        fire = cb;
+      }
+      observe() {}
+      disconnect() {}
+    } as unknown as typeof IntersectionObserver;
+    const scrollTo = vi.fn();
+    Element.prototype.scrollTo = scrollTo as unknown as typeof Element.prototype.scrollTo;
+    render(<WorkStage slides={slides} locale="en" {...props} />);
+    const section = screen.getByRole("region", { name: "Selected work" });
+    act(() => fire?.([{ isIntersecting: true }]));
+    expect(section).toHaveAttribute("data-inview");
+    act(() => void vi.advanceTimersByTime(3600));
+    expect(scrollTo).toHaveBeenCalledWith(expect.objectContaining({ behavior: "smooth" }));
+    scrollTo.mockClear();
+    fireEvent.pointerDown(section.querySelector("ul")!);
+    act(() => void vi.advanceTimersByTime(3600));
+    expect(scrollTo).not.toHaveBeenCalled();
+    act(() => fire?.([{ isIntersecting: false }]));
+    act(() => void vi.advanceTimersByTime(20000));
+    expect(scrollTo).not.toHaveBeenCalled();
+    window.IntersectionObserver = OriginalIO;
+    vi.useRealTimers();
   });
 });
 
