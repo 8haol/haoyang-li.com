@@ -1,7 +1,7 @@
 {
   "common": {
-    "englishOnly": "这一页目前只有英文版。",
-    "readMore": "查看案例",
+    "englishOnly": "这一页暂时只有英文版。",
+    "readMore": "看完整案例",
     "backToWork": "返回作品",
     "skipToContent": "跳到正文",
     "close": "关闭"
@@ -21,15 +21,15 @@
     "stack": "技术栈",
     "outcome": "成果",
     "visit": "访问网站",
-    "readCase": "查看案例",
+    "readCase": "看完整案例",
     "prev": "上一个项目",
     "next": "下一个项目",
     "project": "项目"
   },
   "openSource": {
     "title": "开源",
-    "intro": "几个已经做完的个人项目：都有 README 和截图，也都在解决一个真实的问题。",
-    "why": "缘起：",
+    "intro": "几个做完了的个人项目，都有 README 和截图，也都是因为真有需要才做的。",
+    "why": "为什么做：",
     "status": {
       "live": "已上线",
       "wip": "开发中",
@@ -38,40 +38,40 @@
   },
   "resume": {
     "eyebrow": "简历",
-    "title": "从数学，到生产环境。",
+    "title": "这些年做过的事。",
     "experience": "工作经历",
     "entrepreneurial": "创业经历",
     "education": "教育",
     "skills": "技能",
     "languages": "语言",
     "download": "下载简历（PDF）",
-    "more": "展开其余 {count} 条",
+    "more": "再看 {count} 条",
     "less": "收起"
   },
   "footer": {
     "builtWith": "基于 Next.js 构建，部署在 Vercel。",
     "source": "GitHub 源码",
-    "cta": "聊一聊",
+    "cta": "聊聊",
     "email": "hello@haoyang-li.com",
     "copy": "保留所有权利。"
   },
   "hero": {
     "role": "AI 系统架构师 · 全栈工程师",
     "based": "伦敦",
-    "line": "我搭建能在真实业务里落地的 AI 系统，从第一次需求沟通一直做到上线。",
+    "line": "我做的是能真正用在业务里的 AI 系统，从跟客户聊需求开始，一直做到上线。",
     "scroll": "向下滚动",
     "talk": "和我聊聊",
     "talkSub": "24 小时在线",
     "roles": [
       "AI 系统架构师",
       "全栈工程师",
-      "Forward Deployed 工程师"
+      "驻场 AI 工程师（FDE）"
     ]
   },
   "about": {
     "eyebrow": "关于我",
-    "title": "数学科班出身的 AI 系统架构师。",
-    "body": "我在伦敦读的数学与统计，毕业后做了一年前沿大模型的后训练，给模型写评分标准，定义什么才算好答案。现在我是 Zenith AI 的 Lead AI & Data Integration Architect，实际做的是 AI 系统架构：从第一次和客户沟通，到架构设计、开发，一直到上线生产。我同时是 Kelay AI 的技术联合创始人。我在意 AI 能不能把自己的决策讲清楚，也愿意做那些不起眼、却决定系统能否稳定运行的集成工作。",
+    "title": "学数学出身，现在做 AI 系统。",
+    "body": "我在伦敦读的数学和统计。毕业后做了一年大模型后训练，主要是写评分标准，告诉模型什么样的回答才算好。现在我在 Zenith AI 做 AI 系统架构（职位是 Lead AI & Data Integration Architect），从和客户第一次沟通、设计架构、写代码，一直跟到上线。同时我也是 Kelay AI 的技术联合创始人。我比较在意两件事：AI 做出的决定要能说清楚理由；还有那些不起眼的系统集成，因为系统能不能稳定跑下去，往往就看这部分。",
     "nowLabel": "现在",
     "now": [
       {
@@ -101,35 +101,35 @@
   },
   "gallery": {
     "eyebrow": "精选作品",
-    "hint": "滚动或拖拽 · 点击查看",
+    "hint": "滚动或拖动 · 点开查看详情",
     "open": "查看"
   },
   "agent": {
-    "title": "聊聊我的工作",
-    "subtitle": "这是 AI 版的我，可以直接打字聊。它熟悉我的简历、项目和不少个人情况；答不上来的，会请你联系我本人。",
-    "placeholder": "问问 GAIMS、Kelay、AI agent，或者我是怎么工作的……",
+    "title": "问问我的工作",
+    "subtitle": "这是 AI 版的我，可以直接打字问。我的简历、做过的项目和一些个人情况它都知道；它答不上来的，会让你直接找我。",
+    "placeholder": "可以问 GAIMS、Kelay、AI Agent，或者我平时怎么工作……",
     "send": "发送",
-    "disclosure": "这是 AI 版的我，不是我本人。可能会说错，但不会乱编。",
-    "offline": "助手暂时没有接通。可以发邮件到 hello@haoyang-li.com，我会亲自回复。",
-    "suggest1": "GAIMS 是个什么系统？",
-    "suggest2": "LLM 的决策怎么做到可审计？",
+    "disclosure": "这是 AI 版的我，不是我本人。它可能会答错，但不会瞎编。",
+    "offline": "助手暂时连不上。可以发邮件到 hello@haoyang-li.com，我会亲自回。",
+    "suggest1": "GAIMS 是做什么的？",
+    "suggest2": "怎么让大模型的决定可以追溯？",
     "suggest3": "Kelay AI 是做什么的？",
     "close": "关闭",
     "thinking": "思考中……",
     "connecting": "接通中……",
-    "live": "已接通。直接说就行，随时可以打断我。继续往下滚，我会缩到角落里。",
+    "live": "已接通，直接说话就行，随时可以打断我。继续往下滑的话，我会缩到角落里。",
     "endCall": "挂断",
     "mute": "静音",
     "unmute": "取消静音",
-    "callEnded": "谢谢来电。可以再打一次、改成打字，或者继续看看网站。",
+    "callEnded": "谢谢来电。可以再打一次、换成打字，或者接着逛逛网站。",
     "callAgain": "再打一次",
-    "micDenied": "这需要麦克风权限。请在浏览器里允许后重试，或者改成打字。",
-    "voiceOffline": "语音线路现在没有接通。可以在下面打字，或发邮件到 hello@haoyang-li.com。",
-    "callFailed": "通话中断了。再试一次，或者改成打字。",
-    "useText": "改成打字",
+    "micDenied": "语音通话需要麦克风权限。请在浏览器里允许后再试，或者换成打字。",
+    "voiceOffline": "语音暂时连不上。可以在下面打字，或者发邮件到 hello@haoyang-li.com。",
+    "callFailed": "通话断了。再试一次，或者换成打字。",
+    "useText": "换成打字",
     "expand": "放大通话",
     "collapse": "缩小通话",
-    "scrollHint": "继续往下滚也没关系，我会缩到角落里接着聊。",
+    "scrollHint": "往下滑也没关系，我会缩到角落里接着聊。",
     "resize": "拖动调整聊天面板宽度"
   }
 }
