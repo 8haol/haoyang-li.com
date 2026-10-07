@@ -20,7 +20,7 @@ const current: ViewerProject = {
 };
 const prev = { slug: "kit-funder", title: "Kit Funder", image: "/b.svg" };
 const next = { slug: "product-hub", title: "Product Hub", image: "/c.svg" };
-const labels = { close: "Close", prev: "Previous project", next: "Next project", visit: "Visit site ↗", readCase: "Read the case study" };
+const labels = { close: "Close", prev: "Previous project", next: "Next project", visit: "Visit site", readCase: "Read the case study" };
 
 beforeEach(() => {
   replace.mockClear();

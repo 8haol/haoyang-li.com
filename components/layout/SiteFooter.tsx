@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { ArrowUpRight } from "lucide-react";
 import { siteConfig } from "@/lib/site";
 
 export async function SiteFooter() {
@@ -9,7 +10,8 @@ export async function SiteFooter() {
         <a href={`mailto:${siteConfig.email}`} className="group block">
           <span className="font-display text-[clamp(2.6rem,9cqw,8rem)] font-semibold leading-[0.95] tracking-[-0.04em]">
             {t("cta")}
-            <span aria-hidden className="ml-3 inline-block transition-transform duration-500 ease-out group-hover:-translate-y-2 group-hover:translate-x-2">↗</span>
+            {/* An icon, not the ↗ character: iOS draws that one as an emoji. */}
+            <ArrowUpRight aria-hidden strokeWidth={2.25} className="ml-2 inline-block size-[0.8em] align-[-0.06em] transition-transform duration-500 ease-out group-hover:-translate-y-2 group-hover:translate-x-2" />
           </span>
           <span className="mt-4 block font-mono text-[12px] uppercase tracking-[0.2em] text-fg-muted">{siteConfig.email}</span>
         </a>
