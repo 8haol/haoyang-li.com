@@ -10,15 +10,22 @@ const pad = (n: number) => String(n).padStart(2, "0");
 /**
  * The work section on phones and tablets: a native horizontal scroll-snap strip. The motion (cards easing up
  * to full size as they reach the centre, covers drifting inside their frames, the strip sliding in) is CSS
- * scroll-driven animation in globals.css, so it runs off the main thread; the only script is the counter and
- * the progress bar.
+ * scroll-driven animation in globals.css, so it runs off the main thread. While the section is on screen the
+ * covers drift slowly (CSS) and the strip advances by itself every few seconds, pausing after a touch.
  */
+const ADVANCE_MS = 3500;
+/** How long a touch on the strip holds the auto-advance off. */
+const HOLD_MS = 7000;
+
 export function WorkStrip({ slides, locale, eyebrow, openLabel }: { slides: StageSlide[]; locale: Locale; eyebrow: string; openLabel: string }) {
   const n = slides.length;
   const prefix = locale === "en" ? "" : `/${locale}`;
+  const sectionRef = useRef<HTMLElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
   const barRef = useRef<HTMLSpanElement>(null);
+  const indexRef = useRef(0);
   const [index, setIndex] = useState(0);
+  const [inView, setInView] = useState(false);
 
   // The counter follows the card nearest the strip's centre; the bar follows the scroll position.
   useEffect(() => {
@@ -38,6 +45,7 @@ export function WorkStrip({ slides, locale, eyebrow, openLabel }: { slides: Stag
           best = i;
         }
       });
+      indexRef.current = best;
       setIndex(best);
       const max = list.scrollWidth - list.clientWidth;
       if (barRef.current) barRef.current.style.transform = `scaleX(${max > 0 ? Math.min(1, list.scrollLeft / max) : 1})`;
@@ -53,8 +61,41 @@ export function WorkStrip({ slides, locale, eyebrow, openLabel }: { slides: Stag
     };
   }, []);
 
+  // Most of the section on screen: covers drift and the strip auto-advances. Off screen, nothing runs.
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.4 });
+    io.observe(section);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list || !inView || n < 2) return;
+    if (typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let heldAt = -Infinity;
+    const hold = () => {
+      heldAt = performance.now();
+    };
+    const id = window.setInterval(() => {
+      if (document.hidden || performance.now() - heldAt < HOLD_MS) return;
+      const next = list.children[(indexRef.current + 1) % n] as HTMLElement | undefined;
+      if (next) list.scrollTo({ left: next.offsetLeft + next.offsetWidth / 2 - list.clientWidth / 2, behavior: "smooth" });
+    }, ADVANCE_MS);
+    list.addEventListener("pointerdown", hold, { passive: true });
+    list.addEventListener("touchstart", hold, { passive: true });
+    list.addEventListener("wheel", hold, { passive: true });
+    return () => {
+      window.clearInterval(id);
+      list.removeEventListener("pointerdown", hold);
+      list.removeEventListener("touchstart", hold);
+      list.removeEventListener("wheel", hold);
+    };
+  }, [inView, n]);
+
   return (
-    <section className="relative overflow-hidden bg-black py-16 text-white" aria-label={eyebrow}>
+    <section ref={sectionRef} data-inview={inView || undefined} className="relative overflow-hidden bg-black py-16 text-white" aria-label={eyebrow}>
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/10" />
       {/* A soft glow behind the strip so the black reads as a stage, not a hole. */}
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-1/3 h-2/3 bg-[radial-gradient(60%_50%_at_50%_40%,rgba(120,140,180,0.18),transparent_70%)]" />
@@ -71,8 +112,8 @@ export function WorkStrip({ slides, locale, eyebrow, openLabel }: { slides: Stag
         ref={listRef}
         className="strip-list no-scrollbar relative mt-8 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[14vw] py-2"
       >
-        {slides.map((s) => (
-          <li key={s.slug} className="strip-card w-[72vw] max-w-[440px] flex-none snap-center">
+        {slides.map((s, i) => (
+          <li key={s.slug} style={{ "--i": i } as React.CSSProperties} className="strip-card w-[72vw] max-w-[440px] flex-none snap-center">
             <article>
               <Link
                 href={`${prefix}/work/${s.slug}`}
@@ -82,7 +123,7 @@ export function WorkStrip({ slides, locale, eyebrow, openLabel }: { slides: Stag
                 {/* clip, not hidden: a hidden box is a scroll container and would capture the cover's view timeline. */}
                 <div className="relative aspect-[16/10] overflow-clip rounded-2xl bg-white/5 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.9)] ring-1 ring-white/10">
                   <div className="strip-media absolute inset-0">
-                    <Image src={s.image} alt="" fill sizes="(min-width: 600px) 560px, 96vw" className="object-cover" />
+                    <Image src={s.image} alt="" fill sizes="(min-width: 600px) 560px, 96vw" className="strip-kb object-cover" />
                   </div>
                 </div>
                 <div className="strip-text">
