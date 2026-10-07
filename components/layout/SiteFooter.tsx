@@ -5,7 +5,7 @@ import { siteConfig } from "@/lib/site";
 export async function SiteFooter() {
   const t = await getTranslations("footer");
   return (
-    <footer id="contact" className="mt-32 shell @container pb-10">
+    <footer id="contact" className="mt-8 shell @container pb-10 sm:mt-32">
       <div className="border-t border-border pt-16">
         <a href={`mailto:${siteConfig.email}`} className="group block">
           <span className="font-display text-[clamp(2.6rem,9cqw,8rem)] font-semibold leading-[0.95] tracking-[-0.04em]">
