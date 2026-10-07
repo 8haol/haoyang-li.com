@@ -192,7 +192,8 @@ export function ProjectViewer({ mode, current, prev, next, basePath, labels, chi
     <div
       ref={rootRef}
       data-lenis-prevent
-      className="fixed inset-0 z-50 bg-black/85"
+      className="fixed inset-y-0 left-0 z-50 bg-black/85"
+      style={{ right: "var(--agent-panel-offset)" }}
       role="dialog"
       aria-modal="true"
       aria-label={current.title}
@@ -218,7 +219,7 @@ export function ProjectViewer({ mode, current, prev, next, basePath, labels, chi
             ref={panelRef}
             tabIndex={-1}
             data-lenis-prevent
-            className="h-[min(86dvh,900px)] w-[min(1200px,92vw)] overflow-y-auto rounded-3xl bg-bg px-5 py-10 text-fg shadow-2xl outline-none sm:px-10 sm:py-14 lg:px-16"
+            className="no-scrollbar h-[min(86dvh,900px)] w-[min(1200px,92%)] overflow-y-auto rounded-3xl bg-bg px-5 py-10 text-fg shadow-2xl outline-none sm:px-10 sm:py-14 lg:px-16"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}

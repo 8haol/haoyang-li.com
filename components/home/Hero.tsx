@@ -6,13 +6,13 @@ import { TalkButton } from "@/components/agent/TalkButton";
 
 // Sized by width and height so the two lines stay one confident block on short laptop screens too.
 const NAME =
-  "block font-display text-[clamp(4.5rem,min(17vw,27svh),16rem)] font-bold uppercase leading-[0.84] tracking-[-0.035em] [font-variation-settings:'opsz'_96]";
+  "block font-display text-[clamp(4.5rem,min(17cqw,27svh),16rem)] font-bold uppercase leading-[0.84] tracking-[-0.035em] [font-variation-settings:'opsz'_96]";
 
 export async function Hero() {
   const t = await getTranslations("hero");
   const roles = t.raw("roles") as string[];
   return (
-    <section className="hero-scope relative isolate flex min-h-[calc(100dvh-3.5rem)] flex-col">
+    <section className="hero-scope @container relative isolate flex min-h-[calc(100dvh-3.5rem)] flex-col">
       {/* Grey-on-paper watercolour wash, full bleed; reaches up behind the transparent sticky header so the
           wash has no seam. Tune it live in development at /?tune and paste the JSX it gives you here. */}
       <HeroWash className="pointer-events-none absolute inset-x-0 -top-14 bottom-0 -z-10" />
@@ -35,14 +35,14 @@ export async function Hero() {
                 Li
               </span>
             </HeroReveal>
-            <p className="mt-8 max-w-[24em] text-balance font-serif text-[clamp(1.2rem,1.75vw,1.85rem)] italic leading-[1.3] text-fg/70 lg:ml-[2.5vw] lg:mt-0 lg:[align-self:last_baseline]">
+            <p className="mt-8 max-w-[24em] text-balance font-serif text-[clamp(1.2rem,1.75cqw,1.85rem)] italic leading-[1.3] text-fg/70 lg:ml-[2.5cqw] lg:mt-0 lg:[align-self:last_baseline]">
               {t("line")}
             </p>
             <ul className="mt-10 flex flex-col items-start gap-1 lg:mt-0 lg:items-end lg:[align-self:last_baseline]">
               {roles.map((r, i) => (
                 <li key={r} className="flex items-baseline gap-3">
                   <span className="font-mono text-[10px] tracking-[0.2em] text-fg-muted">0{i + 1}</span>
-                  <span className="font-display text-[clamp(1rem,1.15vw,1.15rem)] font-medium tracking-[-0.01em] text-fg/85">{r}</span>
+                  <span className="font-display text-[clamp(1rem,1.15cqw,1.15rem)] font-medium tracking-[-0.01em] text-fg/85">{r}</span>
                 </li>
               ))}
             </ul>

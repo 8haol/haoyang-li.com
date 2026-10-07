@@ -23,6 +23,14 @@
   padding-inline: clamp(1rem, 4vw, 4.5rem);
 }
 
+/* Inner scroll areas (the project viewer, the chat) scroll without a native bar, like the page itself. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 :root {
   --bg: #f4f2ee;
   --fg: #121212;
@@ -55,6 +63,27 @@ html::-webkit-scrollbar {
 body {
   font-family: var(--font-sans);
   font-feature-settings: "ss01", "cv11";
+}
+/* Split view: while the text panel is open on a wide screen, the page narrows beside it and stays fully usable.
+   <html data-agent-panel> is set by AgentPanel; the panel's width lives here so both sides agree. The narrowing is
+   not animated on purpose: a padding transition re-lays out the page (and resizes the WebGL canvases) every frame. */
+:root {
+  --agent-panel-w: min(520px, 42vw);
+  /* How much of the viewport's right edge the panel occupies right now; fixed overlays subtract it. */
+  --agent-panel-offset: 0px;
+}
+@media (min-width: 1024px) {
+  html[data-agent-panel] {
+    --agent-panel-offset: var(--agent-panel-w);
+  }
+}
+body {
+  padding-right: var(--agent-panel-offset);
+}
+/* While the divider is being dragged. */
+html[data-agent-resizing] {
+  cursor: col-resize;
+  user-select: none;
 }
 .font-display {
   font-family: var(--font-display);
@@ -132,7 +161,7 @@ body {
    until it has scrolled past the hero. <html data-hero> comes from HERO_BACKDROP (lib/hero.ts) on the server, so
    the first paint is already right; the `?hero=` preview flips it on the client. */
 html[data-hero="silk"] .hero-scope,
-html[data-hero="silk"]:not([data-header-past-hero]):has(.hero-scope) header {
+html[data-hero="silk"]:not([data-header-past-hero]):has(.hero-scope) header.site-header {
   --color-fg: #ffffff;
   --color-fg-muted: rgba(255, 255, 255, 0.86);
   --color-border: rgba(255, 255, 255, 0.2);
@@ -151,7 +180,7 @@ html[data-hero="silk"] .hero-scope .font-serif {
   text-shadow: 0 0 22px rgba(24, 34, 52, 0.55), 0 1px 3px rgba(24, 34, 52, 0.3);
 }
 html[data-hero="silk"] .hero-scope .font-mono,
-html[data-hero="silk"]:not([data-header-past-hero]):has(.hero-scope) header :is(.font-mono, a) {
+html[data-hero="silk"]:not([data-header-past-hero]):has(.hero-scope) header.site-header :is(.font-mono, a) {
   text-shadow: 0 0 12px rgba(10, 14, 22, 0.55), 0 1px 2px rgba(10, 14, 22, 0.35);
 }
 html[data-hero="silk"] .hero-scope .talk-cta,

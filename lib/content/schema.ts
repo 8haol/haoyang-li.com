@@ -87,3 +87,18 @@ export const Resume = z.object({
   languages: z.array(z.string()).min(1),
 });
 export type Resume = z.infer<typeof Resume>;
+
+/** Personal material for the voice agent, beyond the CV. Written in Haoyang's own words, first person. */
+export const Persona = z.object({
+  /** How I talk: tone, habits, things I say. */
+  voice: z.array(z.string().min(1)).min(1),
+  /** A few paragraphs of my story, the way I'd tell it on a call. */
+  story: z.string().min(1),
+  /** Short facts about me that are not on the CV. */
+  facts: z.array(z.string().min(1)).default([]),
+  /** Questions people actually ask, with my answers. */
+  faq: z.array(z.object({ q: z.string().min(1), a: z.string().min(1) })).default([]),
+  /** Things I don't discuss, or how I deflect them. */
+  boundaries: z.array(z.string().min(1)).default([]),
+});
+export type Persona = z.infer<typeof Persona>;
