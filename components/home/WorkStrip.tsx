@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Locale } from "@/lib/site";
 import type { StageSlide } from "./WorkStage";
+import { StageBackdrop } from "@/components/motion/StageBackdrop";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -97,8 +98,7 @@ export function WorkStrip({ slides, locale, eyebrow, openLabel }: { slides: Stag
   return (
     <section ref={sectionRef} data-inview={inView || undefined} className="relative overflow-hidden bg-black py-16 text-white" aria-label={eyebrow}>
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/10" />
-      {/* A soft glow behind the strip so the black reads as a stage, not a hole. */}
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-1/3 h-2/3 bg-[radial-gradient(60%_50%_at_50%_40%,rgba(120,140,180,0.18),transparent_70%)]" />
+      <StageBackdrop />
       <div className="shell relative flex items-baseline justify-between">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-white/55">
           {eyebrow} <span className="text-white">({pad(n)})</span>
@@ -136,7 +136,7 @@ export function WorkStrip({ slides, locale, eyebrow, openLabel }: { slides: Stag
         ))}
       </ul>
 
-      <div className="shell relative mt-8">
+      <div className="shell relative mt-4">
         <span aria-hidden className="relative block h-px overflow-hidden bg-white/15">
           <span ref={barRef} className="absolute inset-0 origin-left scale-x-0 bg-white" />
         </span>
