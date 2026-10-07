@@ -29,7 +29,12 @@
   "openSource": {
     "title": "Open source",
     "intro": "A few finished things, each with a README, a screenshot and a reason to exist.",
-    "why": "Why it exists"
+    "why": "Why it exists:",
+    "status": {
+      "live": "Live",
+      "wip": "In progress",
+      "planned": "Planned"
+    }
   },
   "resume": {
     "eyebrow": "Resume",
@@ -63,8 +68,8 @@
   },
   "about": {
     "eyebrow": "About",
-    "title": "Mathematician by training, builder by habit.",
-    "body": "I studied mathematics and statistics in London, spent a year teaching frontier models what good answers look like, and now design and ship AI products for a sportswear group and my own startup. I care about systems that explain themselves, and the unglamorous integration work that makes them run in production.",
+    "title": "AI systems architect, trained as a mathematician.",
+    "body": "I studied mathematics and statistics in London, then spent a year on frontier-model post-training, writing the rubrics that decide what a good answer looks like. Today I'm Lead AI & Data Integration Architect at Zenith AI: I design and build AI systems for businesses, from the first customer conversation through architecture and build to production. I'm also technical co-founder of Kelay AI. I care about AI that can explain its decisions, and about the unglamorous integration work that keeps it running.",
     "nowLabel": "Now",
     "now": [
       {
