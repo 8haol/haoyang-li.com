@@ -131,5 +131,23 @@
     "collapse": "Minimise the call",
     "scrollHint": "Scroll on to keep browsing. I'll tuck into the corner and keep talking.",
     "resize": "Drag to resize the chat"
+  },
+  "contact": {
+    "talkLabel": "Talk now",
+    "talkBody": "Ask the AI version of me about my work, by voice or by typing. It knows my CV and case studies and picks up any time.",
+    "writeLabel": "Leave a note",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send message",
+    "sending": "Sending…",
+    "note": "I read every note myself and reply within a day or two.",
+    "sentTitle": "Thanks, {name}.",
+    "sentBody": "Your note is in my inbox. I'll reply to <b>{email}</b>, usually within a day or two.",
+    "sentNote": "Need an answer sooner? Talk to the AI version of me.",
+    "another": "Write another",
+    "failed": "That didn't go through. Try again, or email hello@haoyang-li.com.",
+    "offline": "The form isn't connected yet. Email hello@haoyang-li.com and I'll reply myself.",
+    "limited": "That's a lot of messages for one day. Email hello@haoyang-li.com instead."
   }
 }
