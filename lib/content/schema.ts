@@ -44,9 +44,16 @@ export const GalleryItem = z.object({
   tags: z.array(z.string()).min(1),
   href: z.string().url().optional(),
   caseStudy: slug.optional(),
+  /** Poster, 16:10. Also the first frame the stage shows while a video loads. */
   image: z.string().optional(),
+  /** Muted 16:10 loop; defaults to `/images/work/<slug>/loop.mp4` when that file exists. */
+  video: z.string().optional(),
   /** Route slug for the project page; defaults to caseStudy, then a slugified title. */
   slug: slug.optional(),
+  /** Chinese overrides; anything left out falls back to the English field. */
+  zh: z
+    .object({ title: z.string().min(1).optional(), blurb: z.string().min(1).optional(), org: z.string().min(1).optional() })
+    .optional(),
 });
 export const Gallery = z.array(GalleryItem);
 export type GalleryItem = z.infer<typeof GalleryItem>;

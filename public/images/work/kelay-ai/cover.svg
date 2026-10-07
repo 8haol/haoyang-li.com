@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
-<defs><radialGradient id="g" cx="0.85" cy="0.1" r="0.9"><stop offset="0" stop-color="#b8532f" stop-opacity="0.18"/><stop offset="1" stop-color="#b8532f" stop-opacity="0"/></radialGradient>
-<pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M80 0H0V80" fill="none" stroke="#b8532f" stroke-opacity="0.08"/></pattern></defs>
-<rect width="1600" height="1000" fill="#f3e9e4"/><rect width="1600" height="1000" fill="url(#grid)"/><rect width="1600" height="1000" fill="url(#g)"/>
-<text x="96" y="132" font-family="ui-monospace,Menlo,monospace" font-size="26" letter-spacing="6" fill="#b8532f" fill-opacity="0.75">KELAY AI (CO-FOUNDER) · 2026</text>
-<text x="96" y="640" font-family="-apple-system,Inter,Helvetica,Arial,sans-serif" font-size="112" font-weight="700" letter-spacing="-4" fill="#121212">Kelay AI</text>
-<text x="96" y="730" font-family="-apple-system,Inter,Helvetica,Arial,sans-serif" font-size="32" fill="#121212" fill-opacity="0.7"><tspan x="96" dy="0">Multi-tenant voice AI receptionist for UK</tspan><tspan x="96" dy="44">small businesses; books, reschedules and takes</tspan><tspan x="96" dy="44">deposits in English and Mandarin.</tspan></text>
-<text x="1504" y="920" text-anchor="end" font-family="ui-monospace,Menlo,monospace" font-size="28" fill="#b8532f" fill-opacity="0.7">02 / 13</text>
-<circle cx="1480" cy="128" r="14" fill="#b8532f"/></svg>
