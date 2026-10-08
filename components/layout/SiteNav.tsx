@@ -103,7 +103,7 @@ export function SiteNav({ sections, labels }: { sections: NavSection[]; labels: 
       <header
         className={`site-header sticky top-0 z-40 transition duration-500 ease-out-expo ${
           handover ? "lg:pointer-events-none lg:-translate-y-3 lg:opacity-0 lg:has-[:focus-visible]:pointer-events-auto lg:has-[:focus-visible]:translate-y-0 lg:has-[:focus-visible]:opacity-100" : ""
-        }`}
+        } ${home ? "" : "bg-bg/85 backdrop-blur-md"}`}
       >
         <a href="#content" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4">
           {labels.skip}

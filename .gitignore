@@ -41,3 +41,8 @@ yarn-error.log*
 next-env.d.ts
 .superpowers/
 .claude/
+
+# the private CV (phone, personal email, named customers) and its inputs never enter the repo
+cv.private.json
+*_private.pdf
+*_private.html

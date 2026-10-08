@@ -1,16 +1,16 @@
 ---
 title: "GAIMS: an auditable LLM decision layer for supplier allocation"
 slug: gaims
-summary: Routes every incoming purchase order to the right factory, explains why, learns from human overrides, and keeps a full audit trail. 3,000+ orders in eight months of production.
+summary: Routes every incoming purchase order to the right factory, explains why, learns from human overrides, and keeps a full audit trail. 3,000+ orders in production since February 2026.
 role: Sole designer and builder (architecture, backend, frontend, LLM pipeline, deployment)
 period: 2025 – present
 org: My Club Group
 stack: [TypeScript, Hono, Drizzle, PostgreSQL, pg-boss, OpenAI, n8n, Zoho CRM, React, Leaflet, Docker]
 outcome:
-  - 3,000+ purchase orders allocated in production over eight months
+  - 3,000+ purchase orders allocated in production since February 2026
   - "Allocation became review-and-approve: every order arrives with a recommendation and its rationale"
   - Patent application filed on the decision-and-feedback method
-  - Demoed to four UK sportswear groups in NDA-stage evaluations
+  - Demoed to enterprise prospects, from UK sportswear brands and global sports retailers, in NDA-stage evaluations
 featured: true
 cover: /images/work/gaims/cover.jpg
 order: 1
@@ -54,14 +54,14 @@ Two generations:
 
 ## Outcome
 
-- 3,000+ purchase orders allocated in production across eight months.
+- 3,000+ purchase orders allocated in production since February 2026.
 - Every order now arrives with a recommendation and its rationale, so people approve or overrule instead of deciding from scratch.
-- Patent application filed on the method; NDA-stage demos to four UK sportswear groups, presented to executives and IT teams.
+- Patent application filed on the method; NDA-stage demos to UK sportswear brands and global sports retailers, presented to executives and IT teams.
 - An immutable audit trail from order receipt to factory assignment, which did not exist before.
 
 ## What I'd do differently
 
-Start the enterprise architecture earlier. The low-code v1 was the right call for proving the decision model with real orders, but I under-estimated how soon isolation and reproducibility would be the gating questions in customer evaluations. I would also instrument the override rate from day one; it is the best single metric for whether the engine is earning trust.
+Start the enterprise architecture earlier. The low-code v1 was the right call for proving the decision model with real orders, but I underestimated how soon isolation and reproducibility would be the gating questions in customer evaluations. I would also instrument the override rate from day one; it is the best single metric for whether the engine is earning trust.
 
 ## Stack
 
