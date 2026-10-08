@@ -3,6 +3,7 @@ import { loadLocalizedYaml } from "@/lib/content/load";
 import { Resume as ResumeSchema, type Resume as ResumeData } from "@/lib/content/schema";
 import type { Locale } from "@/lib/site";
 import { Reveal } from "@/components/motion/Reveal";
+import { LineReveal } from "@/components/motion/LineReveal";
 
 const label = "font-mono text-[11px] uppercase tracking-[0.22em] text-fg-muted";
 const period = "font-mono text-[11px] uppercase tracking-[0.18em] text-fg-muted";
@@ -42,7 +43,7 @@ function Roles({ n, title, items, more, less }: { n: number; title: string; item
         const current = /present|至今/i.test(e.period);
         const rest = e.bullets.slice(SHOWN);
         return (
-          <li key={`${e.org}-${e.period}`} className="relative max-lg:pb-12 max-lg:pl-8 max-lg:last:pb-2 lg:py-8">
+          <li key={`${e.org}-${e.period}`} className="role-row relative max-lg:pb-12 max-lg:pl-8 max-lg:last:pb-2 lg:-mx-4 lg:px-4 lg:py-8">
             <span aria-hidden className="absolute bottom-0 left-[5px] top-4 w-px overflow-hidden bg-border lg:hidden">
               <span className="rail-fill absolute inset-0 origin-top bg-fg/40" />
             </span>
@@ -68,11 +69,15 @@ function Roles({ n, title, items, more, less }: { n: number; title: string; item
                 · {e.location}
               </p>
               <ul className="mt-4 space-y-2 text-[15px] leading-[1.65] text-fg/80">
-                {e.bullets.slice(0, SHOWN).map((b) => (
-                  <Bullet key={b} text={b} />
+                {e.bullets.slice(0, SHOWN).map((b, i) => (
+                  <Reveal key={b} delay={0.06 * i}>
+                    <Bullet text={b} />
+                  </Reveal>
                 ))}
-                {rest.map((b) => (
-                  <Bullet key={b} text={b} className="max-lg:hidden" />
+                {rest.map((b, i) => (
+                  <Reveal key={b} delay={0.06 * (SHOWN + i)} className="max-lg:hidden">
+                    <Bullet text={b} />
+                  </Reveal>
                 ))}
               </ul>
               {rest.length > 0 && (
@@ -105,14 +110,15 @@ export async function Resume() {
   let n = 0;
   return (
     <section className="shell py-16 lg:py-24">
-      <div className="grid gap-12 border-t border-border pt-10 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
+      <div className="relative grid gap-12 pt-10 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
+        <span aria-hidden data-rule className="absolute inset-x-0 top-0 h-px bg-border" />
         <div>
           {/* The heading stays in view while the long list of roles scrolls past it. */}
           <Reveal className="lg:sticky lg:top-24">
             <p className={label}>{t("eyebrow")}</p>
-            <h2 className="font-display mt-5 text-balance text-[clamp(2rem,4.5vw,3.6rem)] font-medium leading-[1.02] tracking-[-0.03em]">
+            <LineReveal className="font-display mt-5 text-balance text-[clamp(2rem,4.5vw,3.6rem)] font-medium leading-[1.02] tracking-[-0.03em]">
               {t("title")}
-            </h2>
+            </LineReveal>
             <p className="mt-6 max-w-md text-[17px] leading-[1.6] text-fg/80">{r.summary}</p>
             <a
               href="/Haoyang_Li_CV.pdf"

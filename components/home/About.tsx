@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { Reveal } from "@/components/motion/Reveal";
+import { LineReveal } from "@/components/motion/LineReveal";
 
 type Entry = { role: string; org: string };
 
@@ -18,9 +19,9 @@ export async function About() {
       <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
         <Reveal>
           <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-fg-muted">{t("eyebrow")}</p>
-          <h2 className="font-display mt-5 text-balance text-[clamp(2rem,4.5cqw,3.6rem)] font-medium leading-[1.02] tracking-[-0.03em]">
+          <LineReveal className="font-display mt-5 text-balance text-[clamp(2rem,4.5cqw,3.6rem)] font-medium leading-[1.02] tracking-[-0.03em]">
             {t("title")}
-          </h2>
+          </LineReveal>
         </Reveal>
         <div>
           <Reveal delay={0.05}>

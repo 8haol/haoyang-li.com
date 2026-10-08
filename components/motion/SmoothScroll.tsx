@@ -11,7 +11,7 @@ export function SmoothScroll() {
     Promise.all([import("lenis"), import("gsap"), import("gsap/ScrollTrigger")]).then(([{ default: Lenis }, { default: gsap }, { ScrollTrigger }]) => {
       if (cancelled) return;
       gsap.registerPlugin(ScrollTrigger);
-      const lenis = new Lenis({ lerp: 0.1 });
+      const lenis = new Lenis({ lerp: 0.085 });
       setLenis(lenis);
       lenis.on("scroll", ScrollTrigger.update);
       // Pins add spacer height that Lenis cannot observe (html is a fixed 100% box); re-measure after refreshes.

@@ -3,6 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { siteConfig } from "@/lib/site";
 import { TalkButton } from "@/components/agent/TalkButton";
 import { ContactForm } from "./ContactForm";
+import { LineReveal } from "@/components/motion/LineReveal";
 
 const EYEBROW = "flex gap-3 font-mono text-[11px] font-normal uppercase tracking-[0.2em] text-fg-muted";
 
@@ -12,19 +13,21 @@ export async function SiteFooter() {
   const c = await getTranslations("contact");
   return (
     <footer id="contact" className="mt-8 shell @container pb-10 sm:mt-32">
-      <div className="border-t border-border pt-16">
+      <div className="relative pt-16">
+        <span aria-hidden data-rule className="absolute inset-x-0 top-0 h-px bg-border" />
         <a href={`mailto:${siteConfig.email}`} className="group block">
-          <span className="font-display text-[clamp(2.6rem,9cqw,8rem)] font-semibold leading-[0.95] tracking-[-0.04em]">
-            {t("cta")}
+          <span className="flex items-baseline font-display text-[clamp(2.6rem,9cqw,8rem)] font-semibold leading-[0.95] tracking-[-0.04em]">
+            <LineReveal as="span" className="block">{t("cta")}</LineReveal>
             {/* An icon, not the ↗ character: iOS draws that one as an emoji. */}
-            <ArrowUpRight aria-hidden strokeWidth={2.25} className="ml-2 inline-block size-[0.8em] align-[-0.06em] transition-transform duration-500 ease-out group-hover:-translate-y-2 group-hover:translate-x-2" />
+            <ArrowUpRight aria-hidden strokeWidth={2.25} className="ml-2 inline-block size-[0.8em] self-center transition-transform duration-500 ease-out group-hover:-translate-y-2 group-hover:translate-x-2" />
           </span>
           <span className="mt-4 block font-mono text-[12px] uppercase tracking-[0.2em] text-fg-muted">{siteConfig.email}</span>
         </a>
         {/* Two ways in, side by side: the agent for anyone who scrolled past the hero's button, a note for those
             who'd rather write. On wide screens both calls to action sit on the same bottom line. */}
         <div className="mt-16 grid gap-14 lg:grid-cols-[5fr_7fr] lg:gap-20">
-          <section className="flex flex-col items-start border-t border-border pt-6">
+          <section className="relative flex flex-col items-start pt-6">
+            <span aria-hidden data-rule className="absolute inset-x-0 top-0 h-px bg-border" />
             <h2 className={EYEBROW}>
               <span className="text-fg/35">01</span>
               {c("talkLabel")}
@@ -34,7 +37,8 @@ export async function SiteFooter() {
               <TalkButton label={h("talk")} sub={h("talkSub")} />
             </div>
           </section>
-          <section className="border-t border-border pt-6">
+          <section className="relative pt-6">
+            <span aria-hidden data-rule className="absolute inset-x-0 top-0 h-px bg-border" />
             <h2 className={EYEBROW}>
               <span className="text-fg/35">02</span>
               {c("writeLabel")}

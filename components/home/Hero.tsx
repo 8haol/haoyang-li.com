@@ -23,7 +23,7 @@ export async function Hero() {
         {/* The name splits across two rows: HAOYANG on its own, then LI with the pitch and the roles on the same
             line, everything sitting on LI's baseline. One h1 for assistive tech; the visible halves are
             presentational. On phones it stacks name, pitch, roles, sitting low so the photo has the top. */}
-        <div className="flex flex-1 flex-col justify-end py-10 lg:justify-center">
+        <div data-flow="hero" className="flex flex-1 flex-col justify-end py-10 will-change-transform lg:justify-center">
           <h1 className="sr-only">Haoyang Li</h1>
           <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr_auto]">
             <HeroReveal className="lg:col-span-3">

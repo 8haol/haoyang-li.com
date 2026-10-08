@@ -3,11 +3,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { Locale } from "@/lib/site";
-import { STAGE, easeOutQuart, indexFromProgress, progressFromIndex, releaseTarget, stripOffset } from "@/lib/stageMath";
+import { STAGE, easeOutQuart, idleSnapTarget, indexFromProgress, progressFromIndex, releaseTarget, stripOffset } from "@/lib/stageMath";
 import { getLenis } from "@/lib/lenis";
 import { useRichMotion } from "@/lib/richMotion";
 import type { CardOutline } from "@/components/motion/StageGL";
 import { WorkStrip } from "./WorkStrip";
+import { StageBackdrop } from "@/components/motion/StageBackdrop";
 
 const StageGL = dynamic(() => import("@/components/motion/StageGL").then((m) => m.StageGL), { ssr: false });
 const StageCursor = dynamic(() => import("@/components/motion/StageCursor").then((m) => m.StageCursor), { ssr: false });
@@ -59,6 +60,8 @@ function Stage({
   const activeRef = useRef(true);
   const progressRef = useRef(0);
   const stRef = useRef<Trigger | null>(null);
+  const barRef = useRef<HTMLSpanElement>(null);
+  const snapTimer = useRef(0);
   const draggingRef = useRef(false);
   const suppressClickRef = useRef(false);
   const [index, setIndex] = useState(0);
@@ -81,6 +84,7 @@ function Stage({
       const size = horizontal ? section.clientWidth : section.clientHeight;
       const off = stripOffset(p, c0, cN, size);
       list.style.transform = horizontal ? `translate3d(${off}px,0,0)` : `translate3d(0,${off}px,0)`;
+      if (barRef.current) barRef.current.style.transform = `scaleX(${Math.min(1, Math.max(0, p))})`;
       const i = indexFromProgress(p, n);
       setIndex((prev) => (prev === i ? prev : i));
     },
@@ -178,6 +182,44 @@ function Stage({
   /** Jump the page scroll so the strip lands on card `i` (keeps pin and strip in sync). */
   const goTo = useCallback((i: number) => scrollToProgress(progressFromIndex(i, n), false), [n, scrollToProgress]);
 
+  // Wheel and trackpad scrolling can stop anywhere, leaving the strip between cards and the nearest card bent. Once
+  // the scroll has been quiet for a moment, settle on the nearest card (never while a drag is in progress).
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || typeof window.matchMedia !== "function" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const settle = () => {
+      snapTimer.current = 0;
+      if (draggingRef.current || !stRef.current) return;
+      const target = idleSnapTarget(progressRef.current, n);
+      if (target !== null) scrollToProgress(target, false, STAGE.snap.duration);
+    };
+    const onScroll = () => {
+      if (!activeRef.current) return;
+      window.clearTimeout(snapTimer.current);
+      snapTimer.current = window.setTimeout(settle, STAGE.snap.idleMs);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.clearTimeout(snapTimer.current);
+    };
+  }, [n, scrollToProgress]);
+
+  // ← → step through the cards while the stage is on screen (not while typing somewhere).
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (!activeRef.current || e.altKey || e.metaKey || e.ctrlKey || document.querySelector("[role=dialog]")) return;
+      if (e.target instanceof Element && e.target.closest("input, textarea, select, [contenteditable=true], [role=dialog]")) return;
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      const next = indexFromProgress(progressRef.current, n) + (e.key === "ArrowRight" ? 1 : -1);
+      if (next < 0 || next >= n) return;
+      e.preventDefault();
+      goTo(next);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [n, goTo]);
+
   /**
    * Keyboard focus: the browser scrolls the overflow-hidden section to reveal the link, which would shove the
    * whole strip sideways. Undo that, then let the page scroll (and the pin) bring the card to the centre.
@@ -273,7 +315,9 @@ function Stage({
   const linkClass = "absolute inset-0 rounded-[3.5%/5.6%] outline-none focus-visible:ring-2 focus-visible:ring-white/70";
 
   return (
-    <section ref={sectionRef} className="relative h-dvh cursor-grab overflow-clip bg-black text-white [touch-action:pan-y] active:cursor-grabbing" aria-label={eyebrow}>
+    <section ref={sectionRef} data-flow="stage" className="relative h-dvh cursor-grab overflow-clip bg-black text-white [touch-action:pan-y] active:cursor-grabbing" aria-label={eyebrow}>
+      <div data-flow="stage-inner" className="absolute inset-0 will-change-transform">
+      <StageBackdrop />
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/10" />
       <div className="pointer-events-none absolute inset-x-0 top-14 z-10 flex items-start justify-between px-4 pt-4 sm:px-6 lg:px-10">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-white/55">
@@ -335,7 +379,11 @@ function Stage({
           {pad(n ? index + 1 : 0)} / {pad(n)}
         </p>
       </div>
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-white/10" />
+      {/* The hairline doubles as the strip's progress: it fills from the left as the cards go by. */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-px overflow-hidden bg-white/10">
+        <span ref={barRef} className="absolute inset-0 origin-left bg-white/70" style={{ transform: "scaleX(0)" }} />
+      </div>
+      </div>
     </section>
   );
 }

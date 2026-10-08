@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { Camera, Mesh, Plane, Program, RenderTarget, Renderer, Texture, Transform } from "ogl";
-import { STAGE, deformCardPoint, frustum, rectToPose, roundedRectPoint, velocityNorm, type SheetParams } from "@/lib/stageMath";
+import { STAGE, cardFocus, deformCardPoint, frustum, rectToPose, roundedRectPoint, velocityNorm, type SheetParams } from "@/lib/stageMath";
 import { cardFragment, cardVertex, floorFragment, floorVertex } from "./stage/shaders";
 import { OVERLAY_H, OVERLAY_W, drawCardOverlay } from "./stage/cardOverlay";
 
@@ -118,6 +118,8 @@ export function StageGL({ cards: slides, cardsRef, velocityRef, activeRef, hover
           uPx: u(0.01),
           uHover: u(0),
           uDent: u<number>(STAGE.hover.dent),
+          uFocus: u(1),
+          uFocusDim: u<number>(STAGE.focus.dim),
         },
       });
       const mesh = new Mesh(gl, { geometry: cardGeo, program });
@@ -316,6 +318,10 @@ export function StageGL({ cards: slides, cardsRef, velocityRef, activeRef, hover
         const hoverTarget = hoverRef.current === i ? 1 : 0;
         const hv = c.program.uniforms.uHover;
         hv.value += (hoverTarget - hv.value) * STAGE.hover.lerp;
+        // The centred card is lit in full; the others recede, a hovered one comes back up.
+        const focusTarget = small ? 1 : Math.max(cardFocus(tmpRect.left + r.width / 2, ww), hv.value);
+        const fc = c.program.uniforms.uFocus;
+        fc.value += (focusTarget - fc.value) * STAGE.hover.lerp;
         // A hovered card lifts a touch toward the viewer (about its own centre).
         const lift = 1 + STAGE.hover.lift * hv.value;
         c.mesh.position.set(p.x, p.y, 0);

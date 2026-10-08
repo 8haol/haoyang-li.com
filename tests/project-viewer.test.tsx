@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 
 const replace = vi.fn();
 const back = vi.fn();
@@ -49,14 +49,15 @@ describe("ProjectViewer", () => {
     fireEvent.click(screen.getByRole("button", { name: "Next project: Product Hub" }));
     expect(replace).toHaveBeenCalledWith("/zh/work/product-hub", { scroll: false });
   });
-  it("switches with the arrow keys and closes with Escape", () => {
+  it("switches with the arrow keys and closes with Escape, once the overlay has faded", async () => {
     render(<ProjectViewer mode="modal" current={current} prev={prev} next={next} basePath="" labels={labels} />);
     fireEvent.keyDown(document, { key: "ArrowRight" });
     expect(replace).toHaveBeenLastCalledWith("/work/product-hub", { scroll: false });
     fireEvent.keyDown(document, { key: "ArrowLeft" });
     expect(replace).toHaveBeenLastCalledWith("/work/kit-funder", { scroll: false });
     fireEvent.keyDown(document, { key: "Escape" });
-    expect(back).toHaveBeenCalled();
+    expect(back).not.toHaveBeenCalled();
+    await waitFor(() => expect(back).toHaveBeenCalled());
   });
   it("hides a strip at either end and renders nothing modal-ish in page mode", () => {
     const { unmount } = render(<ProjectViewer mode="modal" current={current} prev={null} next={next} basePath="" labels={labels} />);
@@ -76,11 +77,11 @@ describe("ProjectViewer", () => {
     expect(screen.getByRole("link", { name: /Read the case study/ })).toHaveAttribute("href", "#article");
     expect(document.getElementById("article")).toHaveTextContent("Article body");
   });
-  it("closes when the dark gutter around the panel is clicked", () => {
+  it("closes when the dark gutter around the panel is clicked", async () => {
     render(<ProjectViewer mode="modal" current={current} prev={prev} next={next} basePath="" labels={labels} />);
     const gutter = screen.getByRole("dialog").querySelector(".flex.h-full") as HTMLElement;
     fireEvent.click(gutter);
-    expect(back).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(back).toHaveBeenCalledTimes(1));
   });
   it("locks Lenis on the overlay itself, not on <html>", () => {
     render(<ProjectViewer mode="modal" current={current} prev={prev} next={next} basePath="" labels={labels} />);

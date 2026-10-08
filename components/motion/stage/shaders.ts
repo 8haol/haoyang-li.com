@@ -191,6 +191,8 @@ uniform vec2 uRes;      // plane world size
 uniform float uCorner;  // radius as a share of the plane height
 uniform float uAlpha;
 uniform float uLit;     // 0 flat, 1 full sheen
+uniform float uFocus;   // 1 for the card at the centre of the stage, 0 at the edges: side cards sit back in the dark
+uniform float uFocusDim;
 uniform float uPx;      // world units per CSS pixel at z = 0
 uniform vec3 cameraPosition;
 varying vec2 vUv;
@@ -213,6 +215,7 @@ void main() {
   vec3 v = normalize(cameraPosition - vWorld);
   col = sheetLit(col, n, v, uLit * (1.0 + 0.4 * uHover));
   col *= 1.0 - SHADE * sheetShade(vX);
+  col *= mix(uFocusDim, 1.0, uFocus);
   vec2 p = (vUv - 0.5) * uRes;
   float r = uCorner * uRes.y;
   float d = rbox(p, uRes * 0.5, r);

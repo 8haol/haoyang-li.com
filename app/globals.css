@@ -288,3 +288,69 @@ html[data-hero="silk"] .hero-scope .talk-cta :is(.font-display, .font-mono) {
   from { transform: scaleY(0); }
   to { transform: scaleY(1); }
 }
+
+/* Dark stage atmosphere (StageBackdrop): two pools of colour drift behind the cards. Pre-blurred gradients moved
+   with transforms only, so the compositor does all the work; the global reduced-motion rule freezes them. */
+.stage-pool {
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  will-change: transform;
+}
+.stage-pool-a {
+  left: -10vmax;
+  top: -25vmax;
+  background: radial-gradient(closest-side, rgba(86, 110, 170, 0.34), rgba(86, 110, 170, 0.12) 45%, transparent 72%);
+  animation: poolA 38s ease-in-out infinite alternate;
+}
+.stage-pool-b {
+  right: -20vmax;
+  bottom: -30vmax;
+  background: radial-gradient(closest-side, rgba(150, 110, 90, 0.26), rgba(150, 110, 90, 0.08) 45%, transparent 72%);
+  animation: poolB 46s ease-in-out infinite alternate;
+}
+.stage-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+@keyframes poolA {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(18vmax, 10vmax, 0) scale(1.15); }
+}
+@keyframes poolB {
+  from { transform: translate3d(0, 0, 0) scale(1.1); }
+  to { transform: translate3d(-16vmax, -12vmax, 0) scale(0.95); }
+}
+
+/* Contact fields: the underline brightens by growing from the left on focus, not by fading. */
+.field-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--fg);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.6s var(--ease-out-expo);
+}
+.peer:focus ~ .field-line,
+.peer:not(:placeholder-shown) ~ .field-line {
+  transform: scaleX(1);
+}
+
+/* Role rows in the résumé: a faint tint as the pointer passes, so the long list has some life on wide screens. */
+@media (hover: hover) {
+  .role-row {
+    transition: background-color 0.4s var(--ease-out-expo);
+    border-radius: 12px;
+  }
+  .role-row:hover {
+    background-color: rgba(18, 18, 18, 0.03);
+  }
+}

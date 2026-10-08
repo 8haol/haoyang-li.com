@@ -2,6 +2,7 @@
 import { useState, type FormEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { ArrowRight, Check } from "lucide-react";
+import { Magnetic } from "@/components/motion/Magnetic";
 
 type Status = "idle" | "sending" | "sent" | "error" | "offline" | "limited";
 
@@ -52,15 +53,18 @@ export function ContactForm() {
           <div className="relative">
             <input id="contact-name" name="name" type="text" required maxLength={100} autoComplete="name" placeholder={t("name")} className={FIELD} />
             <label htmlFor="contact-name" className={LABEL}>{t("name")}</label>
+            <span aria-hidden className="field-line" />
           </div>
           <div className="relative">
             <input id="contact-email" name="email" type="email" required maxLength={200} autoComplete="email" placeholder={t("email")} className={FIELD} />
             <label htmlFor="contact-email" className={LABEL}>{t("email")}</label>
+            <span aria-hidden className="field-line" />
           </div>
         </div>
         <div className="relative">
           <textarea id="contact-message" name="message" required maxLength={5000} rows={4} placeholder={t("message")} className={`${FIELD} resize-none`} data-lenis-prevent />
           <label htmlFor="contact-message" className={LABEL}>{t("message")}</label>
+          <span aria-hidden className="field-line" />
         </div>
         {/* Honeypot: off screen and out of the tab order, so only bots fill it in. */}
         <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden className="absolute -left-[9999px] h-px w-px opacity-0" />
@@ -68,10 +72,12 @@ export function ContactForm() {
           <p aria-live="polite" className={`text-[14px] leading-6 ${error ? "text-fg" : "text-fg-muted"}`}>
             {error ?? t("note")}
           </p>
-          <button type="submit" disabled={status === "sending"} className={`${PILL} self-start bg-fg text-bg disabled:translate-y-0 disabled:opacity-60 sm:self-auto`}>
-            {status === "sending" ? t("sending") : t("send")}
-            <ArrowRight aria-hidden strokeWidth={2} className="size-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-1" />
-          </button>
+          <Magnetic className="self-start sm:self-auto">
+            <button type="submit" disabled={status === "sending"} className={`${PILL} bg-fg text-bg disabled:translate-y-0 disabled:opacity-60`}>
+              {status === "sending" ? t("sending") : t("send")}
+              <ArrowRight aria-hidden strokeWidth={2} className="size-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-1" />
+            </button>
+          </Magnetic>
         </div>
       </form>
 

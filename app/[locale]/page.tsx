@@ -8,6 +8,7 @@ import { About } from "@/components/home/About";
 import { Resume } from "@/components/home/Resume";
 import { WorkStage, type StageSlide } from "@/components/home/WorkStage";
 import { Reveal } from "@/components/motion/Reveal";
+import { SectionFlow } from "@/components/motion/SectionFlow";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
@@ -25,14 +26,16 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   // main paints its own paper: the page background turns slate while the silk hero is on screen (globals.css).
   return (
     <main id="content" className="bg-bg">
+      <SectionFlow />
       <Hero />
-      <div id="about">
+      <div id="about" data-flow="about" className="will-change-transform">
         <About />
       </div>
       <div id="selected-work">
         <WorkStage slides={slides} locale={locale} eyebrow={g("eyebrow")} hint={g("hint")} openLabel={g("open")} />
       </div>
-      <div id="resume">
+      {/* The résumé is the next sheet: it comes up over the sinking stage with rounded shoulders. */}
+      <div id="resume" className="relative z-10 -mt-8 rounded-t-[32px] bg-bg sm:-mt-10 sm:rounded-t-[40px]">
         <Resume />
       </div>
       {siteConfig.showOpenSource && (
