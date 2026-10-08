@@ -11,7 +11,9 @@ vi.mock("@/components/motion/StageGL", () => ({
 const scroll = vi.fn();
 const lenisScrollTo = vi.fn();
 vi.mock("@/lib/lenis", () => ({ getLenis: () => ({ scrollTo: lenisScrollTo }), setLenis: vi.fn() }));
-vi.mock("gsap", () => ({ default: { registerPlugin: vi.fn(), ticker: { add: vi.fn(), remove: vi.fn() } } }));
+vi.mock("gsap", () => ({
+  default: { registerPlugin: vi.fn(), to: vi.fn(() => ({ revert: vi.fn() })), ticker: { add: vi.fn(), remove: vi.fn() } },
+}));
 vi.mock("gsap/ScrollTrigger", () => ({
   ScrollTrigger: { create: vi.fn(() => ({ start: 1000, end: 3000, scroll, kill: vi.fn(), getVelocity: () => 0, progress: 0 })) },
 }));
