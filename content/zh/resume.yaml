@@ -64,7 +64,7 @@ skills:
   - group: 语言与框架
     items: [TypeScript, JavaScript, Python, SQL, React, Next.js, Node.js]
   - group: AI 与集成
-    items: [大模型 API, RAG, 提示词工程, 工具调用, REST API, n8n, Zoho CRM, Retell, Voiceflow]
+    items: [大模型 API, RAG, 提示词工程, 工具调用, REST API, n8n, Make, Zoho CRM, Retell, Voiceflow]
   - group: 数据与部署
     items: [PostgreSQL/Neon, Supabase, Airtable, Railway, Vercel, Netlify, Cloudflare]
   - group: 开发工具
