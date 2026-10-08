@@ -45,28 +45,28 @@ export function cvHtml(r = loadYaml("resume.yaml", Resume), priv: PrivateDetails
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>${esc(r.name)} — CV</title>
 <style>
-  @page { size: A4; margin: 13mm 14mm 12mm; }
+  @page { size: A4; margin: 10mm 11mm 9mm; }
   * { box-sizing: border-box; }
-  html { font-size: 9.6pt; }
-  body { margin: 0; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #121212; line-height: 1.32; }
+  html { font-size: 8.9pt; }
+  body { margin: 0; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #121212; line-height: 1.25; }
   a { color: inherit; text-decoration: none; }
   .ext { font-size: 0.72em; margin-left: 0.15em; vertical-align: 0.18em; color: #555; }
-  header { text-align: center; margin-bottom: 7pt; }
+  header { text-align: center; margin-bottom: 5pt; }
   h1 { margin: 0; font-size: 20pt; font-weight: 700; text-transform: uppercase; }
   .contact { margin-top: 3pt; font-size: 8.8pt; color: #333; }
   .contact span + span::before { content: "  |  "; color: #999; white-space: pre; }
   .summary { margin: 6pt 0 0; font-size: 9.4pt; color: #222; }
-  h2 { margin: 9pt 0 3pt; padding-bottom: 1.5pt; border-bottom: 0.8pt solid #121212; font-size: 10.5pt; font-weight: 700; letter-spacing: 0.02em; }
-  .entry + .entry { margin-top: 5pt; }
+  h2 { margin: 6pt 0 2pt; padding-bottom: 1.5pt; border-bottom: 0.8pt solid #121212; font-size: 10.5pt; font-weight: 700; letter-spacing: 0.02em; }
+  .entry + .entry { margin-top: 3pt; }
   .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12pt; }
   h3 { margin: 0; font-size: 10pt; font-weight: 700; }
   .sub { margin-top: 0.5pt; }
   .title { font-style: italic; }
   .period, .loc { font-size: 8.8pt; color: #333; white-space: nowrap; }
   ul { margin: 2pt 0 0; padding-left: 10pt; }
-  li { margin: 0 0 1pt; padding-left: 1pt; }
+  li { margin: 0; padding-left: 1pt; }
   li::marker { color: #555; }
-  .skills p { margin: 0 0 1.5pt; }
+  .skills p { margin: 0 0 1pt; }
   .skills b { font-weight: 700; }
   .edu .row + .row { margin-top: 0.5pt; }
   .course { margin: 1pt 0 0; color: #333; font-size: 9pt; }

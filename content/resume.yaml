@@ -31,7 +31,20 @@ experience:
     location: Zhengzhou, China
     period: Jun 2023 – Aug 2023
     bullets:
-      - Researched commodity futures trading strategies using Python, SQL and PCA-based factor analysis.
+      - Researched commodity futures trading strategies; PCA-based factor mining in Python identified the key market drivers and cut noise in the predictive models by 30%.
+      - Processed three years of high-frequency candlestick data in SQL and integrated supply–demand models in Python, lifting the portfolio Sharpe ratio by 15%, with Tableau dashboards for the traders.
+  - org: Haochuang Investment Group Co., Ltd
+    title: Quantitative Researcher
+    location: Shenzhen, China
+    period: Jun 2022 – Aug 2022
+    bullets:
+      - Modelled volatility clustering and autocorrelation in market data with Python; backtested Value-at-Risk models in R, improving forecast precision by 15% and cutting VaR breaches by 20% in scenario simulations.
+  - org: PARKLU by Launchmetrics
+    title: Data Analyst
+    location: Shanghai, China
+    period: Aug 2021 – Oct 2021
+    bullets:
+      - Built and maintained a SQL database of 8,000+ key opinion leaders, automating data entry with Python scripts (50% less manual work); analysed engagement and conversion data to guide influencer partnerships.
 entrepreneurial:
   - org: Kelay AI
     title: Technical Co-founder
