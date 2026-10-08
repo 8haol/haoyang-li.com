@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getGalleryProjects, loadLocalizedYaml, localizeGalleryItem } from "@/lib/content/load";
 import { OpenSource } from "@/lib/content/schema";
@@ -8,6 +9,8 @@ import { Resume } from "@/components/home/Resume";
 import { WorkStage, type StageSlide } from "@/components/home/WorkStage";
 import { Reveal } from "@/components/motion/Reveal";
 import { SectionFlow } from "@/components/motion/SectionFlow";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default async function HomePage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;

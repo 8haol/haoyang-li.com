@@ -11,8 +11,8 @@ experience:
     period: 2025.05 – 至今
     bullets:
       - 端到端负责企业 AI 项目：调研客户需求、设计架构、全栈开发、部署上线，之后和业务团队一起持续迭代。
-      - 独立设计和开发 GAIMS，一套可追溯的 AI 供应商分配系统（专利申请中），上线八个月处理了 3,000 多张采购订单。系统综合大模型、历史和风险数据、各品牌的规则以及人工审核反馈来做决定，并做了租户隔离和敏感数据脱敏。
-      - 为四家英国运动服饰集团定制 GAIMS 演示，在签保密协议后的评估阶段，向对方高管和 IT 团队讲解架构和业务价值。
+      - 独立设计和开发 GAIMS，一套可追溯的 AI 供应商分配系统（专利申请中），自 2026 年 2 月上线以来处理了 3,000 多张采购订单。系统综合大模型、历史和风险数据、各品牌的规则以及人工审核反馈来做决定，并做了租户隔离和敏感数据脱敏。
+      - 为英国运动服饰品牌和全球体育零售商等企业客户定制 GAIMS 演示，在签保密协议后的评估阶段，向对方高管和 IT 团队讲解架构和业务价值。
       - 上线 Voiceflow 聊天 Agent，累计 4 万多条消息、1.5 万多名用户；搭建 Retell 语音 Agent，对接 Zoho CRM，自动录入线索、生成通话摘要、保存通话记录，并按来电意图分给对应的销售。
       - 搭建 50 多个 n8n 工作流，把 AI 产品和 CRM、运营数据串起来，用于查询订单状态、预约销售电话和处理跨系统的业务流程。
       - 交付 Kit Funder、客户门户和 Zenith AI 官网，开发了登录、支付、订单追踪和 CRM 对接等全栈客户流程。
@@ -29,14 +29,27 @@ experience:
     location: 中国郑州
     period: 2023.06 – 2023.08
     bullets:
-      - 用 Python、SQL 和基于 PCA 的因子分析研究商品期货交易策略。
+      - 研究商品期货交易策略：用 Python 做基于 PCA 的因子挖掘，找出主要的市场驱动因素，把预测模型的噪声降低了 30%。
+      - 用 SQL 处理三年的高频 K 线数据，用 Python 接入供需预测模型，组合夏普比率提高 15%，并用 Tableau 给交易员做了可视化看板。
+  - org: 浩创投资集团有限公司
+    title: 量化研究员
+    location: 中国深圳
+    period: 2022.06 – 2022.08
+    bullets:
+      - 用 Python 处理市场数据，研究波动率聚集和自相关问题；用 R 回测多种 VaR 模型，在情景模拟中把风险预测精度提高 15%，VaR 超限次数减少 20%。
+  - org: PARKLU by Launchmetrics
+    title: 数据分析师
+    location: 中国上海
+    period: 2021.08 – 2021.10
+    bullets:
+      - 搭建并维护 8,000 多名 KOL 的 SQL 数据库，用 Python 脚本自动录入数据，减少一半人工操作；分析互动和转化数据，为品牌的 KOL 合作决策提供依据。
 entrepreneurial:
   - org: Kelay AI
     title: 技术联合创始人
     location: 英国伦敦
     period: 2026.05 – 至今
     bullets:
-      - 用 Next.js、TypeScript 和 PostgreSQL 开发给小商户用的 AI 语音预约应用（试点阶段）。多租户架构，每个商户自动生成自己的 Retell Agent，支持中英双语通话。
+      - 用 Next.js、TypeScript 和 PostgreSQL 开发给小商户用的 AI 语音预约应用（已可开始试点）。多租户架构，每个商户自动生成自己的 Retell Agent，支持中英双语通话。
       - 开发预约、改约和取消功能，做了 Webhook 签名校验和通话记录的防重复写入；通过真实通话测试，解决了来电号码识别和模型响应慢的问题。
 education:
   - school: 伦敦政治经济学院（LSE）
@@ -51,7 +64,7 @@ skills:
   - group: 语言与框架
     items: [TypeScript, JavaScript, Python, SQL, React, Next.js, Node.js]
   - group: AI 与集成
-    items: [大模型 API, RAG, 提示词工程, 工具调用, REST API, n8n, Zoho CRM, Retell AI, Voiceflow]
+    items: [大模型 API, RAG, 提示词工程, 工具调用, REST API, n8n, Zoho CRM, Retell, Voiceflow]
   - group: 数据与部署
     items: [PostgreSQL/Neon, Supabase, Airtable, Railway, Vercel, Netlify, Cloudflare]
   - group: 开发工具

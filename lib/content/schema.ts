@@ -105,6 +105,8 @@ export const Persona = z.object({
   facts: z.array(z.string().min(1)).default([]),
   /** Questions people actually ask, with my answers. */
   faq: z.array(z.object({ q: z.string().min(1), a: z.string().min(1) })).default([]),
+  /** Short sample exchanges that show how I actually answer, used as examples for the agent. */
+  examples: z.array(z.object({ visitor: z.string().min(1), me: z.string().min(1) })).default([]),
   /** Things I don't discuss, or how I deflect them. */
   boundaries: z.array(z.string().min(1)).default([]),
 });

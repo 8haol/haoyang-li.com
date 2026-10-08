@@ -60,7 +60,7 @@ export default async function OgImage() {
           </div>
 
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid rgba(255,255,255,0.22)", paddingTop: 22 }}>
-            <span style={{ ...MONO, width: 260 }}>London · Shanghai</span>
+            <span style={{ ...MONO, width: 260 }}>London</span>
             <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "8px 30px 8px 8px", borderRadius: 999, background: "#ffffff", color: "#121212", boxShadow: "0 12px 40px -12px rgba(18,18,18,0.55)" }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 52, height: 52, borderRadius: 999, background: "#121212", color: "#ffffff" }}>
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
