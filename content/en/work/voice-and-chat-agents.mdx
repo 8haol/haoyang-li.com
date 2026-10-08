@@ -1,7 +1,7 @@
 ---
 title: "Voice and chat agents wired into the business"
 slug: voice-and-chat-agents
-summary: Chat agents in six languages serving 40K+ messages to 15K+ users, voice agents that capture leads into the CRM with summaries and intent routing, and the 50+ integration workflows that connect them to orders, bookings and operations.
+summary: Chat agents in five languages serving 40K+ messages to 15K+ users, voice agents that capture leads into the CRM with summaries and intent routing, and the 50+ integration workflows that connect them to orders, bookings and operations.
 role: Designed and built the agents and the integration layer
 period: May 2025 – present
 org: My Club Group · Zenith AI
@@ -31,7 +31,7 @@ I designed the conversation flows, built the agents, and built and operated the 
 
 ## Architecture
 
-- **Chat**: Voiceflow agents on the public sites in six languages (English, EU English, Spanish, French, German, Italian): a global intent router, product agents grounded in a knowledge base and price lists, and separate order-support agents. 40K+ messages, 15K+ users.
+- **Chat**: Voiceflow agents on six storefronts in five languages (UK and EU English, Spanish, French, German, Italian): a global intent router, product agents grounded in a knowledge base and price lists, and separate order-support agents. 40K+ messages, 15K+ users.
 - **Voice**: Retell agents answering inbound sales lines. On call end, a webhook delivers transcript and summary; a workflow classifies intent, creates or updates the CRM lead, and routes it to the right salesperson with the summary attached.
 - **Integration layer**: 50+ n8n workflows acting as the API surface for the agents and the web apps. Order-status lookups, sales-call booking, estimate generation, approval notifications and CRM synchronisation are all workflows with webhook triggers.
 - **Webhook-only backend**: the kit order form and the client portal talk to this layer through webhooks. There is no bespoke API server to maintain.

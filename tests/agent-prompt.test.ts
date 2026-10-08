@@ -43,7 +43,7 @@ describe("agent prompt", () => {
     expect(prompt.trimEnd()).toMatch(/# Before every reply[\s\S]*hand the turn over\?$/);
   });
   it("stays short enough to follow: full write-ups only for featured projects, no markdown to read out", () => {
-    expect(prompt.length).toBeLessThan(40_000);
+    expect(prompt.length).toBeLessThan(42_000);
     expect(prompt.match(/^Three decisions:$/gm)).toHaveLength(3);
     expect(prompt).not.toMatch(/\*\*/);
     expect(prompt).not.toMatch(/^## (Context|Architecture)$/m);

@@ -4,7 +4,7 @@
 - title: GAIMS
   blurb: Auditable LLM decision layer that routes purchase orders to partner factories, with a rationale a person can approve or overrule; 3,000+ orders in production.
   org: My Club Group
-  year: 2025–2026
+  year: 2025 – present
   tags: [LLM, Decision systems, Hono, Postgres]
   caseStudy: gaims
   image: /images/work/gaims/cover.jpg
@@ -22,19 +22,19 @@
     title: Zenith AI 官网
     blurb: 一家 AI 服务公司的官网，重点在动效。基于 Next.js，配合 GSAP、Lenis 和 Three.js。
 - title: Voice & chat agents
-  blurb: Chat agents in six languages that answer from live order data (40K+ messages), and voice agents that log every call to the CRM with a summary and intent routing.
-  org: My Club Group
-  year: 2025–2026
+  blurb: Chat agents in five languages that answer from live order data (40K+ messages), and voice agents that log every call to the CRM with a summary and intent routing.
+  org: My Club Group · Zenith AI
+  year: 2025 – present
   tags: [Voiceflow, Retell, Zoho CRM, n8n]
   caseStudy: voice-and-chat-agents
   image: /images/work/voice-and-chat-agents/cover.jpg
   zh:
     title: 语音与聊天 Agent
-    blurb: 聊天 Agent 支持六种语言，回答都基于实时订单数据，累计 4 万多条消息；语音 Agent 把每通电话连同摘要记进 CRM，再按来电意图分给对应的销售。
+    blurb: 聊天 Agent 支持五种语言，回答都基于实时订单数据，累计 4 万多条消息；语音 Agent 把每通电话连同摘要记进 CRM，再按来电意图分给对应的销售。
 - title: Kit Funder
   blurb: Not-for-profit platform matching UK grassroots clubs with local sponsors; nine-dimension scoring (eight rules plus an LLM judgement), mutual opt-in and in-app messaging.
   org: Kit Funder (not-for-profit)
-  year: 2025–2026
+  year: 2025 – present
   tags: [AI matching, React, Base44, OpenAI]
   href: https://kitfunder.ai/
   caseStudy: kit-funder

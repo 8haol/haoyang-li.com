@@ -20,9 +20,10 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { locale, slug } = await params;
   const project = getProject(locale, slug);
   if (!project) return {};
-  return project.kind === "case"
-    ? { title: project.work.frontmatter.title, description: project.work.frontmatter.summary }
-    : { title: localizeGalleryItem(project.item, locale).title, description: localizeGalleryItem(project.item, locale).blurb };
+  const alternates = { canonical: `/work/${slug}` };
+  if (project.kind === "case") return { title: project.work.frontmatter.title, description: project.work.frontmatter.summary, alternates };
+  const item = localizeGalleryItem(project.item, locale);
+  return { title: item.title, description: item.blurb, alternates };
 }
 
 export default async function WorkDetail({ params }: { params: Params }) {
