@@ -30,7 +30,7 @@
   image: /images/work/voice-and-chat-agents/cover.jpg
   zh:
     title: 语音与聊天 Agent
-    blurb: 聊天 Agent 支持六种语言，回答都基于实时订单数据，累计 4 万多条消息；语音 Agent 把每通电话连同摘要记进 CRM，再按来电意图分给对应的销售。
+    blurb: 聊天 Agent 支持五种语言，回答都基于实时订单数据，累计 4 万多条消息；语音 Agent 把每通电话连同摘要记进 CRM，再按来电意图分给对应的销售。
 - title: Kit Funder
   blurb: Not-for-profit platform matching UK grassroots clubs with local sponsors; nine-dimension scoring (eight rules plus an LLM judgement), mutual opt-in and in-app messaging.
   org: Kit Funder (not-for-profit)
