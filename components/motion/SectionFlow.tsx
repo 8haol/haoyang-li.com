@@ -5,9 +5,9 @@ import { useEffect } from "react";
  * How the home page's sections hand over to each other, all driven by scroll position (GSAP ScrollTrigger):
  *  - the hero's type drifts up and fades as the about section rises over it;
  *  - the about block eases back as the black stage slides in with rounded top corners that square off when it docks;
- *  - at the end of its pin the stage sinks and dims while the résumé sheet comes up over it;
  *  - hairlines marked `data-rule` draw in from the left the first time they come into view.
- * Elements opt in with `data-flow="hero" | "about" | "stage" | "stage-inner"`. Nothing runs under reduced motion.
+ * The stage's exit (sinking under the résumé) lives in WorkStage, next to the pin it has to follow.
+ * Elements opt in with `data-flow="hero" | "about" | "stage"`. Nothing runs under reduced motion.
  */
 export function SectionFlow() {
   useEffect(() => {
@@ -21,7 +21,6 @@ export function SectionFlow() {
         const hero = document.querySelector<HTMLElement>('[data-flow="hero"]');
         const about = document.querySelector<HTMLElement>('[data-flow="about"]');
         const stage = document.querySelector<HTMLElement>('[data-flow="stage"]');
-        const inner = document.querySelector<HTMLElement>('[data-flow="stage-inner"]');
 
         if (hero) {
           gsap.to(hero, {
@@ -47,16 +46,6 @@ export function SectionFlow() {
               transformOrigin: "50% 100%",
               ease: "none",
               scrollTrigger: { trigger: stage, start: "top bottom", end: "top top", scrub: true },
-            });
-          }
-          // Exit: once unpinned the stage sinks under the résumé, which reads as the next sheet sliding over it.
-          if (inner) {
-            gsap.to(inner, {
-              scale: 0.94,
-              opacity: 0.4,
-              transformOrigin: "50% 0%",
-              ease: "none",
-              scrollTrigger: { trigger: stage, start: "bottom bottom", end: "bottom top", scrub: true },
             });
           }
         }
