@@ -121,6 +121,19 @@ function Stage({
         onRefresh: () => apply(progressRef.current),
       }) as unknown as Trigger;
       stRef.current = st;
+      // Exit: once unpinned the stage sinks under the résumé, which reads as the next sheet sliding over it.
+      // Keyed off the pin's own end so it can never be measured without the pin's scroll distance.
+      const inner = section.querySelector<HTMLElement>('[data-flow="stage-inner"]');
+      const exit =
+        inner && !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? gsap.to(inner, {
+              scale: 0.94,
+              opacity: 0.4,
+              transformOrigin: "50% 0%",
+              ease: "none",
+              scrollTrigger: { start: () => st.end, end: () => st.end + window.innerHeight, scrub: true },
+            })
+          : null;
       const tick = () => {
         if (!draggingRef.current) velocityRef.current = st.getVelocity();
       };
@@ -128,6 +141,8 @@ function Stage({
       apply(0);
       cleanup = () => {
         gsap.ticker.remove(tick);
+        exit?.scrollTrigger?.kill();
+        exit?.revert();
         st.kill();
         stRef.current = null;
       };
