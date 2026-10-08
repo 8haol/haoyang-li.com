@@ -41,12 +41,29 @@ describe("/api/chat", () => {
     );
     vi.stubGlobal("fetch", fetchMock);
     const { POST } = await import("@/app/api/chat/route");
-    const res = await POST(post({ message: "hi", locale: "zh", agent_id: "agent_evil" }));
+    const res = await POST(
+      post(
+        { message: "hi", locale: "zh", agent_id: "agent_evil" },
+        { "x-vercel-ip-city": "London", "x-vercel-ip-country": "GB", referer: "https://haoyang-li.com/work/gaims", "x-referrer": "https://www.linkedin.com/feed/" },
+      ),
+    );
     expect(await res.json()).toEqual({ chat_id: "chat_1", reply: "Hey, I'm Haoyang." });
     expect(calls(fetchMock)).toEqual([
       {
         path: "/create-chat",
-        body: { agent_id: "agent_chat", retell_llm_dynamic_variables: { channel: "chat", locale: "zh" }, metadata: { source: "haoyang-li.com", locale: "zh" } },
+        body: {
+          agent_id: "agent_chat",
+          retell_llm_dynamic_variables: { channel: "chat", locale: "zh" },
+          metadata: {
+            source: "haoyang-li.com",
+            locale: "zh",
+            city: "London",
+            country: "GB",
+            visitor: expect.stringMatching(/^[0-9a-f]{12}$/),
+            page: "/work/gaims",
+            referrer: "www.linkedin.com",
+          },
+        },
       },
       { path: "/create-chat-completion", body: { chat_id: "chat_1", content: "hi" } },
     ]);

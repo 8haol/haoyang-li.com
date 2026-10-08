@@ -1,4 +1,5 @@
 import { RETELL_API, retellConfig, webCallBody } from "@/lib/agent/retell";
+import { clientIp, visitorContext } from "@/lib/agent/visitor";
 
 export const runtime = "nodejs";
 
@@ -23,12 +24,11 @@ function allow(ip: string): boolean {
 export async function POST(req: Request) {
   const cfg = retellConfig();
   if (!cfg) return new Response("voice offline", { status: 503 });
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
-  if (!allow(ip)) return new Response("rate limited", { status: 429 });
+  if (!allow(clientIp(req.headers))) return new Response("rate limited", { status: 429 });
 
   const incoming = await req.json().catch(() => ({}));
   const locale = req.headers.get("x-locale") === "zh" ? "zh" : "en";
-  const body = webCallBody(incoming, cfg.agentId, locale, { source: "haoyang-li.com", locale });
+  const body = webCallBody(incoming, cfg.agentId, locale, { source: "haoyang-li.com", locale, ...visitorContext(req.headers, cfg.apiKey) });
 
   const upstream = await fetch(`${RETELL_API}/v3/create-web-call`, {
     method: "POST",

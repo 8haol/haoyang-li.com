@@ -27,7 +27,7 @@ describe("/api/voice", () => {
     const fetchMock = vi.fn(async () => new Response(JSON.stringify({ call_id: "call_1", access_token: "tok" }), { status: 201, headers: { "content-type": "application/json" } }));
     vi.stubGlobal("fetch", fetchMock);
     const { POST } = await import("@/app/api/voice/route");
-    const res = await POST(post({ agent_id: "agent_evil", agent_version: "latest" }, { "x-locale": "zh", "x-forwarded-for": "1.2.3.4" }));
+    const res = await POST(post({ agent_id: "agent_evil", agent_version: "latest" }, { "x-locale": "zh", "x-forwarded-for": "1.2.3.4", "x-vercel-ip-country": "GB" }));
     expect(res.status).toBe(201);
     expect(await res.json()).toEqual({ call_id: "call_1", access_token: "tok" });
     const [url, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
@@ -36,7 +36,7 @@ describe("/api/voice", () => {
     expect(JSON.parse(init.body as string)).toEqual({
       agent_id: "agent_ours",
       retell_llm_dynamic_variables: { channel: "voice", locale: "zh" },
-      metadata: { source: "haoyang-li.com", locale: "zh" },
+      metadata: { source: "haoyang-li.com", locale: "zh", country: "GB", visitor: expect.stringMatching(/^[0-9a-f]{12}$/) },
     });
   });
 
