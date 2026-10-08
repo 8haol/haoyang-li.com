@@ -52,7 +52,8 @@ export function agentLlmConfig(channel: Channel) {
   const shared = {
     model: "gpt-5.6-terra",
     model_high_priority: false,
-    model_temperature: 0.5,
+    // Low, not zero: the agent should stick to its material and still vary its phrasing like a person.
+    model_temperature: 0.3,
     general_prompt: buildAgentPrompt(),
     default_dynamic_variables: sessionVariables(channel, "en"),
   };
@@ -76,6 +77,39 @@ const ANALYSIS_FIELDS = [
   { type: "string", name: "visitor_name", description: "The visitor's name if they gave one.", examples: ["Sam", "a recruiter from a London startup"] },
   { type: "string", name: "visitor_intent", description: "Why they got in touch: hiring, collaboration, curiosity, something else.", examples: ["recruiter screening for an FDE role", "engineer curious about GAIMS"] },
   { type: "string", name: "follow_up", description: "Anything Haoyang should follow up on by email, or 'none'.", examples: ["send CV to the visitor", "none"] },
+  {
+    type: "string",
+    name: "claims_to_verify",
+    description: "Anything the agent stated as fact about Haoyang, his work or his life that is not in its prompt material, quoted briefly, or 'none'.",
+    examples: ["said GAIMS runs in 'six countries'", "none"],
+  },
+];
+
+/** Names the transcriber keeps getting wrong on calls ("Hao Young", "Kelly AI"), so it is biased toward them. */
+export const BOOSTED_KEYWORDS = [
+  "Haoyang",
+  "Haoyang Li",
+  "Kelay",
+  "Kelay AI",
+  "GAIMS",
+  "Zenith AI",
+  "My Club Group",
+  "Outlier",
+  "LSE",
+  "King's College London",
+  "Retell",
+  "Voiceflow",
+  "Zoho",
+  "n8n",
+  "Picos de Europa",
+  "Forward Deployed Engineer",
+];
+
+/** How the voice says the names it would otherwise guess at. */
+export const PRONUNCIATIONS = [
+  { word: "Haoyang", alphabet: "ipa", phoneme: "haʊˈjɑːŋ" },
+  { word: "Kelay", alphabet: "ipa", phoneme: "kəˈleɪ" },
+  { word: "GAIMS", alphabet: "ipa", phoneme: "ɡeɪmz" },
 ];
 
 /** Retell requires an agent version to run the LLM version with the same number. */
@@ -90,13 +124,23 @@ export function voiceAgentConfig(llmId: string, version: number, voiceId = proce
     voice_temperature: 1,
     voice_speed: 1,
     enable_dynamic_voice_speed: true,
+    pronunciation_dictionary: PRONUNCIATIONS,
     language: "en-GB",
-    responsiveness: 1,
-    interruption_sensitivity: 0.9,
+    stt_mode: "accurate",
+    boosted_keywords: BOOSTED_KEYWORDS,
+    // A beat before the greeting so the connection noise of joining does not count as an interruption.
+    begin_message_delay_ms: 600,
+    // Turn-taking tuned down from the maximum: a "yeah" or "mm" should not cut the agent off mid-sentence,
+    // and it should finish hearing a question before it answers it.
+    responsiveness: 0.8,
+    interruption_sensitivity: 0.6,
     enable_backchannel: true,
-    backchannel_frequency: 0.6,
+    backchannel_frequency: 0.35,
     backchannel_words: ["mm-hmm", "yeah", "right", "got it"],
     denoising_mode: "noise-cancellation",
+    // If the visitor goes quiet, check in like a person would, twice, before hanging up.
+    reminder_trigger_ms: 15_000,
+    reminder_max_count: 2,
     end_call_after_silence_ms: 45_000,
     max_call_duration_ms: 15 * 60 * 1000,
     post_call_analysis_data: ANALYSIS_FIELDS,
