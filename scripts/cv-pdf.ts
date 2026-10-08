@@ -2,11 +2,14 @@
  * Renders public/Haoyang_Li_CV.pdf from content/resume.yaml, so the PDF can never drift from the site (or carry
  * anything the site does not). One A4 page, printed by the local Chrome in headless mode.
  *
- *   npm run cv:pdf             write public/Haoyang_Li_CV.pdf
- *   npm run cv:pdf -- --html   also keep the intermediate HTML next to it, to tweak the layout in a browser
+ *   npm run cv:pdf               write public/Haoyang_Li_CV.pdf
+ *   npm run cv:pdf -- --html     also keep the intermediate HTML next to it, to tweak the layout in a browser
+ *   npm run cv:pdf -- --private  write Haoyang_Li_CV_private.pdf in the repo root (git-ignored) for sending by hand:
+ *                                phone, personal email and the named enterprise customers come from cv.private.json
+ *                                ({ "phone", "email", "clients": [...] }), which is git-ignored too and never published.
  */
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, writeFileSync, copyFileSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, writeFileSync, copyFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { loadYaml } from "@/lib/content/load";
@@ -15,17 +18,27 @@ import { siteConfig } from "@/lib/site";
 
 const CHROME = process.env.CHROME_PATH ?? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const OUT = path.join(process.cwd(), "public", "Haoyang_Li_CV.pdf");
+const PRIVATE_OUT = path.join(process.cwd(), "Haoyang_Li_CV_private.pdf");
+const PRIVATE_FILE = path.join(process.cwd(), "cv.private.json");
+const PUBLIC_CLIENTS = "four UK sportswear groups";
+
+/** Details kept out of the public PDF and the repository. */
+export type PrivateDetails = { phone?: string; email?: string; clients?: string[] };
 
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const host = siteConfig.url.replace(/^https?:\/\//, "");
 
-export function cvHtml(r = loadYaml("resume.yaml", Resume)): string {
+export function cvHtml(r = loadYaml("resume.yaml", Resume), priv: PrivateDetails = {}): string {
   const org = (name: string, url?: string) => (url ? `<a href="${url}">${esc(name)}<span class="ext">↗</span></a>` : esc(name));
+  const names = priv.clients?.length ? priv.clients.slice(0, -1).join(", ") + (priv.clients.length > 1 ? " and " : "") + priv.clients[priv.clients.length - 1] : "";
+  const bullet = (b: string) => (names ? b.replace(PUBLIC_CLIENTS, names) : b);
+  const email = priv.email ?? r.email;
+  const contact = [esc(r.location), priv.phone ? esc(priv.phone) : "", `<a href="mailto:${email}">${esc(email)}</a>`, `<a href="${siteConfig.url}">${host}</a>`, "Open to relocation worldwide"].filter(Boolean);
   const entry = (e: (typeof r.experience)[number]) => `
     <article class="entry">
       <div class="row"><h3>${org(e.org, e.url)}</h3><span class="period">${esc(e.period)}</span></div>
       <div class="row sub"><span class="title">${esc(e.title)}</span><span class="loc">${esc(e.location)}</span></div>
-      <ul>${e.bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>
+      <ul>${e.bullets.map((b) => `<li>${esc(bullet(b))}</li>`).join("")}</ul>
     </article>`;
   const section = (title: string, body: string) => `<section><h2>${esc(title)}</h2>${body}</section>`;
 
@@ -61,7 +74,7 @@ export function cvHtml(r = loadYaml("resume.yaml", Resume)): string {
 <body>
   <header>
     <h1>${esc(r.name)}</h1>
-    <p class="contact"><span>${esc(r.location)}</span><span><a href="mailto:${r.email}">${r.email}</a></span><span><a href="${siteConfig.url}">${host}</a></span><span>Open to relocation worldwide</span></p>
+    <p class="contact">${contact.map((c) => `<span>${c}</span>`).join("")}</p>
     <p class="summary">${esc(r.summary)}</p>
   </header>
   ${section("Experience", r.experience.map(entry).join(""))}
@@ -86,16 +99,20 @@ export function cvHtml(r = loadYaml("resume.yaml", Resume)): string {
 }
 
 function main() {
-  const html = cvHtml();
+  const isPrivate = process.argv.includes("--private");
+  if (isPrivate && !existsSync(PRIVATE_FILE)) throw new Error(`--private needs ${path.basename(PRIVATE_FILE)} next to package.json: { "phone": "...", "email": "...", "clients": ["..."] }`);
+  const priv: PrivateDetails = isPrivate ? JSON.parse(readFileSync(PRIVATE_FILE, "utf8")) : {};
+  const out = isPrivate ? PRIVATE_OUT : OUT;
+  const html = cvHtml(undefined, priv);
   const dir = mkdtempSync(path.join(tmpdir(), "cv-"));
   const htmlPath = path.join(dir, "cv.html");
   const pdfPath = path.join(dir, "cv.pdf");
   writeFileSync(htmlPath, html);
   execFileSync(CHROME, ["--headless=new", "--disable-gpu", "--no-pdf-header-footer", `--print-to-pdf=${pdfPath}`, `file://${htmlPath}`], { stdio: "ignore" });
-  copyFileSync(pdfPath, OUT);
-  if (process.argv.includes("--html")) copyFileSync(htmlPath, OUT.replace(/\.pdf$/, ".html"));
+  copyFileSync(pdfPath, out);
+  if (process.argv.includes("--html")) copyFileSync(htmlPath, out.replace(/\.pdf$/, ".html"));
   rmSync(dir, { recursive: true, force: true });
-  console.log(`wrote ${path.relative(process.cwd(), OUT)}`);
+  console.log(`wrote ${path.relative(process.cwd(), out)}`);
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(__filename)) main();

@@ -31,3 +31,14 @@ describe("CV PDF", () => {
     expect(bannedTermsIn(html)).toEqual([]);
   });
 });
+
+describe("private CV", () => {
+  it("swaps in the phone, personal email and named customers only when asked", () => {
+    const html = cvHtml(undefined, { phone: "+44 7000 000000", email: "me@example.com", clients: ["Alpha Sports", "Beta Kit", "Gamma Teamwear"] });
+    expect(html).toContain("+44 7000 000000");
+    expect(html).toContain("me@example.com");
+    expect(html).toContain("Alpha Sports, Beta Kit and Gamma Teamwear");
+    expect(html).not.toContain("four UK sportswear groups");
+    expect(cvHtml()).toContain("four UK sportswear groups");
+  });
+});
