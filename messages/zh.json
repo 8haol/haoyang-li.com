@@ -109,7 +109,7 @@
     "subtitle": "这是 AI 版的我，可以直接打字问。我的简历、做过的项目和一些个人情况它都知道；它答不上来的，会让你直接找我。",
     "placeholder": "可以问 GAIMS、Kelay、AI Agent，或者我平时怎么工作……",
     "send": "发送",
-    "disclosure": "这是 AI 版的我，不是我本人。它可能会答错，但不会瞎编。",
+    "disclosure": "这是 AI 版的我，不是我本人。它可能会答错，但不会瞎编。每段对话我都会看，也会看到大致来自哪里。",
     "offline": "助手暂时连不上。可以发邮件到 hello@haoyang-li.com，我会亲自回。",
     "suggest1": "GAIMS 是做什么的？",
     "suggest2": "怎么让大模型的决定可以追溯？",

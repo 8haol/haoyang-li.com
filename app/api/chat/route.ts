@@ -1,4 +1,5 @@
 import { agentReply, chatBody, RETELL_API, retellConfig } from "@/lib/agent/retell";
+import { clientIp, visitorContext } from "@/lib/agent/visitor";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -26,8 +27,7 @@ const CHAT_ID = /^[\w-]{1,128}$/;
 export async function POST(req: Request) {
   const cfg = retellConfig("chat");
   if (!cfg) return new Response("assistant offline", { status: 503 });
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
-  if (!allow(ip)) return new Response("rate limited", { status: 429 });
+  if (!allow(clientIp(req.headers))) return new Response("rate limited", { status: 429 });
 
   const body = (await req.json().catch(() => null)) as { chat_id?: unknown; message?: unknown; locale?: unknown } | null;
   const message = typeof body?.message === "string" ? body.message.trim().slice(0, 4000) : "";
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
   // A chat Retell has already closed (idle timeout) takes no more messages: start a fresh one, once.
   for (let fresh = !chatId; ; fresh = true) {
     if (!chatId) {
-      const created = await retell("/create-chat", chatBody(cfg.agentId, locale, { source: "haoyang-li.com", locale }));
+      const created = await retell("/create-chat", chatBody(cfg.agentId, locale, { source: "haoyang-li.com", locale, ...visitorContext(req.headers, cfg.apiKey) }));
       if (!created.ok) return new Response("upstream error", { status: 502 });
       chatId = ((await created.json()) as { chat_id: string }).chat_id;
     }

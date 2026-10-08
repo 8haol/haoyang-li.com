@@ -134,7 +134,7 @@ export function AgentPanel({ onClose, labels }: { onClose: () => void; labels: L
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: { "content-type": "application/json", "x-referrer": document.referrer },
         body: JSON.stringify({ chat_id: chatIdRef.current, message: content, locale }),
       });
       if (res.status === 503) {

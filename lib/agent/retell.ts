@@ -1,4 +1,5 @@
 import { buildAgentPrompt, VOICE_BEGIN_MESSAGE } from "@/lib/agent/prompt";
+import { siteConfig } from "@/lib/site";
 
 export const RETELL_API = "https://api.retellai.com";
 
@@ -85,6 +86,9 @@ const ANALYSIS_FIELDS = [
   },
 ];
 
+/** Where Retell posts the finished, analysed conversations; /api/retell mails each one to Haoyang. */
+export const WEBHOOK_URL = `${siteConfig.url}/api/retell`;
+
 /** Names the transcriber keeps getting wrong on calls ("Hao Young", "Kelly AI"), so it is biased toward them. */
 export const BOOSTED_KEYWORDS = [
   "Haoyang",
@@ -144,6 +148,8 @@ export function voiceAgentConfig(llmId: string, version: number, voiceId = proce
     end_call_after_silence_ms: 45_000,
     max_call_duration_ms: 15 * 60 * 1000,
     post_call_analysis_data: ANALYSIS_FIELDS,
+    webhook_url: WEBHOOK_URL,
+    webhook_events: ["call_analyzed"],
   };
 }
 
@@ -155,5 +161,7 @@ export function chatAgentConfig(llmId: string, version: number) {
     language: ["en-GB", "zh-CN"],
     end_chat_after_silence_ms: 30 * 60 * 1000,
     post_chat_analysis_data: ANALYSIS_FIELDS,
+    webhook_url: WEBHOOK_URL,
+    webhook_events: ["chat_analyzed"],
   };
 }

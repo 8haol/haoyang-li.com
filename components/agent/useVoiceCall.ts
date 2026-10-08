@@ -41,7 +41,7 @@ export function useVoiceCall(locale: string) {
     const client = new RetellClient({
       key: "proxied",
       fetch: async (_url, init) => {
-        const res = await fetch("/api/voice", { ...init, headers: { ...(init?.headers as Record<string, string> | undefined), "x-locale": locale } });
+        const res = await fetch("/api/voice", { ...init, headers: { ...(init?.headers as Record<string, string> | undefined), "x-locale": locale, "x-referrer": document.referrer } });
         if (res.status === 503) offline = true;
         return res;
       },
