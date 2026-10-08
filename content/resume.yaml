@@ -13,7 +13,7 @@ experience:
     period: May 2025 – Present
     bullets:
       - Own enterprise AI delivery from customer discovery and architecture design through full-stack development, deployment and iteration with business stakeholders.
-      - Independently designed and built GAIMS, a patent-pending, auditable AI decision layer for supplier allocation, processing 3,000+ purchase orders in production. Combines frontier LLMs, historical and risk data, brand-specific criteria and human-review feedback; implements tenant isolation and sensitive-data redaction.
+      - Independently designed and built GAIMS, a patent-pending, auditable AI decision layer for supplier allocation, processing 3,000+ purchase orders in production since February 2026. Combines frontier LLMs, historical and risk data, brand-specific criteria and human-review feedback; implements tenant isolation and sensitive-data redaction.
       - Built tailored GAIMS demos for four UK sportswear groups; presented architecture and business value to executives and IT teams during NDA-stage evaluations.
       - Deployed Voiceflow chat agents with 40K+ messages and 15K+ users; built Retell voice agents integrating Zoho CRM lead capture, call summaries, transcripts and intent-based sales routing.
       - Built 50+ n8n workflows integrating AI products with CRM and operational data, supporting order-status retrieval, sales-call booking and cross-system business processes.
