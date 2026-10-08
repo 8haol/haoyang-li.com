@@ -31,9 +31,26 @@ describe("agent prompt", () => {
     expect(prompt).toContain('In chat (channel "chat")');
     expect(prompt).toMatch(/never call end_call there/);
   });
-  it("tells the agent not to invent and not to read TODO lines", () => {
-    expect(prompt).toMatch(/Never invent/);
+  it("grounds every fact in the material and skips TODO lines", () => {
+    expect(prompt).toMatch(/only true if it is in the material/);
+    expect(prompt).toMatch(/Do not derive new facts/);
     expect(prompt).toMatch(/marked TODO/);
+    expect(prompt).not.toMatch(/TODO:/);
+  });
+  it("shows the agent how Haoyang answers and repeats the three checks after the material", () => {
+    expect(prompt).toContain("### How a real exchange with me sounds");
+    expect(prompt).toMatch(/Visitor: .+\nMe: .+/);
+    expect(prompt.trimEnd()).toMatch(/# Before every reply[\s\S]*hand the turn over\?$/);
+  });
+  it("stays short enough to follow: full write-ups only for featured projects, no markdown to read out", () => {
+    expect(prompt.length).toBeLessThan(40_000);
+    expect(prompt.match(/^Three decisions:$/gm)).toHaveLength(3);
+    expect(prompt).not.toMatch(/\*\*/);
+    expect(prompt).not.toMatch(/^## (Context|Architecture)$/m);
+  });
+  it("knows what the real Haoyang sounds like on the line", () => {
+    expect(prompt).toMatch(/If the visitor says they are Haoyang/);
+    expect(prompt).toMatch(/still "I", never "he" or "他"/);
   });
 });
 
@@ -85,6 +102,24 @@ describe("retell config", () => {
     expect(agent.response_engine).toEqual({ type: "retell-llm", llm_id: "llm_x", version: 6 });
     expect(agent.voice_id).toBe("11labs-Haoyang");
     expect(agent.max_call_duration_ms).toBeLessThanOrEqual(15 * 60 * 1000);
+  });
+  it("lets the visitor finish, hears the names right and says them right", () => {
+    const agent = voiceAgentConfig("llm_x", 6);
+    expect(agent.interruption_sensitivity).toBeLessThanOrEqual(0.7);
+    expect(agent.responsiveness).toBeLessThan(1);
+    expect(agent.backchannel_frequency).toBeLessThanOrEqual(0.4);
+    expect(agent.begin_message_delay_ms).toBeGreaterThan(0);
+    expect(agent.reminder_max_count).toBeGreaterThan(0);
+    expect(agent.stt_mode).toBe("accurate");
+    expect(agent.boosted_keywords).toEqual(expect.arrayContaining(["Haoyang", "Kelay", "GAIMS"]));
+    expect(agent.pronunciation_dictionary.map((p) => p.word)).toEqual(expect.arrayContaining(["Haoyang", "Kelay"]));
+    for (const p of agent.pronunciation_dictionary) expect(p.alphabet).toBe("ipa");
+  });
+  it("keeps the model close to its material and asks the post-call analysis to flag unsupported claims", () => {
+    expect(agentLlmConfig("voice").model_temperature).toBeLessThanOrEqual(0.3);
+    const names = (fields: { name: string }[]) => fields.map((f) => f.name);
+    expect(names(voiceAgentConfig("llm_x", 1).post_call_analysis_data)).toContain("claims_to_verify");
+    expect(names(chatAgentConfig("llm_x", 1).post_chat_analysis_data)).toContain("claims_to_verify");
   });
   it("pins forwarded web-call bodies to our agent and the voice channel", () => {
     const body = webCallBody({ agent_id: "agent_evil", agent_override: { x: 1 }, retell_llm_dynamic_variables: { channel: "x" }, metadata: { a: "1" }, sdk: "3" }, "agent_ours", "en", { source: "site" });

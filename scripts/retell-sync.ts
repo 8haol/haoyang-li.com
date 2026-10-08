@@ -35,7 +35,8 @@ const AGENTS = {
   },
   chat: {
     env: ["RETELL_CHAT_AGENT_ID", "RETELL_CHAT_LLM_ID"],
-    paths: { get: "/get-chat-agent", create: "/create-chat-agent", update: "/update-chat-agent", draft: "/create-chat-agent-version" },
+    // Drafts of a chat agent come from the same endpoint as voice drafts; there is no /create-chat-agent-version.
+    paths: { get: "/get-chat-agent", create: "/create-chat-agent", update: "/update-chat-agent", draft: "/create-agent-version" },
     config: (llmId: string, version: number) => chatAgentConfig(llmId, version),
   },
 } as const;
