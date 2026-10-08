@@ -66,7 +66,7 @@ skills:
   - group: Engineering
     items: [TypeScript, JavaScript, Python, SQL, React, Next.js, Node.js]
   - group: AI & integration
-    items: [LLM APIs, RAG, prompt engineering, tool calling, REST APIs, n8n, Zoho CRM, Retell AI, Voiceflow]
+    items: [LLM APIs, RAG, prompt engineering, tool calling, REST APIs, n8n, Make, Zoho CRM, Retell AI, Voiceflow]
   - group: Data & deployment
     items: [PostgreSQL/Neon, Supabase, Airtable, Railway, Vercel, Netlify, Cloudflare]
   - group: Developer tools
