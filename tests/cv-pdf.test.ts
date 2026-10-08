@@ -22,12 +22,12 @@ describe("CV PDF", () => {
     expect(text).toContain("haoyang-li.com");
     expect(text).not.toMatch(/\+44|\b0?7\d{3}\s?\d{6}\b/);
     expect(text).not.toMatch(/@(outlook|gmail|hotmail|icloud|live|qq)\./i);
-    expect(text).toContain("four UK sportswear groups");
+    expect(text).toContain("UK sportswear brands and global sports retailers");
   });
   it("is generated from resume.yaml", () => {
     const html = cvHtml();
     expect(html).toContain("Lead AI &amp; Data Integration Architect");
-    expect(html).toContain("four UK sportswear groups");
+    expect(html).toContain("UK sportswear brands and global sports retailers");
     expect(bannedTermsIn(html)).toEqual([]);
   });
 });
@@ -38,7 +38,7 @@ describe("private CV", () => {
     expect(html).toContain("+44 7000 000000");
     expect(html).toContain("me@example.com");
     expect(html).toContain("Alpha Sports, Beta Kit and Gamma Teamwear");
-    expect(html).not.toContain("four UK sportswear groups");
-    expect(cvHtml()).toContain("four UK sportswear groups");
+    expect(html).not.toContain("UK sportswear brands and global sports retailers");
+    expect(cvHtml()).toContain("UK sportswear brands and global sports retailers");
   });
 });

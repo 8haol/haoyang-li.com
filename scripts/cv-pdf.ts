@@ -20,7 +20,7 @@ const CHROME = process.env.CHROME_PATH ?? "/Applications/Google Chrome.app/Conte
 const OUT = path.join(process.cwd(), "public", "Haoyang_Li_CV.pdf");
 const PRIVATE_OUT = path.join(process.cwd(), "Haoyang_Li_CV_private.pdf");
 const PRIVATE_FILE = path.join(process.cwd(), "cv.private.json");
-const PUBLIC_CLIENTS = "four UK sportswear groups";
+const PUBLIC_CLIENTS = "enterprise prospects, from UK sportswear brands and global sports retailers";
 
 /** Details kept out of the public PDF and the repository. */
 export type PrivateDetails = { phone?: string; email?: string; clients?: string[] };
