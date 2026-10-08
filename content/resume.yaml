@@ -51,8 +51,8 @@ entrepreneurial:
     location: London, UK
     period: May 2026 – Present
     bullets:
-      - Built a pilot-ready voice AI booking application for small businesses using Next.js, TypeScript and PostgreSQL; integrated Retell agent provisioning and English/Mandarin conversations within a multi-tenant architecture.
-      - Implemented booking, rescheduling and cancellation tools, webhook signature verification and idempotent call storage; resolved caller-ID and model-latency issues through test calls.
+      - Built a pilot-stage voice AI booking application for small businesses using Next.js, TypeScript and PostgreSQL; integrated Retell agent provisioning and English/Mandarin conversations within a multi-tenant architecture.
+      - Implemented booking, rescheduling and cancellation tools, webhook signature verification and idempotent call storage; resolved caller-ID and model-latency issues through live-call testing.
 education:
   - school: London School of Economics and Political Science
     degree: MSc Applicable Mathematics
@@ -66,9 +66,9 @@ skills:
   - group: Engineering
     items: [TypeScript, JavaScript, Python, SQL, React, Next.js, Node.js]
   - group: AI & integration
-    items: [LLM APIs, RAG, prompt engineering, tool calling, REST APIs, n8n, Zoho CRM, Retell, Voiceflow]
+    items: [LLM APIs, RAG, prompt engineering, tool calling, REST APIs, n8n, Zoho CRM, Retell AI, Voiceflow]
   - group: Data & deployment
     items: [PostgreSQL/Neon, Supabase, Airtable, Railway, Vercel, Netlify, Cloudflare]
   - group: Developer tools
     items: [Git/GitHub, Claude Code, Codex, Cursor, Base44]
-languages: [Mandarin (native), English (fluent), Spanish (proficient)]
+languages: [Mandarin (native), English (proficient), Spanish (proficient)]
